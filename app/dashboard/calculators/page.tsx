@@ -4,7 +4,6 @@ import React from "react";
 const page = () => {
   return (
     <div>
-      <BreadcrumbDemo breadcrumb={["dashboard", "calculators"]} />
       <h1>Calculators</h1>
     </div>
   );

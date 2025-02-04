@@ -17,12 +17,11 @@ import {
 import { usePathname } from "next/navigation";
 import { Fragment, useEffect } from "react";
 
-export function BreadcrumbDemo({ breadcrumb }: any) {
+export function BreadcrumbDemo() {
   const pathname = usePathname();
 
   let pathnameArray = pathname.split("/");
   pathnameArray.shift();
-  console.log(pathnameArray);
 
   const getBreadcrumbUrl = (idx: number) => {
     let string = "";
@@ -35,9 +34,9 @@ export function BreadcrumbDemo({ breadcrumb }: any) {
   return (
     <Breadcrumb>
       <BreadcrumbList>
-        {breadcrumb.map((route: string, idx: number) => (
+        {pathnameArray.map((route: string, idx: number) => (
           <Fragment key={route}>
-            {idx == breadcrumb.length - 1 ? (
+            {idx == pathnameArray.length - 1 ? (
               <BreadcrumbItem>
                 <BreadcrumbPage>
                   {" "}

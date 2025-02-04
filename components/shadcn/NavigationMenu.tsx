@@ -16,38 +16,38 @@ const Navigation = () => {
     {
       title: "Macros",
       href: "/dashboard/calculators/macros",
-      description: "A modal calculator for macro tracking.",
+      description: "Track your macros.",
     },
     {
       title: "Weight",
       href: "/dashboard/calculators/weights",
-      description: "A modal calculator for weights tracking.",
+      description: "Quick weight calculator",
     },
     {
       title: "RPE/RIR",
       href: "/dashboard/calculators/rpe&rir",
-      description: "A modal calculator for RPE/RIR.",
+      description: "Convert RPE/RIR weight",
     },
     {
       title: "1REP",
       href: "/dashboard/calculators/1rep",
-      description: "A modal calculator for 1 REP max test.",
+      description: "Convert 1 REP max",
     },
     {
       title: "AMRAP",
       href: "/dashboard/calculators/amrap",
-      description: "A modal calculator for AMRAP test.",
+      description: "Convert AMRAP",
     },
   ];
   return (
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
+          <NavigationMenuTrigger>Links</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
               <LinkItems href="/dashboard" title="Dashboard">
-                Quick view current and future workouts, lifting stats, etc...
+                View of today and upcoming workouts, calendar view, check stats!
               </LinkItems>
               <LinkItems href="/dashboard/templates" title="Templates">
                 Create, edit or delete workout templates here.

@@ -7,6 +7,7 @@ import { FullWorkoutTemplate } from "../shadcn/FullWorkoutTemplate";
 const Template = () => {
   return (
     <div>
+      {/* Show all full templates */}
       <FullWorkoutTemplate />
     </div>
   );

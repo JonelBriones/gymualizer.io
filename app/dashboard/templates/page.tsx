@@ -1,12 +1,12 @@
 import { BreadcrumbDemo } from "@/components/shadcn/BreadcrumbDemo";
+import { FullWorkoutTemplate } from "@/components/shadcn/FullWorkoutTemplate";
 import Template from "@/components/template/Template";
 import React from "react";
 
 const page = () => {
   return (
     <div>
-      <BreadcrumbDemo breadcrumb={["dashboard", "templates"]} />
-      <Template />
+      <FullWorkoutTemplate />
     </div>
   );
 };
