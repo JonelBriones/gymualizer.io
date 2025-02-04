@@ -1,0 +1,308 @@
+[
+  {
+    "week": 1,
+    "days": [
+      {
+        "id": "000",
+        "day": 1,
+        "exercises": [
+          {
+            "name": "Bench",
+            "sets": 4,
+            "reps": 8,
+            "weight": 225,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "87.5% of your 1rm",
+            "unit": "lbs"
+          },
+          {
+            "name": "Bicep-curls",
+            "sets": 4,
+            "reps": 8,
+            "weight": 15,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "keep good tension",
+            "unit": "lbs"
+          },
+          {
+            "name": "Tricep-extension",
+            "sets": 4,
+            "reps": 12,
+            "weight": 25,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "try not to lock out",
+            "unit": "lbs"
+          }
+        ],
+        "summaryNote": "Felt really good today, bench went up like crazy"
+      },
+      {
+        "id": "001",
+        "day": 2,
+        "exercises": [
+          {
+            "name": "Squat",
+            "sets": 4,
+            "reps": 8,
+            "weight": 225,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "it was good",
+            "unit": "lbs"
+          },
+          {
+            "name": "Lunges",
+            "sets": 4,
+            "reps": 8,
+            "weight": 15,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "it was good",
+            "unit": "lbs"
+          },
+          {
+            "name": "Tricep-extension",
+            "sets": 4,
+            "reps": 12,
+            "weight": 25,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "it was good",
+            "unit": "lbs"
+          }
+        ],
+        "summaryNote": "Leg day was brutal today"
+      },
+      {
+        "id": "002",
+        "day": 3,
+        "exercises": [
+          {
+            "name": "Bench",
+            "sets": 4,
+            "reps": 8,
+            "weight": 225,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "it was good",
+            "unit": "lbs"
+          },
+          {
+            "name": "Bicep-curls",
+            "sets": 4,
+            "reps": 8,
+            "weight": 15,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "it was good",
+            "unit": "lbs"
+          },
+          {
+            "name": "Tricep-extension",
+            "sets": 4,
+            "reps": 12,
+            "weight": 25,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "it was good",
+            "unit": "lbs"
+          }
+        ],
+        "summaryNote": ""
+      },
+      {
+        "id": "003",
+        "day": 4,
+        "exercises": [
+          {
+            "name": "Bench",
+            "sets": 4,
+            "reps": 8,
+            "weight": 225,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "it was good",
+            "unit": "lbs"
+          },
+          {
+            "name": "Bicep-curls",
+            "sets": 4,
+            "reps": 8,
+            "weight": 15,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "it was good",
+            "unit": "lbs"
+          },
+          {
+            "name": "Tricep-extension",
+            "sets": 4,
+            "reps": 12,
+            "weight": 25,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "it was good",
+            "unit": "lbs"
+          }
+        ],
+        "summaryNote": ""
+      }
+    ]
+  },
+  {
+    "week": 2,
+    "days": [
+      {
+        "id": "010",
+        "day": 1,
+        "exercises": [
+          {
+            "name": "Bench",
+            "sets": 4,
+            "reps": 8,
+            "weight": 225,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "87.5% of your 1rm",
+            "unit": "lbs"
+          },
+          {
+            "name": "Bicep-curls",
+            "sets": 4,
+            "reps": 8,
+            "weight": 15,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "keep good tension",
+            "unit": "lbs"
+          },
+          {
+            "name": "Tricep-extension",
+            "sets": 4,
+            "reps": 12,
+            "weight": 25,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "try not to lock out",
+            "unit": "lbs"
+          }
+        ],
+        "summaryNote": "Felt really good today, bench went up like crazy"
+      },
+      {
+        "id": "011",
+        "day": 2,
+        "exercises": [
+          {
+            "name": "Squat",
+            "sets": 4,
+            "reps": 8,
+            "weight": 225,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "it was good",
+            "unit": "lbs"
+          },
+          {
+            "name": "Lunges",
+            "sets": 4,
+            "reps": 8,
+            "weight": 15,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "it was good",
+            "unit": "lbs"
+          },
+          {
+            "name": "Tricep-extension",
+            "sets": 4,
+            "reps": 12,
+            "weight": 25,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "it was good",
+            "unit": "lbs"
+          }
+        ],
+        "summaryNote": "Leg day was brutal today"
+      },
+      {
+        "id": "012",
+        "day": 3,
+        "exercises": [
+          {
+            "name": "Bench",
+            "sets": 4,
+            "reps": 8,
+            "weight": 225,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "it was good",
+            "unit": "lbs"
+          },
+          {
+            "name": "Bicep-curls",
+            "sets": 4,
+            "reps": 8,
+            "weight": 15,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "it was good",
+            "unit": "lbs"
+          },
+          {
+            "name": "Tricep-extension",
+            "sets": 4,
+            "reps": 12,
+            "weight": 25,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "it was good",
+            "unit": "lbs"
+          }
+        ],
+        "summaryNote": ""
+      },
+      {
+        "id": "013",
+        "day": 4,
+        "exercises": [
+          {
+            "name": "Bench",
+            "sets": 4,
+            "reps": 8,
+            "weight": 225,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "it was good",
+            "unit": "lbs"
+          },
+          {
+            "name": "Bicep-curls",
+            "sets": 4,
+            "reps": 8,
+            "weight": 15,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "it was good",
+            "unit": "lbs"
+          },
+          {
+            "name": "Tricep-extension",
+            "sets": 4,
+            "reps": 12,
+            "weight": 25,
+            "rir": 4,
+            "rpe": 8,
+            "notes": "it was good",
+            "unit": "lbs"
+          }
+        ],
+        "summaryNote": ""
+      }
+    ]
+  }
+]
