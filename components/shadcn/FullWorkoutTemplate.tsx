@@ -6,7 +6,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useReducer } from "react";
-import fakedata from "@/data.json";
+import fakedata from "@/json/data.json";
 import SingleExercise from "../template/SingleExercise";
 
 const intialState = {
@@ -43,46 +43,42 @@ export function FullWorkoutTemplate() {
   const [state, dispatchEvent] = useReducer(reducer, intialState);
   console.log("state", state);
   return (
-    <div className="w-[600px]">
+    <div className="w-full">
       <h4 className="text-4xl">Template #1</h4>
       <Accordion type="single" collapsible className="w-full">
         {fakedata.map(({ week, days }) => (
           <AccordionItem value={`item-${week}`} key={week}>
             <AccordionTrigger
+              className="hover:bg-neutral-100 p-5"
               onClick={() => dispatchEvent({ type: "week", week })}
             >
               Week {week}
             </AccordionTrigger>
             <AccordionContent>
-              {days.map(({ day, exercises, summaryNote }, idx) => (
-                <div key={day} className="flex flex-col bg-blue-50">
-                  <h3>Day {day}</h3>
-                  <div className="p-4 bg-red-50">
-                    {exercises.map((props) => (
-                      <SingleExercise {...props} key={props.name} />
-                    ))}
-                  </div>
-                  <Accordion type="single" collapsible className="w-full">
-                    <AccordionItem value={`item-${day}`}>
-                      {summaryNote ? (
-                        <AccordionTrigger
-                          onClick={() =>
-                            dispatchEvent({
-                              type: "summary_notes",
-                              note: idx,
-                            })
-                          }
-                        >
-                          {state.showNotes[idx] ? "hide notes" : "show notes"}
-                        </AccordionTrigger>
-                      ) : (
-                        <div>no notes</div>
-                      )}
-                      <AccordionContent>{summaryNote}</AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </div>
-              ))}
+              <Accordion type="single" collapsible className="w-full">
+                {days.map(({ day, exercises }) => (
+                  <AccordionItem value={`item-${day}`} key={day}>
+                    <AccordionTrigger
+                      className="hover:bg-neutral-100 p-5"
+                      onClick={() =>
+                        dispatchEvent({
+                          type: "summary_notes",
+                          note: day,
+                        })
+                      }
+                    >
+                      Day {day}
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="p-4 bg-orange-50 w-full flex flex-col">
+                        {exercises.map((props) => (
+                          <SingleExercise {...props} key={props.name} />
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
             </AccordionContent>
           </AccordionItem>
         ))}

@@ -6,7 +6,7 @@ import React from "react";
 const page = () => {
   return (
     <div>
-      <FullWorkoutTemplate />
+      <Template />
     </div>
   );
 };

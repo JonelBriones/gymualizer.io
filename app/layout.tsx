@@ -5,6 +5,7 @@ import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { BreadcrumbDemo } from "@/components/shadcn/BreadcrumbDemo";
 
 import Navigation from "@/components/shadcn/NavigationMenu";
+import { CardTemplate } from "@/components/shadcn/CardTemplate";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -27,13 +28,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="container m-auto p-8">
-        <div className="mb-10">
-          <Navigation />
-        </div>
-        <div className="flex flex-col gap-4">
-          <BreadcrumbDemo />
-          {children}
+      <body className="min-h-screen">
+        <div className="container mx-auto px-4">
+          <div className="p-5">
+            <Navigation />
+          </div>
+          <div className="flex flex-col gap-4">
+            <BreadcrumbDemo />
+            {children}
+          </div>
         </div>
       </body>
     </html>

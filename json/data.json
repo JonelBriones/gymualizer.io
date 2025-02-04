@@ -1,0 +1,115 @@
+[
+  {
+    "week": 1,
+    "days": [
+      {
+        "id": "000",
+        "day": 1,
+        "exercises": [
+          {
+            "name": "Bench",
+            "sets": 4,
+            "reps": 8,
+            "loading": "2.5%",
+            "description": "last week"
+          },
+          {
+            "name": "Bicep-curls",
+            "sets": 4,
+            "reps": 8,
+            "loading": "2.5%",
+            "description": "last week"
+          },
+          {
+            "name": "Tricep-extension",
+            "sets": 4,
+            "reps": 12,
+            "loading": "2.5%",
+            "description": "last week"
+          }
+        ]
+      },
+      {
+        "id": "001",
+        "day": 2,
+        "exercises": [
+          {
+            "name": "Squat",
+            "sets": 4,
+            "reps": 8,
+            "loading": "82.5%",
+            "description": "last week"
+          },
+          {
+            "name": "Lunges",
+            "sets": 4,
+            "reps": 8,
+            "loading": "2.5%",
+            "description": "last week"
+          },
+          {
+            "name": "Tricep-extension",
+            "sets": 4,
+            "reps": 12,
+            "loading": "2.5%",
+            "description": "last week"
+          }
+        ]
+      },
+      {
+        "id": "002",
+        "day": 3,
+        "exercises": [
+          {
+            "name": "Bench",
+            "sets": 4,
+            "reps": 8,
+            "loading": "82.5%",
+            "description": "last week"
+          },
+          {
+            "name": "Bicep-curls",
+            "sets": 4,
+            "reps": 8,
+            "loading": "2.5%",
+            "description": "last week"
+          },
+          {
+            "name": "Tricep-extension",
+            "sets": 4,
+            "reps": 12,
+            "loading": "2.5%",
+            "description": "last week"
+          }
+        ]
+      },
+      {
+        "id": "003",
+        "day": 4,
+        "exercises": [
+          {
+            "name": "Bench",
+            "sets": 4,
+            "reps": 8,
+            "loading": "82.5%",
+            "description": "last week"
+          },
+          {
+            "name": "Bicep-curls",
+            "sets": 4,
+            "reps": 8,
+            "loading": "2.5%",
+            "description": "last week"
+          },
+          {
+            "name": "Tricep-extension",
+            "sets": 4,
+            "reps": 12,
+            "loading": "2.5%",
+            "description": "last week"
+          }
+        ]
+      }
+    ]
+  }
+]
