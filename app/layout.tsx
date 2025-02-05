@@ -5,7 +5,7 @@ import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { BreadcrumbDemo } from "@/components/shadcn/BreadcrumbDemo";
 
 import Navigation from "@/components/shadcn/NavigationMenu";
-import { CardTemplate } from "@/components/shadcn/CardTemplate";
+import { CardTemplate } from "@/components/shadcn/CreateExerciseCard";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
