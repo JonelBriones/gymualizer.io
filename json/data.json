@@ -1,112 +1,427 @@
 [
   {
-    "week": 1,
-    "days": [
+    "_id": "28572857",
+    "name": "Bench Program",
+    "startDate": "may 5 2025",
+    "endDate": "december 9 2025",
+    "weeks": [
       {
-        "id": "000",
-        "day": 1,
-        "exercises": [
+        "days": [
           {
-            "name": "Bench",
-            "sets": 4,
-            "reps": 8,
-            "loading": "2.5%",
-            "description": "last week"
+            "id": "000",
+            "day": 1,
+            "exercises": [
+              {
+                "name": "Bench",
+                "loadType": "weight",
+                "sets": "4",
+                "reps": "8",
+                "load": "315",
+                "unit": "lbs",
+                "notes": "Addition ntoes goes here"
+              },
+              {
+                "name": "Tricep-extension",
+                "loadType": "rpe",
+                "sets": "4",
+                "reps": "12",
+                "load": "8",
+                "unit": "kg",
+                "notes": "Addition ntoes goes here"
+              }
+            ]
           },
           {
-            "name": "Bicep-curls",
-            "sets": 4,
-            "reps": 8,
-            "loading": "2.5%",
-            "description": "last week"
+            "id": "001",
+            "day": 2,
+            "exercises": [
+              {
+                "name": "Bench",
+                "loadType": "percentage",
+                "sets": "4",
+                "reps": "8",
+                "load": "75",
+                "unit": "lbs",
+                "notes": "Addition ntoes goes here"
+              },
+              {
+                "name": "Tricep-extension",
+                "loadType": "rpe",
+                "sets": "4",
+                "reps": "12",
+                "load": "8",
+                "unit": "kg",
+                "notes": "Addition ntoes goes here"
+              }
+            ]
           },
           {
-            "name": "Tricep-extension",
-            "sets": 4,
-            "reps": 12,
-            "loading": "2.5%",
-            "description": "last week"
+            "id": "002",
+            "day": 3,
+            "exercises": [
+              {
+                "name": "Bench",
+                "loadType": "weight",
+                "sets": "4",
+                "reps": "8",
+                "load": "315",
+                "unit": "lbs",
+                "notes": "Addition ntoes goes here"
+              },
+              {
+                "name": "Tricep-extension",
+                "loadType": "rpe",
+                "sets": "4",
+                "reps": "12",
+                "load": "8",
+                "unit": "kg",
+                "notes": "Addition ntoes goes here"
+              }
+            ]
+          },
+          {
+            "id": "003",
+            "day": 4,
+            "exercises": [
+              {
+                "name": "Bench",
+                "loadType": "weight",
+                "sets": "4",
+                "reps": "8",
+                "load": "315",
+                "unit": "lbs",
+                "notes": "Addition ntoes goes here"
+              },
+              {
+                "name": "Tricep-extension",
+                "loadType": "rpe",
+                "sets": "4",
+                "reps": "12",
+                "load": "8",
+                "unit": "kg",
+                "notes": "Addition ntoes goes here"
+              }
+            ]
           }
         ]
       },
       {
-        "id": "001",
-        "day": 2,
-        "exercises": [
+        "days": [
           {
-            "name": "Squat",
-            "sets": 4,
-            "reps": 8,
-            "loading": "82.5%",
-            "description": "last week"
+            "id": "111",
+            "day": 1,
+            "exercises": [
+              {
+                "name": "Bench",
+                "sets": 4,
+                "reps": 8,
+                "loading": "2.5%",
+                "description": "last week"
+              },
+              {
+                "name": "Bicep-curls",
+                "sets": 4,
+                "reps": 8,
+                "loading": "2.5%",
+                "description": "last week"
+              },
+              {
+                "name": "Tricep-extension",
+                "sets": 4,
+                "reps": 12,
+                "loading": "2.5%",
+                "description": "last week"
+              }
+            ]
           },
           {
-            "name": "Lunges",
-            "sets": 4,
-            "reps": 8,
-            "loading": "2.5%",
-            "description": "last week"
+            "id": "222",
+            "day": 2,
+            "exercises": [
+              {
+                "name": "Squat",
+                "sets": 4,
+                "reps": 8,
+                "loading": "82.5%",
+                "description": "last week"
+              },
+              {
+                "name": "Lunges",
+                "sets": 4,
+                "reps": 8,
+                "loading": "2.5%",
+                "description": "last week"
+              },
+              {
+                "name": "Tricep-extension",
+                "sets": 4,
+                "reps": 12,
+                "loading": "2.5%",
+                "description": "last week"
+              }
+            ]
           },
           {
-            "name": "Tricep-extension",
-            "sets": 4,
-            "reps": 12,
-            "loading": "2.5%",
-            "description": "last week"
+            "id": "333",
+            "day": 3,
+            "exercises": [
+              {
+                "name": "Bench",
+                "sets": 4,
+                "reps": 8,
+                "loading": "82.5%",
+                "description": "last week"
+              },
+              {
+                "name": "Bicep-curls",
+                "sets": 4,
+                "reps": 8,
+                "loading": "2.5%",
+                "description": "last week"
+              },
+              {
+                "name": "Tricep-extension",
+                "sets": 4,
+                "reps": 12,
+                "loading": "2.5%",
+                "description": "last week"
+              }
+            ]
+          },
+          {
+            "id": "444",
+            "day": 4,
+            "exercises": [
+              {
+                "name": "Bench",
+                "sets": 4,
+                "reps": 8,
+                "loading": "82.5%",
+                "description": "last week"
+              },
+              {
+                "name": "Bicep-curls",
+                "sets": 4,
+                "reps": 8,
+                "loading": "2.5%",
+                "description": "last week"
+              },
+              {
+                "name": "Tricep-extension",
+                "sets": 4,
+                "reps": 12,
+                "loading": "2.5%",
+                "description": "last week"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "22552659",
+    "name": "Squat Program",
+    "startDate": "feb 2 2025",
+    "endDate": "march 2 2025",
+    "weeks": [
+      {
+        "days": [
+          {
+            "id": "000",
+            "day": 1,
+            "exercises": [
+              {
+                "name": "Bench",
+                "loadType": "weight",
+                "sets": "4",
+                "reps": "8",
+                "load": "315",
+                "unit": "lbs",
+                "notes": "Addition ntoes goes here"
+              },
+              {
+                "name": "Tricep-extension",
+                "loadType": "rpe",
+                "sets": "4",
+                "reps": "12",
+                "load": "8",
+                "unit": "kg",
+                "notes": "Addition ntoes goes here"
+              }
+            ]
+          },
+          {
+            "id": "001",
+            "day": 2,
+            "exercises": [
+              {
+                "name": "Bench",
+                "loadType": "weight",
+                "sets": "4",
+                "reps": "8",
+                "load": "315",
+                "unit": "lbs",
+                "notes": "Addition ntoes goes here"
+              },
+              {
+                "name": "Tricep-extension",
+                "loadType": "rpe",
+                "sets": "4",
+                "reps": "12",
+                "load": "8",
+                "unit": "kg",
+                "notes": "Addition ntoes goes here"
+              }
+            ]
+          },
+          {
+            "id": "002",
+            "day": 3,
+            "exercises": [
+              {
+                "name": "Bench",
+                "loadType": "weight",
+                "sets": "4",
+                "reps": "8",
+                "load": "315",
+                "unit": "lbs",
+                "notes": "Addition ntoes goes here"
+              },
+              {
+                "name": "Tricep-extension",
+                "loadType": "rpe",
+                "sets": "4",
+                "reps": "12",
+                "load": "8",
+                "unit": "kg",
+                "notes": "Addition ntoes goes here"
+              }
+            ]
+          },
+          {
+            "id": "003",
+            "day": 4,
+            "exercises": [
+              {
+                "name": "Bench",
+                "loadType": "weight",
+                "sets": "4",
+                "reps": "8",
+                "load": "315",
+                "unit": "lbs",
+                "notes": "Addition ntoes goes here"
+              },
+              {
+                "name": "Tricep-extension",
+                "loadType": "rpe",
+                "sets": "4",
+                "reps": "12",
+                "load": "8",
+                "unit": "kg",
+                "notes": "Addition ntoes goes here"
+              }
+            ]
           }
         ]
       },
       {
-        "id": "002",
-        "day": 3,
-        "exercises": [
+        "days": [
           {
-            "name": "Bench",
-            "sets": 4,
-            "reps": 8,
-            "loading": "82.5%",
-            "description": "last week"
+            "id": "111",
+            "day": 1,
+            "exercises": [
+              {
+                "name": "Bench",
+                "loadType": "weight",
+                "sets": "4",
+                "reps": "8",
+                "load": "315",
+                "unit": "lbs",
+                "notes": "Addition ntoes goes here"
+              },
+              {
+                "name": "Tricep-extension",
+                "loadType": "rpe",
+                "sets": "4",
+                "reps": "12",
+                "load": "8",
+                "unit": "kg",
+                "notes": "Addition ntoes goes here"
+              }
+            ]
           },
           {
-            "name": "Bicep-curls",
-            "sets": 4,
-            "reps": 8,
-            "loading": "2.5%",
-            "description": "last week"
+            "id": "222",
+            "day": 2,
+            "exercises": [
+              {
+                "name": "Bench",
+                "loadType": "weight",
+                "sets": "4",
+                "reps": "8",
+                "load": "315",
+                "unit": "lbs",
+                "notes": "Addition ntoes goes here"
+              },
+              {
+                "name": "Tricep-extension",
+                "loadType": "rpe",
+                "sets": "4",
+                "reps": "12",
+                "load": "8",
+                "unit": "kg",
+                "notes": "Addition ntoes goes here"
+              }
+            ]
           },
           {
-            "name": "Tricep-extension",
-            "sets": 4,
-            "reps": 12,
-            "loading": "2.5%",
-            "description": "last week"
-          }
-        ]
-      },
-      {
-        "id": "003",
-        "day": 4,
-        "exercises": [
-          {
-            "name": "Bench",
-            "sets": 4,
-            "reps": 8,
-            "loading": "82.5%",
-            "description": "last week"
+            "id": "333",
+            "day": 3,
+            "exercises": [
+              {
+                "name": "Bench",
+                "loadType": "weight",
+                "sets": "4",
+                "reps": "8",
+                "load": "315",
+                "unit": "lbs",
+                "notes": "Addition ntoes goes here"
+              },
+              {
+                "name": "Tricep-extension",
+                "loadType": "rpe",
+                "sets": "4",
+                "reps": "12",
+                "load": "8",
+                "unit": "kg",
+                "notes": "Addition ntoes goes here"
+              }
+            ]
           },
           {
-            "name": "Bicep-curls",
-            "sets": 4,
-            "reps": 8,
-            "loading": "2.5%",
-            "description": "last week"
-          },
-          {
-            "name": "Tricep-extension",
-            "sets": 4,
-            "reps": 12,
-            "loading": "2.5%",
-            "description": "last week"
+            "id": "444",
+            "day": 4,
+            "exercises": [
+              {
+                "name": "Bench",
+                "loadType": "weight",
+                "sets": "4",
+                "reps": "8",
+                "load": "315",
+                "unit": "lbs",
+                "notes": "Addition ntoes goes here"
+              },
+              {
+                "name": "Tricep-extension",
+                "loadType": "rpe",
+                "sets": "4",
+                "reps": "12",
+                "load": "8",
+                "unit": "kg",
+                "notes": "Addition ntoes goes here"
+              }
+            ]
           }
         ]
       }

@@ -7,6 +7,7 @@ import { DatePickerWithRange } from "@/components/shadcn/DatePickerWithRangeDemo
 import { DrawerCreateTemplate } from "@/components/shadcn/DrawerDemo";
 import { FullWorkoutTemplate } from "@/components/shadcn/FullWorkoutTemplate";
 import SingleExercise from "@/components/template/SingleExercise";
+import WeeksAccordion from "@/components/template/WeeksAccordion";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Accordion,
@@ -24,53 +25,54 @@ import React, {
 } from "react";
 import { DateRange } from "react-day-picker";
 
-const programDefault = {
-  name: "",
-  startDate: "",
-  endDate: "",
-  program: [
-    {
-      _id: "2582058",
-      days: [
-        {
-          _id: "2526058",
-          // workout
-        },
-        {
-          _id: "2588858",
-          // workout
-        },
-        {
-          _id: "2222058",
-          // workout
-        },
-      ],
-    },
-  ],
+const currentDay = new Date();
+const defaultDate = {
+  from: new Date(
+    currentDay.getFullYear(),
+    currentDay.getMonth(),
+    currentDay.getDay()
+  ),
+  to: addDays(
+    new Date(
+      currentDay.getFullYear(),
+      currentDay.getMonth(),
+      currentDay.getDay()
+    ),
+    20
+  ),
 };
 const defaultForm = {
   name: "",
   startDate: "",
   endDate: "",
 };
+
 const intialState = {
-  showNotes: {},
-  showWeeks: {},
+  showTemplate: {},
+  showWeek: {},
+  showDay: {},
 };
 function reducer(state: any, action: any) {
   switch (action.type) {
-    case "summary_notes": {
+    case "SHOW_TEMPLATE": {
       return {
         ...state,
-        showNotes: {
+        showTemplate: {
           ...state.showNotes,
-          [action.note]: !state.showNotes[action.note],
+          [action.showTemplate]: !state.showNotes[action.showTemplate],
         },
       };
     }
-    case "week": {
-      console.log("state", state);
-      console.log("action", action);
+    case "SHOW_WEEK": {
+      return {
+        ...state,
+        showWeek: {
+          ...state.showWeeks,
+          [action.week]: !state.showWeeks[action.week],
+        },
+      };
+    }
+    case "SHOW_DAY": {
       return {
         ...state,
         showWeeks: {
@@ -80,31 +82,14 @@ function reducer(state: any, action: any) {
       };
     }
   }
-  console.log("action summary", action);
 }
 const page = () => {
   const [state, dispatchEvent] = useReducer(reducer, intialState);
   const [allTemplates, setAllTemplates] = useState<TemplateT[]>([]);
   const [exercises, setExercises] = useState<ExerciseT[]>([]);
-  const [numberOfWeeks, setNumberOfWeeks] = React.useState(1);
   const [templateForm, setTemplateForm] = useState<TemplateT>(defaultForm);
 
-  const currentDay = new Date();
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(
-      currentDay.getFullYear(),
-      currentDay.getMonth(),
-      currentDay.getDay()
-    ),
-    to: addDays(
-      new Date(
-        currentDay.getFullYear(),
-        currentDay.getMonth(),
-        currentDay.getDay()
-      ),
-      20
-    ),
-  });
+  const [date, setDate] = React.useState<DateRange | undefined>(defaultDate);
   const options = {
     year: "numeric",
     month: "long",
@@ -122,6 +107,7 @@ const page = () => {
     console.log(templateForm);
     console.log("ALL TEMPLATES", allTemplates);
     setTemplateForm(defaultForm);
+    setDate(defaultDate);
   };
   useEffect(() => {
     if (date) {
@@ -134,31 +120,23 @@ const page = () => {
   }, [date]);
 
   return (
-    <div className="flex gap-4">
-      <div className="flex flex-col gap-2">
-        <div>
-          {allTemplates.map((template: any, idx) => (
-            <div key={idx}>
-              <h4>{template.name}</h4>
-            </div>
-          ))}
-        </div>
+    <div className="flex flex-col gap-4">
+      <DrawerCreateTemplate
+        text={"New Template"}
+        templateForm={templateForm}
+        setTemplateForm={setTemplateForm}
+        date={date}
+        setDate={setDate}
+        options={options}
+        setReadyToSave={setReadyToSave}
+        readyToSave={readyToSave}
+        onSubmitCreateTemplate={onSubmitCreateTemplate}
+        setShowQuestion={setShowQuestion}
+        showQuestion={showQuestion}
+      />
+      <WeeksAccordion templates={allTemplates} dispatchEvent={dispatchEvent} />
 
-        <DrawerCreateTemplate
-          text={"New Template"}
-          templateForm={templateForm}
-          setTemplateForm={setTemplateForm}
-          date={date}
-          setDate={setDate}
-          options={options}
-          setReadyToSave={setReadyToSave}
-          readyToSave={readyToSave}
-          onSubmitCreateTemplate={onSubmitCreateTemplate}
-          setShowQuestion={setShowQuestion}
-          showQuestion={showQuestion}
-        />
-      </div>
-      <div className="flex gap-2">
+      {/* <div className="flex gap-2">
         <CreateExerciseCard exercises={exercises} setExercises={setExercises} />
 
         <div className="p-5 border border-neutral-200 rounded-md w-[300px] shadow-sm">
@@ -171,7 +149,7 @@ const page = () => {
             ))}
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

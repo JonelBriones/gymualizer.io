@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Exercise } from "@/app/_types/types";
+import { ExerciseT } from "@/app/_types/types";
 const defaultForm = {
   name: "",
   loadType: "weight",
@@ -31,7 +31,7 @@ const defaultForm = {
 };
 
 export function CreateExerciseCard({ exercises, setExercises }: any) {
-  const [exerciseForm, setExerciseForm] = useState<Exercise>(defaultForm);
+  const [exerciseForm, setExerciseForm] = useState<ExerciseT>(defaultForm);
   const onSubmitCreateExercise = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setExercises([...exercises, exerciseForm]);

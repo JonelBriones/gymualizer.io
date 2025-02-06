@@ -1,59 +1,26 @@
-"use client";
+import React, { useReducer } from "react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { useReducer } from "react";
-import fakedata from "@/json/data.json";
-import SingleExercise from "../template/SingleExercise";
-
-const intialState = {
-  showTemplate: {},
-  showWeek: {},
-  showDay: {},
-};
-function reducer(state: any, action: any) {
-  switch (action.type) {
-    case "SHOW_TEMPLATE": {
-      return {
-        ...state,
-        showTemplate: {
-          ...state.showNotes,
-          [action.showTemplate]: !state.showNotes[action.showTemplate],
-        },
-      };
-    }
-    case "SHOW_WEEK": {
-      return {
-        ...state,
-        showWeek: {
-          ...state.showWeeks,
-          [action.week]: !state.showWeeks[action.week],
-        },
-      };
-    }
-    case "SHOW_DAY": {
-      return {
-        ...state,
-        showWeeks: {
-          ...state.showWeeks,
-          [action.week]: !state.showWeeks[action.week],
-        },
-      };
-    }
-  }
-}
-
-export function FullWorkoutTemplate() {
-  const [state, dispatchEvent] = useReducer(reducer, intialState);
-  console.log("state", state);
+} from "../ui/accordion";
+import { TemplateT } from "@/app/_types/types";
+import fakeData from "@/json/data.json";
+import SingleExercise from "./SingleExercise";
+const WeeksAccordion = ({
+  templates,
+  dispatchEvent,
+}: {
+  templates: TemplateT[];
+  dispatchEvent: any;
+}) => {
+  console.log(templates);
+  console.log(fakeData);
   return (
     <div className="w-full">
-      <h4 className="text-4xl">Template #1</h4>
       <Accordion type="multiple" className="w-full">
-        {fakedata.map(({ name, startDate, endDate, weeks, _id }: any, idx) => (
+        {fakeData.map(({ name, startDate, endDate, weeks, _id }: any, idx) => (
           <AccordionItem value={`item-${idx}`} key={_id}>
             <AccordionTrigger
               className="hover:bg-neutral-100 p-5"
@@ -106,4 +73,6 @@ export function FullWorkoutTemplate() {
       </Accordion>
     </div>
   );
-}
+};
+
+export default WeeksAccordion;
