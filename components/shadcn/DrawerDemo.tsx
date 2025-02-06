@@ -16,11 +16,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { DatePickerWithRange } from "./DatePickerWithRangeDemo";
-const defaultForm = {
-  name: "",
-  startDate: "",
-  endDate: "",
-};
+
 export function DrawerCreateTemplate({
   text,
   options,
@@ -32,6 +28,7 @@ export function DrawerCreateTemplate({
   onSubmitCreateTemplate,
   setShowQuestion,
   showQuestion,
+  defaultForm,
 }: any) {
   const onDrawerClose = () => {
     setReadyToSave(false);

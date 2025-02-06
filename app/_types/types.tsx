@@ -12,4 +12,8 @@ export type TemplateT = {
   name: string;
   startDate: any;
   endDate: any;
+  weeks?: [];
+};
+export type Day = {
+  exercises: ExerciseT[];
 };

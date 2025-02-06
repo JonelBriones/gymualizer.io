@@ -1,21 +1,16 @@
 "use client";
 import { ExerciseT, TemplateT } from "@/app/_types/types";
-import { CalendarDemo } from "@/components/shadcn/CalendarDemo";
-import { CreateExerciseCard } from "@/components/shadcn/CreateExerciseCard";
-import { DatePickerDemo } from "@/components/shadcn/DatePickerDemo";
-import { DatePickerWithRange } from "@/components/shadcn/DatePickerWithRangeDemo";
 import { DrawerCreateTemplate } from "@/components/shadcn/DrawerDemo";
-import { FullWorkoutTemplate } from "@/components/shadcn/FullWorkoutTemplate";
 import SingleExercise from "@/components/template/SingleExercise";
-import WeeksAccordion from "@/components/template/WeeksAccordion";
-import { Calendar } from "@/components/ui/calendar";
+
+import fakeData from "@/json/data.json";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@radix-ui/react-accordion";
-import { addDays, getYear, isSameDay, isWithinInterval } from "date-fns";
+} from "@/components/ui/accordion";
+import { addDays } from "date-fns";
 import React, {
   FormEvent,
   Fragment,
@@ -24,6 +19,7 @@ import React, {
   useState,
 } from "react";
 import { DateRange } from "react-day-picker";
+import { CreateExerciseCard } from "@/components/shadcn/CreateExerciseCard";
 
 const currentDay = new Date();
 const defaultDate = {
@@ -41,10 +37,11 @@ const defaultDate = {
     20
   ),
 };
-const defaultForm = {
+const defaultForm: TemplateT = {
   name: "",
   startDate: "",
   endDate: "",
+  weeks: [],
 };
 
 const intialState = {
@@ -54,15 +51,6 @@ const intialState = {
 };
 function reducer(state: any, action: any) {
   switch (action.type) {
-    case "SHOW_TEMPLATE": {
-      return {
-        ...state,
-        showTemplate: {
-          ...state.showNotes,
-          [action.showTemplate]: !state.showNotes[action.showTemplate],
-        },
-      };
-    }
     case "SHOW_WEEK": {
       return {
         ...state,
@@ -85,9 +73,8 @@ function reducer(state: any, action: any) {
 }
 const page = () => {
   const [state, dispatchEvent] = useReducer(reducer, intialState);
-  const [allTemplates, setAllTemplates] = useState<TemplateT[]>([]);
   const [exercises, setExercises] = useState<ExerciseT[]>([]);
-  const [templateForm, setTemplateForm] = useState<TemplateT>(defaultForm);
+  const [template, setTemplate] = useState<TemplateT>(defaultForm);
 
   const [date, setDate] = React.useState<DateRange | undefined>(defaultDate);
   const options = {
@@ -98,33 +85,35 @@ const page = () => {
 
   const [readyToSave, setReadyToSave] = useState(false);
   const [showQuestion, setShowQuestion] = useState(0);
-
   const onSubmitCreateTemplate = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setReadyToSave(true);
     setShowQuestion(0);
-    setAllTemplates([...allTemplates, templateForm]);
-    console.log(templateForm);
-    console.log("ALL TEMPLATES", allTemplates);
-    setTemplateForm(defaultForm);
+    console.log(template);
     setDate(defaultDate);
   };
+
+  // const timeDiff = Math.abs(
+  //   template?.endDate.toLocalDateString().getTime() - template?.startDate.getTime()
+  // );
+  console.log(template?.endDate);
   useEffect(() => {
     if (date) {
-      setTemplateForm({
-        ...templateForm,
+      setTemplate({
+        ...template,
         startDate: date.from,
         endDate: date.to,
       });
     }
+    console.log(template);
   }, [date]);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 w-full">
       <DrawerCreateTemplate
         text={"New Template"}
-        templateForm={templateForm}
-        setTemplateForm={setTemplateForm}
+        templateForm={template}
+        setTemplateForm={setTemplate}
         date={date}
         setDate={setDate}
         options={options}
@@ -133,13 +122,59 @@ const page = () => {
         onSubmitCreateTemplate={onSubmitCreateTemplate}
         setShowQuestion={setShowQuestion}
         showQuestion={showQuestion}
+        defaultForm={defaultForm}
       />
-      <WeeksAccordion templates={allTemplates} dispatchEvent={dispatchEvent} />
 
-      {/* <div className="flex gap-2">
-        <CreateExerciseCard exercises={exercises} setExercises={setExercises} />
+      {/* CALCULATE WEEKS FROM START TO END DATE */}
+      {readyToSave && (
+        <div>
+          <h1>{template.name}</h1>
+          <Accordion type="multiple" className="w-full">
+            {Array(10)
+              .fill("")
+              .map(({ days }: any, idx) => (
+                <AccordionItem value={`item-${idx}`} key={idx}>
+                  <AccordionTrigger
+                    className="hover:bg-neutral-100 p-5"
+                    onClick={() => dispatchEvent({ type: "name", days })}
+                  >
+                    Week {idx + 1}
+                  </AccordionTrigger>
+                  <AccordionContent className="ml-4">
+                    <Accordion type="single" collapsible className="w-full">
+                      {Array(7)
+                        .fill("")
+                        .map((_, idx) => (
+                          <AccordionItem value={`item-${idx}`} key={idx}>
+                            <AccordionTrigger
+                              className="hover:bg-neutral-100 p-5"
+                              onClick={() =>
+                                dispatchEvent({
+                                  type: "summary_notes",
+                                  note: idx,
+                                })
+                              }
+                            >
+                              Day {idx + 1}
+                            </AccordionTrigger>
+                            <AccordionContent className="ml-4">
+                              <CreateExerciseCard
+                                exercises={exercises}
+                                setExercises={setExercises}
+                              />
+                            </AccordionContent>
+                          </AccordionItem>
+                        ))}
+                    </Accordion>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+          </Accordion>
+        </div>
+      )}
 
-        <div className="p-5 border border-neutral-200 rounded-md w-[300px] shadow-sm">
+      <div className="flex gap-2">
+        {/* <div className="p-5 border border-neutral-200 rounded-md w-[300px] shadow-sm">
           <h4 className="font-medium text-xl">Exercises</h4>
           <div className="flex flex-col gap-2">
             {exercises.map((props: ExerciseT, idx) => (
@@ -148,8 +183,8 @@ const page = () => {
               </Fragment>
             ))}
           </div>
-        </div>
-      </div> */}
+        </div> */}
+      </div>
     </div>
   );
 };

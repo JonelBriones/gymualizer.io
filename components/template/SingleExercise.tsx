@@ -10,19 +10,19 @@ const SingleExercise = ({
   name,
   sets,
   reps,
-  loading,
+  loadType,
   load,
   unit,
   notes,
 }: ExerciseT) => {
   let description = `${sets} x ${reps} at ${
-    loading == "percentage"
+    loadType == "percentage"
       ? `${load}%`
       : loadType == "rpe"
       ? `rpe ${load}`
       : `${load}${unit}`
   } `;
-
+  console.log;
   return (
     <>
       <TooltipProvider>
