@@ -1,4 +1,4 @@
-export type Exercise = {
+export type ExerciseT = {
   name: string;
   loadType: string;
   sets: string;
@@ -6,4 +6,10 @@ export type Exercise = {
   load: string;
   unit: string;
   notes: string;
+};
+
+export type TemplateT = {
+  name: string;
+  startDate: any;
+  endDate: any;
 };

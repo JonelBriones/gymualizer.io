@@ -1,8 +1,5 @@
 "use client";
-
-import React, { useState } from "react";
-import { Minus, Plus } from "lucide-react";
-
+import React, { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -15,23 +12,35 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { CreateTemplateCard } from "./CreateTemplateCard";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { DatePickerWithRange } from "./DatePickerWithRangeDemo";
 const defaultForm = {
   name: "",
-  totalWeeks: 0,
+  startDate: "",
+  endDate: "",
 };
-export function DrawerDemo({ text, numberOfWeeks, setNumberOfWeeks }: any) {
-  const [readyToSave, setReadyToSave] = useState(false);
-  const [templateForm, setTemplateForm] = useState<any>(defaultForm);
-  const [programName, setProgramName] = useState("");
-  const [programDuration, setProgramDuration] = useState(0);
+export function DrawerCreateTemplate({
+  text,
+  options,
+  templateForm,
+  setTemplateForm,
+  date,
+  setDate,
+  setReadyToSave,
+  onSubmitCreateTemplate,
+  setShowQuestion,
+  showQuestion,
+}: any) {
   const onDrawerClose = () => {
-    setProgramName("");
-    setProgramDuration(0);
     setReadyToSave(false);
-    setTimeout(() => {
-      setTemplateForm(defaultForm);
-    }, 2000);
+    setTemplateForm(defaultForm);
+    setShowQuestion(0);
   };
+
+  const questions = ["Add a title.", "Pick a start and end date."];
+
   return (
     <Drawer>
       <DrawerTrigger asChild>
@@ -39,57 +48,91 @@ export function DrawerDemo({ text, numberOfWeeks, setNumberOfWeeks }: any) {
       </DrawerTrigger>
       <DrawerContent>
         <div className="mx-auto w-full max-w-sm">
-          <DrawerHeader>
-            <DrawerTitle>
-              {readyToSave ? (
-                <span className="flex flex-col">
-                  <span className="text-4xl">{templateForm.name}</span>
-                  <span className="text-4xl">
-                    {templateForm.totalWeeks} week cycle
+          <Card className="h-[240px] flex flex-col justify-between">
+            <DrawerHeader>
+              <DrawerTitle>
+                {showQuestion == 2 ? (
+                  <span>{templateForm.name}</span>
+                ) : (
+                  <span>{questions[showQuestion]}</span>
+                )}
+              </DrawerTitle>
+              <DrawerDescription>
+                {showQuestion == 2 && (
+                  <span className="flex flex-col text-lg">
+                    <span>
+                      <span className="flex flex-col">
+                        Start date:{" "}
+                        {date.from.toLocaleDateString("en-us", options)}
+                      </span>
+                      <span>
+                        End date: {date.to.toLocaleDateString("en-us", options)}
+                      </span>
+                    </span>
                   </span>
-                </span>
-              ) : (
-                "Creating Template"
-              )}
-            </DrawerTitle>
-            <DrawerDescription>
-              {readyToSave ? "Is this correct?" : "Update the following fields"}
-            </DrawerDescription>
-          </DrawerHeader>
+                )}
+              </DrawerDescription>
+            </DrawerHeader>
 
-          {readyToSave ? (
-            <DrawerFooter className="">
-              <div className="flex w-full gap-2">
-                <DrawerClose asChild>
-                  <Button onClick={onDrawerClose} className="flex-1">
-                    Save
-                  </Button>
-                </DrawerClose>
-                <DrawerClose asChild>
-                  <Button
-                    variant="outline"
-                    onClick={onDrawerClose}
-                    className="flex-1"
-                  >
-                    Cancel
-                  </Button>
-                </DrawerClose>
-              </div>
-            </DrawerFooter>
-          ) : (
-            <CreateTemplateCard
-              numberOfWeeks={numberOfWeeks}
-              setNumberOfWeeks={setNumberOfWeeks}
-              readyToSave={readyToSave}
-              setReadyToSave={setReadyToSave}
-              programName={programName}
-              setProgramName={setProgramName}
-              setProgramDuration={setProgramDuration}
-              templateForm={templateForm}
-              programDuration={programDuration}
-              setTemplateForm={setTemplateForm}
-            />
-          )}
+            <CardContent>
+              <form onSubmit={onSubmitCreateTemplate}>
+                {showQuestion == 0 && (
+                  <div className="flex justify-center">
+                    <Label htmlFor="name"></Label>
+                    <Input
+                      id="name"
+                      name="name"
+                      value={templateForm.name}
+                      required
+                      minLength={1}
+                      onChange={(e) =>
+                        setTemplateForm({
+                          ...templateForm,
+                          name: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                )}
+                {showQuestion == 1 && (
+                  <div className="flex justify-center">
+                    <DatePickerWithRange date={date} setDate={setDate} />
+                  </div>
+                )}
+
+                <DrawerFooter className="">
+                  <div className="flex w-full gap-2">
+                    {showQuestion == 2 ? (
+                      <DrawerClose asChild className="flex-1">
+                        <Button type="submit">Save</Button>
+                      </DrawerClose>
+                    ) : (
+                      <Button
+                        type="button"
+                        onClick={() => {
+                          if (templateForm.name == "") return;
+                          setShowQuestion(showQuestion + 1);
+                        }}
+                        className="flex-1"
+                      >
+                        Save
+                      </Button>
+                    )}
+
+                    <DrawerClose asChild>
+                      <Button
+                        variant="outline"
+                        onClick={onDrawerClose}
+                        className="flex-1"
+                      >
+                        Cancel
+                      </Button>
+                    </DrawerClose>
+                  </div>
+                </DrawerFooter>
+              </form>
+            </CardContent>
+          </Card>
         </div>
       </DrawerContent>
     </Drawer>

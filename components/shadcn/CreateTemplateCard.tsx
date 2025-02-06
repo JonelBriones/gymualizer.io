@@ -2,25 +2,10 @@
 import React, { FormEvent, useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Exercise } from "@/app/_types/types";
-import { Minus, Plus } from "lucide-react";
+import { DatePickerWithRange } from "./DatePickerWithRangeDemo";
 
 export function CreateTemplateCard({
   setReadyToSave,
@@ -29,11 +14,14 @@ export function CreateTemplateCard({
   programName,
   programDuration,
   setProgramName,
-  setProgramDuration,
+  date,
+  setDate,
+  onDrawerClose,
 }: any) {
   const onSubmitCreateTemplate = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (templateForm.name == "") {
+    setShowQuestion(showQuestion + 1);
+    if (templateForm?.name == "") {
       setTemplateForm({ ...templateForm, name: programName });
     } else if (templateForm.totalWeeks == 0) {
       setTemplateForm({
@@ -43,78 +31,49 @@ export function CreateTemplateCard({
       setReadyToSave(true);
     }
   };
-  const title = `${
-    !templateForm.name ? "Program Name" : "Duration of Program"
-  }`;
-  const description = `${
-    !templateForm.name
-      ? "Add a name for this program"
-      : "How many weeks is the program?"
-  }`;
 
+  const questions = [
+    {
+      question: "What would you to name this program?",
+      answer: "",
+    },
+    {
+      question: "Pick a start date.",
+      answer: "",
+    },
+    {
+      question: "Pick a end date.",
+      answer: "",
+    },
+  ];
+  const [showQuestion, setShowQuestion] = useState(0);
+
+  useEffect(() => {}, [showQuestion]);
   return (
     <Card className="">
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
+        <CardTitle>{questions[showQuestion].question}</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={onSubmitCreateTemplate}>
-          {templateForm.name}
-          {templateForm.totalWeeks}
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
-              {templateForm.name && templateForm.totalWeeks ? (
-                <div>
-                  <h4 className="text-xl">{templateForm.name}</h4>
-                  <h4 className="text-xl">{templateForm.totalWeeks}</h4>
-                </div>
-              ) : templateForm.name == "" ? (
+              {showQuestion == 0 && (
                 <>
-                  <Label htmlFor="name">Template Name</Label>
+                  <Label htmlFor="name">Program name</Label>
                   <Input
                     id="name"
                     name="name"
                     value={programName}
-                    placeholder="Name of your exercise"
+                    placeholder="Program name"
                     onChange={(e) => setProgramName(e.target.value)}
                   />
                 </>
-              ) : (
+              )}
+              {showQuestion == 1 && (
                 <>
-                  <div className="p-4 pb-0">
-                    <div className="flex items-center justify-center space-x-2">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon"
-                        className="h-8 w-8 shrink-0 rounded-full"
-                        onClick={() => setProgramDuration(programDuration - 1)}
-                        disabled={programDuration <= 1}
-                      >
-                        <Minus />
-                        <span className="sr-only">Decrease</span>
-                      </Button>
-                      <div className="flex-1 text-center">
-                        <div className="text-7xl font-bold tracking-tighter">
-                          {programDuration}
-                        </div>
-                        <div className="text-[0.70rem] uppercase text-muted-foreground">
-                          TOTAL WEEKS
-                        </div>
-                      </div>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon"
-                        className="h-8 w-8 shrink-0 rounded-full"
-                        onClick={() => setProgramDuration(programDuration + 1)}
-                        disabled={programDuration >= 52}
-                      >
-                        <Plus />
-                        <span className="sr-only">Increase</span>
-                      </Button>
-                    </div>
+                  <div className="w-fit">
+                    <DatePickerWithRange date={date} setDate={setDate} />
                   </div>
                 </>
               )}
@@ -122,9 +81,10 @@ export function CreateTemplateCard({
           </div>
           <div className="flex justify-between">
             <Button type="submit">Save</Button>
-            <Button>Cancel</Button>
+            <Button type="button" onClick={() => setReadyToSave(true)}>
+              Cancel
+            </Button>
           </div>
-          {/* WEEKS */}
         </form>
       </CardContent>
     </Card>

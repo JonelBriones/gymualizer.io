@@ -6,7 +6,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { TooltipDemo } from "../shadcn/TooltipDemo";
 const SingleExercise = ({
   name,
   sets,
