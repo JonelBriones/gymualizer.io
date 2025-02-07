@@ -28,11 +28,11 @@ export function DrawerCreateTemplate({
   onSubmitCreateTemplate,
   setShowQuestion,
   showQuestion,
-  defaultForm,
+  defaultTemplateForm,
 }: any) {
   const onDrawerClose = () => {
     setReadyToSave(false);
-    setTemplateForm(defaultForm);
+    setTemplateForm(defaultTemplateForm);
     setShowQuestion(0);
   };
 

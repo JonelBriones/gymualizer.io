@@ -6,6 +6,20 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Params } from "next/dist/server/request/params";
+interface Param {
+  name: any;
+  sets: any;
+  reps: any;
+  loadType: any;
+  load: any;
+  unit: any;
+  notes: any;
+  addToweek: any;
+  addToWeekdayIdx: any;
+  weekIdx: any;
+  setTemplate: any;
+}
 const SingleExercise = ({
   name,
   sets,
@@ -14,7 +28,10 @@ const SingleExercise = ({
   load,
   unit,
   notes,
-}: ExerciseT) => {
+  addToWeek,
+  weekIdx,
+  dayIdx,
+}: Params) => {
   let description = `${sets} x ${reps} at ${
     loadType == "percentage"
       ? `${load}%`
@@ -22,13 +39,13 @@ const SingleExercise = ({
       ? `rpe ${load}`
       : `${load}${unit}`
   } `;
-  console.log;
+
   return (
     <>
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <div className="flex gap-4 place-items-center border border-neutral-400 p-2 rounded-md cursor-pointer select-none">
+            <div className="flex gap-4 place-items-center p-2 rounded-md cursor-pointer select-none">
               <div className="flex gap-2">
                 <h4 className="text-[16px] font-medium">{name}</h4>
                 <span className="text-neutral-600">{description}</span>

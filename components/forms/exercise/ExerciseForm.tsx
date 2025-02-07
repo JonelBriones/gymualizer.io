@@ -23,11 +23,13 @@ import { ExerciseT } from "@/app/_types/types";
 const defaultForm = {
   name: "",
   loadType: "weight",
-  sets: "",
-  reps: "",
-  load: "",
+  sets: "0",
+  reps: "0",
+  load: "0",
   unit: "lbs",
   notes: "",
+  week: "0",
+  day: "0",
 };
 interface Params {
   onSubmitCreateExercise: any;
@@ -39,12 +41,22 @@ const ExerciseForm = ({
   exerciseForm,
   setExerciseForm,
 }: Params) => {
+  const days = [
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
+  ];
   return (
     <form onSubmit={onSubmitCreateExercise}>
       <div className="grid w-full items-center gap-4">
         <div className="flex flex-col space-y-1.5">
           <Label htmlFor="name">Exercise Name</Label>
           <Input
+            required
             id="name"
             name="name"
             value={exerciseForm.name}
@@ -54,7 +66,73 @@ const ExerciseForm = ({
             }
           />
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-col max-w-[270px]">
+          <div className="flex flex-col space-y-1.5 flex-1">
+            <Label htmlFor="week">Week</Label>
+            <Select
+              required
+              value={exerciseForm.week}
+              name="week"
+              onValueChange={(e) =>
+                setExerciseForm({ ...exerciseForm, week: e })
+              }
+            >
+              <SelectTrigger id="reps">
+                <SelectValue placeholder="Select" />
+              </SelectTrigger>
+              <SelectContent position="popper">
+                {Array(10)
+                  .fill(null)
+                  .map((_, idx) => (
+                    <SelectItem key={idx} value={idx.toString()}>
+                      {idx + 1}
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex flex-col space-y-1.5 flex-1">
+            <Label htmlFor="day">Day</Label>
+            <Select
+              required
+              value={exerciseForm.day}
+              name="day"
+              onValueChange={(e) =>
+                setExerciseForm({ ...exerciseForm, day: e })
+              }
+            >
+              <SelectTrigger id="day">
+                <SelectValue placeholder="Select" />
+              </SelectTrigger>
+              <SelectContent position="popper">
+                {Array(7)
+                  .fill(null)
+                  .map((_, idx) => (
+                    <SelectItem key={idx} value={idx.toString()}>
+                      {idx + 1}
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex flex-col space-y-1.5 flex-1">
+            <Label htmlFor="unit">Unit</Label>
+            <Select
+              value={exerciseForm.unit}
+              name="unit"
+              onValueChange={(e) =>
+                setExerciseForm({ ...exerciseForm, unit: e })
+              }
+            >
+              <SelectTrigger id="reps">
+                <SelectValue placeholder="Select" />
+              </SelectTrigger>
+              <SelectContent position="popper">
+                <SelectItem value="kg">kg</SelectItem>
+                <SelectItem value="lbs">lbs</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           <div className="flex flex-col space-y-1.5 flex-1">
             <Label htmlFor="reps">Load Type</Label>
             <Select
@@ -71,24 +149,6 @@ const ExerciseForm = ({
                 <SelectItem value="weight">Weight</SelectItem>
                 <SelectItem value="percentage">Percentage</SelectItem>
                 <SelectItem value="rpe">RPE</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="unit">Unit</Label>
-            <Select
-              value={exerciseForm.unit}
-              name="unit"
-              onValueChange={(e) =>
-                setExerciseForm({ ...exerciseForm, unit: e })
-              }
-            >
-              <SelectTrigger id="reps">
-                <SelectValue placeholder="Select" />
-              </SelectTrigger>
-              <SelectContent position="popper">
-                <SelectItem value="kg">kg</SelectItem>
-                <SelectItem value="lbs">lbs</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -141,7 +201,7 @@ const ExerciseForm = ({
             </Select>
           </div>
           {/* RENDER ON LOAD TYPE */}
-          <div className="flex flex-col space-y-1.5 w-[100px]">
+          <div className="flex flex-col space-y-1.5 ">
             <Label htmlFor="load">Load</Label>
             {exerciseForm.loadType == "weight" && (
               <Input
@@ -149,6 +209,7 @@ const ExerciseForm = ({
                 placeholder="0"
                 name="load"
                 max={1000}
+                className="w-[70px]"
                 onChange={(e) =>
                   setExerciseForm({ ...exerciseForm, load: e.target.value })
                 }

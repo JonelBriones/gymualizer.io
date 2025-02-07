@@ -1,49 +1,47 @@
 "use client";
-import React, { FormEvent, useEffect, useState } from "react";
-
-import { Button } from "@/components/ui/button";
+import React, { FormEvent, useEffect } from "react";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { ExerciseT } from "@/app/_types/types";
-import ExerciseForm from "../forms/exercise/ExerciseForm";
-const defaultForm = {
-  name: "",
-  loadType: "weight",
-  sets: "",
-  reps: "",
-  load: "",
-  unit: "lbs",
-  notes: "",
-};
 
-export function CreateExerciseCard({ exercises, setExercises }: any) {
-  const [exerciseForm, setExerciseForm] = useState<ExerciseT>(defaultForm);
+import { ExerciseT, TemplateT } from "@/app/_types/types";
+import ExerciseForm from "../forms/exercise/ExerciseForm";
+interface Params {
+  exerciseForm: any;
+  setExerciseForm: any;
+  defaultExerciseForm: ExerciseT;
+  weekIdx: any;
+  dayIdx: any;
+  template: TemplateT;
+  setTemplate: any;
+  exercises: any;
+  setExercises: any;
+}
+export function CreateExerciseCard({
+  exerciseForm,
+  setExerciseForm,
+  defaultExerciseForm,
+  template,
+  setTemplate,
+  exercises,
+  setExercises,
+}: any) {
   const onSubmitCreateExercise = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (exerciseForm.week == "" || exerciseForm.day == "") return;
+    console.log("form", exerciseForm);
     setExercises([...exercises, exerciseForm]);
-    setExerciseForm(defaultForm);
-  };
-  useEffect(() => {
+    setExerciseForm(defaultExerciseForm);
     console.log(exercises);
-  }, [exercises]);
+  };
+
   return (
-    <Card className="md:w-[350px]">
-      <CardHeader>
+    <Card className="w-fit md:max-w-md">
+      <CardHeader className="">
         <CardTitle>Create Exercise</CardTitle>
         <CardDescription>
           Add exercise, sets, reps, load and notes.
