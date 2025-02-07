@@ -17,31 +17,11 @@ const TemplateForm = () => {
     const parentElement = document.getElementById("exercise-form");
     parentElement?.appendChild(newInput);
   };
-  const handleRemoveInput = () => {
-    setTotalExerciseInputs(totalExerciseInputs - 1);
-    // const newInput = document.createElement("input")
-    // newInput.setAttribute("type","text")
-    // newInput.setAttribute("id","exercise")
-  };
+
   console.log(FAKE_WORKOUTPLAN);
   return (
     <div>
       <h1 className="text-4xl">Create Template</h1>
-      {/* Templates can be full work out plans or indivual work out days  */}
-
-      <div>
-        {/* full Template Cycle
-            gives a prompt of questions
-            1. How many weeks would you your template to have?
-              - select number
-            2. How many days would you like to workout each week?
-              -select number 1-7
-            renders forms to corresponding inputs
-      
-  */}
-        {/* individual exercises per workout */}
-      </div>
-
       <form
         action=""
         id="exercise-form"

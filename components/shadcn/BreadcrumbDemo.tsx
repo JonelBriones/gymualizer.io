@@ -32,30 +32,32 @@ export function BreadcrumbDemo() {
   };
 
   return (
-    <Breadcrumb>
-      <BreadcrumbList>
-        {pathnameArray.map((route: string, idx: number) => (
-          <Fragment key={route}>
-            {idx == pathnameArray.length - 1 ? (
-              <BreadcrumbItem>
-                <BreadcrumbPage>
-                  {" "}
-                  {route[0].toUpperCase() + route.slice(1, route.length)}
-                </BreadcrumbPage>
-              </BreadcrumbItem>
-            ) : (
-              <>
+    pathname !== "/" && (
+      <Breadcrumb>
+        <BreadcrumbList>
+          {pathnameArray.map((route: string, idx: number) => (
+            <Fragment key={route}>
+              {idx == pathnameArray.length - 1 ? (
                 <BreadcrumbItem>
-                  <BreadcrumbLink href={getBreadcrumbUrl(idx)}>
+                  <BreadcrumbPage>
+                    {" "}
                     {route[0].toUpperCase() + route.slice(1, route.length)}
-                  </BreadcrumbLink>
+                  </BreadcrumbPage>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator />
-              </>
-            )}
-          </Fragment>
-        ))}
-      </BreadcrumbList>
-    </Breadcrumb>
+              ) : (
+                <>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href={getBreadcrumbUrl(idx)}>
+                      {route[0].toUpperCase() + route.slice(1, route.length)}
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                </>
+              )}
+            </Fragment>
+          ))}
+        </BreadcrumbList>
+      </Breadcrumb>
+    )
   );
 }

@@ -53,7 +53,7 @@ const ExerciseForm = ({
   return (
     <form onSubmit={onSubmitCreateExercise}>
       <div className="grid w-full items-center gap-4">
-        <div className="flex flex-col space-y-1.5">
+        <div className="flex space-y-1.5">
           <Label htmlFor="name">Exercise Name</Label>
           <Input
             required
@@ -67,7 +67,7 @@ const ExerciseForm = ({
           />
         </div>
         <div className="flex gap-2 flex-col max-w-[270px]">
-          <div className="flex flex-col space-y-1.5 flex-1">
+          {/* <div className="flex flex-col space-y-1.5 flex-1">
             <Label htmlFor="week">Week</Label>
             <Select
               required
@@ -105,16 +105,14 @@ const ExerciseForm = ({
                 <SelectValue placeholder="Select" />
               </SelectTrigger>
               <SelectContent position="popper">
-                {Array(7)
-                  .fill(null)
-                  .map((_, idx) => (
-                    <SelectItem key={idx} value={idx.toString()}>
-                      {idx + 1}
-                    </SelectItem>
-                  ))}
+                {days.map((day, idx) => (
+                  <SelectItem key={idx} value={idx.toString()}>
+                    {day[0].toUpperCase() + day.slice(1, day.length)}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
-          </div>
+          </div> */}
           <div className="flex flex-col space-y-1.5 flex-1">
             <Label htmlFor="unit">Unit</Label>
             <Select

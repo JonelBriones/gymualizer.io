@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { ExerciseT, TemplateT } from "@/app/_types/types";
+import { ExerciseT, TemplateT, Week } from "@/app/_types/types";
 import ExerciseForm from "../forms/exercise/ExerciseForm";
 interface Params {
   exerciseForm: any;
@@ -29,18 +29,37 @@ export function CreateExerciseCard({
   setTemplate,
   exercises,
   setExercises,
+  weekIdx,
+  dayIdx,
 }: any) {
   const onSubmitCreateExercise = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (exerciseForm.week == "" || exerciseForm.day == "") return;
-    console.log("form", exerciseForm);
-    setExercises([...exercises, exerciseForm]);
+    console.log(`adding new exercise to Week ${weekIdx} day ${dayIdx}`);
+
     setExerciseForm(defaultExerciseForm);
-    console.log(exercises);
+
+    setTemplate({
+      ...template,
+      weeks: template.weeks.map((week: Week, currentWeek: number) =>
+        currentWeek == weekIdx
+          ? {
+              ...week,
+              days: week.days.map((day, currentDay: number) =>
+                currentDay == dayIdx
+                  ? {
+                      ...day,
+                      exercises: [...day.exercises, exerciseForm],
+                    }
+                  : day
+              ),
+            }
+          : week
+      ),
+    });
   };
 
   return (
-    <Card className="w-fit md:max-w-md">
+    <Card className="w-fit md:max-w-md h-fit">
       <CardHeader className="">
         <CardTitle>Create Exercise</CardTitle>
         <CardDescription>

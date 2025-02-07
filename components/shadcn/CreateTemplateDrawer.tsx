@@ -17,7 +17,7 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { DatePickerWithRange } from "./DatePickerWithRangeDemo";
 
-export function DrawerCreateTemplate({
+export function CreateTemplateDrawer({
   text,
   options,
   templateForm,
@@ -37,6 +37,8 @@ export function DrawerCreateTemplate({
   };
 
   const questions = ["Add a title.", "Pick a start and end date."];
+
+  // UPDATE TEMPLATE HERE ACTION
 
   return (
     <Drawer>

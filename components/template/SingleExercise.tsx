@@ -28,9 +28,6 @@ const SingleExercise = ({
   load,
   unit,
   notes,
-  addToWeek,
-  weekIdx,
-  dayIdx,
 }: Params) => {
   let description = `${sets} x ${reps} at ${
     loadType == "percentage"
@@ -39,7 +36,7 @@ const SingleExercise = ({
       ? `rpe ${load}`
       : `${load}${unit}`
   } `;
-
+  console.log();
   return (
     <>
       <TooltipProvider>

@@ -55,6 +55,7 @@ export function DatePickerWithRange({ className, date, setDate }: Params) {
           <Calendar
             initialFocus
             mode="range"
+            // fromDate={new Date()}
             defaultMonth={date?.from}
             selected={date}
             onSelect={setDate}

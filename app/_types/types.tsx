@@ -6,8 +6,8 @@ export type ExerciseT = {
   load: string;
   unit: string;
   notes: string;
-  week: string;
-  day: number;
+  // week: string;
+  // day: number;
 };
 
 export type TemplateT = {
