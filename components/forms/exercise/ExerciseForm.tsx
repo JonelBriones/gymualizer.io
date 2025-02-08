@@ -1,15 +1,7 @@
 "use client";
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, Fragment } from "react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -18,42 +10,27 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  SelectGroup,
+  SelectLabel,
 } from "@/components/ui/select";
 import { ExerciseT } from "@/app/_types/types";
-const defaultForm = {
-  name: "",
-  loadType: "weight",
-  sets: "0",
-  reps: "0",
-  load: "0",
-  unit: "lbs",
-  notes: "",
-  week: "0",
-  day: "0",
-};
+
 interface Params {
-  onSubmitCreateExercise: any;
-  exerciseForm: any;
-  setExerciseForm: any;
+  onSubmitCreateExercise: React.FormEventHandler<HTMLFormElement>;
+  setExerciseForm: (exercise: ExerciseT) => void;
+  defaultExerciseForm: ExerciseT;
+  exerciseForm: ExerciseT;
 }
 const ExerciseForm = ({
-  onSubmitCreateExercise,
   exerciseForm,
+  onSubmitCreateExercise,
   setExerciseForm,
+  defaultExerciseForm,
 }: Params) => {
-  const days = [
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-    "sunday",
-  ];
   return (
     <form onSubmit={onSubmitCreateExercise}>
-      <div className="grid w-full items-center gap-4">
-        <div className="flex space-y-1.5">
+      <div className="grid items-center gap-4">
+        <div className="flex flex-col space-y-1.5">
           <Label htmlFor="name">Exercise Name</Label>
           <Input
             required
@@ -66,53 +43,7 @@ const ExerciseForm = ({
             }
           />
         </div>
-        <div className="flex gap-2 flex-col max-w-[270px]">
-          {/* <div className="flex flex-col space-y-1.5 flex-1">
-            <Label htmlFor="week">Week</Label>
-            <Select
-              required
-              value={exerciseForm.week}
-              name="week"
-              onValueChange={(e) =>
-                setExerciseForm({ ...exerciseForm, week: e })
-              }
-            >
-              <SelectTrigger id="reps">
-                <SelectValue placeholder="Select" />
-              </SelectTrigger>
-              <SelectContent position="popper">
-                {Array(10)
-                  .fill(null)
-                  .map((_, idx) => (
-                    <SelectItem key={idx} value={idx.toString()}>
-                      {idx + 1}
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="flex flex-col space-y-1.5 flex-1">
-            <Label htmlFor="day">Day</Label>
-            <Select
-              required
-              value={exerciseForm.day}
-              name="day"
-              onValueChange={(e) =>
-                setExerciseForm({ ...exerciseForm, day: e })
-              }
-            >
-              <SelectTrigger id="day">
-                <SelectValue placeholder="Select" />
-              </SelectTrigger>
-              <SelectContent position="popper">
-                {days.map((day, idx) => (
-                  <SelectItem key={idx} value={idx.toString()}>
-                    {day[0].toUpperCase() + day.slice(1, day.length)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div> */}
+        <div className="flex gap-2 w-full ">
           <div className="flex flex-col space-y-1.5 flex-1">
             <Label htmlFor="unit">Unit</Label>
             <Select
@@ -122,7 +53,7 @@ const ExerciseForm = ({
                 setExerciseForm({ ...exerciseForm, unit: e })
               }
             >
-              <SelectTrigger id="reps">
+              <SelectTrigger id="units">
                 <SelectValue placeholder="Select" />
               </SelectTrigger>
               <SelectContent position="popper">
@@ -140,7 +71,7 @@ const ExerciseForm = ({
                 setExerciseForm({ ...exerciseForm, loadType: e })
               }
             >
-              <SelectTrigger id="reps">
+              <SelectTrigger id="loadType">
                 <SelectValue placeholder="Select" />
               </SelectTrigger>
               <SelectContent position="popper">
@@ -152,13 +83,13 @@ const ExerciseForm = ({
           </div>
         </div>
         <div className="flex gap-2">
-          <div className="flex flex-col space-y-1.5 w-[100px]">
+          <div className="flex flex-col space-y-1.5 flex-1 ">
             <Label htmlFor="sets">Sets</Label>
             <Select
-              value={exerciseForm.sets}
+              value={exerciseForm.sets.toString()}
               name="sets"
               onValueChange={(e) =>
-                setExerciseForm({ ...exerciseForm, sets: e })
+                setExerciseForm({ ...exerciseForm, sets: parseInt(e) })
               }
             >
               <SelectTrigger id="sets">
@@ -175,13 +106,13 @@ const ExerciseForm = ({
               </SelectContent>
             </Select>
           </div>
-          <div className="flex flex-col space-y-1.5 w-[100px]">
+          <div className="flex flex-col space-y-1.5 flex-1">
             <Label htmlFor="reps">Reps</Label>
             <Select
-              value={exerciseForm.reps}
+              value={exerciseForm.reps.toString()}
               name="reps"
               onValueChange={(e) =>
-                setExerciseForm({ ...exerciseForm, reps: e })
+                setExerciseForm({ ...exerciseForm, reps: parseInt(e) })
               }
             >
               <SelectTrigger id="reps">
@@ -199,67 +130,81 @@ const ExerciseForm = ({
             </Select>
           </div>
           {/* RENDER ON LOAD TYPE */}
-          <div className="flex flex-col space-y-1.5 ">
-            <Label htmlFor="load">Load</Label>
+          <div className="flex flex-col space-y-1.5 flex-1">
             {exerciseForm.loadType == "weight" && (
-              <Input
-                id="load"
-                placeholder="0"
-                name="load"
-                max={1000}
-                className="w-[70px]"
-                onChange={(e) =>
-                  setExerciseForm({ ...exerciseForm, load: e.target.value })
-                }
-              />
+              <Fragment>
+                <Label htmlFor="load">Weight</Label>
+                <Input
+                  id="load"
+                  placeholder="0"
+                  name="load"
+                  max={1000}
+                  value={exerciseForm.load}
+                  className="w-[70px]"
+                  onChange={(e) =>
+                    setExerciseForm({ ...exerciseForm, load: e.target.value })
+                  }
+                />
+              </Fragment>
             )}
             {exerciseForm.loadType == "percentage" && (
-              <Select
-                value={exerciseForm.load}
-                name="load"
-                onValueChange={(e) =>
-                  setExerciseForm({ ...exerciseForm, load: e })
-                }
-              >
-                <SelectTrigger id="percentage">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent position="popper">
-                  {Array.from(
-                    { length: Math.floor(101 / 2.5) + 1 },
-                    (_, i) => i * 2.5
-                  ).map(
-                    (value) =>
-                      value % 2.5 == 0 && (
-                        <SelectItem key={value} value={`${value}`}>
-                          {value}%
-                        </SelectItem>
-                      )
-                  )}
-                </SelectContent>
-              </Select>
+              <Fragment>
+                <Label htmlFor="load">Percent</Label>
+
+                <Select
+                  value={exerciseForm.load}
+                  name="load"
+                  onValueChange={(e) =>
+                    setExerciseForm({ ...exerciseForm, load: e })
+                  }
+                >
+                  <SelectTrigger id="percentage">
+                    <SelectValue placeholder="Select" />
+                  </SelectTrigger>
+                  <SelectContent position="popper">
+                    {Array.from(
+                      { length: Math.floor(101 / 2.5) + 1 },
+                      (_, i) => i * 2.5
+                    ).map(
+                      (value) =>
+                        value % 2.5 == 0 && (
+                          <SelectItem key={value} value={`${value}`}>
+                            {value}%
+                          </SelectItem>
+                        )
+                    )}
+                  </SelectContent>
+                </Select>
+              </Fragment>
             )}
+
             {exerciseForm.loadType == "rpe" && (
-              <Select
-                value={exerciseForm.load}
-                name="load"
-                onValueChange={(e) =>
-                  setExerciseForm({ ...exerciseForm, load: e })
-                }
-              >
-                <SelectTrigger id="rpe">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent position="popper">
-                  {Array(11)
-                    .fill("")
-                    .map((_, idx) => (
-                      <SelectItem key={idx} value={`${idx}`}>
-                        {idx} RPE
-                      </SelectItem>
-                    ))}
-                </SelectContent>
-              </Select>
+              <Fragment>
+                <Label htmlFor="load">RPE</Label>
+                <Select
+                  value={exerciseForm.load}
+                  name="load"
+                  onValueChange={(e) =>
+                    setExerciseForm({ ...exerciseForm, load: e })
+                  }
+                >
+                  <SelectTrigger id="rpe">
+                    <SelectValue placeholder="Select" />
+                  </SelectTrigger>
+                  <SelectContent position="popper">
+                    <SelectGroup>
+                      <SelectLabel>RPE</SelectLabel>
+                      {Array(11)
+                        .fill("")
+                        .map((_, idx) => (
+                          <SelectItem key={idx} value={`${idx}`}>
+                            {idx} RPE
+                          </SelectItem>
+                        ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </Fragment>
             )}
           </div>
         </div>
@@ -278,7 +223,10 @@ const ExerciseForm = ({
       </div>
 
       <div className="flex justify-between mt-4">
-        <Button variant="outline" onClick={() => setExerciseForm(defaultForm)}>
+        <Button
+          variant="outline"
+          onClick={() => setExerciseForm(defaultExerciseForm)}
+        >
           Cancel
         </Button>
         <Button type="submit">Save</Button>

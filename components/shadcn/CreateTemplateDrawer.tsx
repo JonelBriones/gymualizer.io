@@ -36,7 +36,7 @@ export function CreateTemplateDrawer({
     setShowQuestion(0);
   };
 
-  const questions = ["Add a title.", "Pick a start and end date."];
+  const questions = ["Name this program.", "Pick a start and end date."];
 
   // UPDATE TEMPLATE HERE ACTION
 
@@ -76,13 +76,14 @@ export function CreateTemplateDrawer({
             <CardContent>
               <form onSubmit={onSubmitCreateTemplate}>
                 {showQuestion == 0 && (
-                  <div className="flex justify-center">
-                    <Label htmlFor="name"></Label>
+                  <div>
+                    <Label htmlFor="name">Name</Label>
                     <Input
                       id="name"
                       name="name"
                       value={templateForm.name}
                       required
+                      placeholder="Powerlifting Program 3.0"
                       minLength={1}
                       onChange={(e) =>
                         setTemplateForm({

@@ -1,67 +1,196 @@
-{
-  "name": "Template #2",
-  "startDate": "may 5 2025",
-  "endDate": "december 9 2025",
-  "weeks": [
-    {
-      "days": [
-        {
-          "exercises": [
-            {
-              "name": "WEEK 1 MONDAY",
-              "loadType": "weight",
-              "sets": "4",
-              "reps": "8",
-              "load": "315",
-              "unit": "lbs",
-              "notes": "week 1 day 1"
-            }
-          ]
-        },
-        {
-          "exercises": [
-            {
-              "name": "WEEK 1 TUESDAY",
-              "loadType": "weight",
-              "sets": "4",
-              "reps": "8",
-              "load": "315",
-              "unit": "lbs",
-              "notes": "week 1 day 2"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "days": [
-        {
-          "exercises": [
-            {
-              "name": "WEEK 2 MONDAY",
-              "loadType": "weight",
-              "sets": "4",
-              "reps": "8",
-              "load": "315",
-              "unit": "lbs",
-              "notes": "week 2 day 2"
-            }
-          ]
-        },
-        {
-          "exercises": [
-            {
-              "name": "WEEK 2 TUESAY",
-              "loadType": "weight",
-              "sets": "4",
-              "reps": "8",
-              "load": "315",
-              "unit": "lbs",
-              "notes": "week 2 day 2"
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
+[
+  {
+    "name": "Template #1",
+    "startDate": "may 5 2025",
+    "endDate": "december 9 2025",
+    "weeks": [
+      {
+        "days": [
+          {
+            "exercises": [
+              {
+                "name": "Bench",
+                "loadType": "weight",
+                "sets": "4",
+                "reps": "8",
+                "load": "315",
+                "unit": "lbs",
+                "notes": "week 1 day 1",
+                "date": 1738742400000
+              }
+            ]
+          },
+          {
+            "exercises": []
+          },
+          {
+            "exercises": [
+              {
+                "name": "Squat",
+                "loadType": "weight",
+                "sets": "4",
+                "reps": "8",
+                "load": "315",
+                "unit": "lbs",
+                "notes": "week 1 day 2",
+                "date": 1738742400000
+              }
+            ]
+          },
+          {
+            "exercises": []
+          },
+          {
+            "exercises": [
+              {
+                "name": "Squat",
+                "loadType": "weight",
+                "sets": "4",
+                "reps": "8",
+                "load": "315",
+                "unit": "lbs",
+                "notes": "week 1 day 2",
+                "date": 1738742400000
+              }
+            ]
+          },
+          {
+            "exercises": []
+          },
+          {
+            "exercises": []
+          }
+        ]
+      },
+      {
+        "days": [
+          {
+            "exercises": [
+              {
+                "name": "Bench",
+                "loadType": "weight",
+                "sets": "4",
+                "reps": "8",
+                "load": "315",
+                "unit": "lbs",
+                "notes": "week 1 day 1",
+                "date": 1738742400000
+              }
+            ]
+          },
+          {
+            "exercises": []
+          },
+          {
+            "exercises": [
+              {
+                "name": "Squat",
+                "loadType": "weight",
+                "sets": "4",
+                "reps": "8",
+                "load": "315",
+                "unit": "lbs",
+                "notes": "week 1 day 2",
+                "date": 1738742400000
+              }
+            ]
+          },
+          {
+            "exercises": []
+          },
+          {
+            "exercises": [
+              {
+                "name": "Squat",
+                "loadType": "weight",
+                "sets": "4",
+                "reps": "8",
+                "load": "315",
+                "unit": "lbs",
+                "notes": "week 1 day 2",
+                "date": 1738742400000
+              }
+            ]
+          },
+          {
+            "exercises": []
+          },
+          {
+            "exercises": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Template #2",
+    "startDate": "may 5 2025",
+    "endDate": "december 9 2025",
+    "weeks": [
+      {
+        "days": [
+          {
+            "exercises": [
+              {
+                "name": "WEEK 1 MONDAY",
+                "loadType": "weight",
+                "sets": "4",
+                "reps": "8",
+                "load": "315",
+                "unit": "lbs",
+                "notes": "week 1 day 1",
+                "date": 1738742400000
+              }
+            ]
+          },
+          {
+            "exercises": [
+              {
+                "name": "WEEK 1 TUESDAY",
+                "loadType": "weight",
+                "sets": "4",
+                "reps": "8",
+                "load": "315",
+                "unit": "lbs",
+                "notes": "week 1 day 2",
+                "date": 1738742400000
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "days": [
+          {
+            "exercises": [
+              {
+                "name": "WEEK 2 MONDAY",
+                "loadType": "weight",
+                "sets": "4",
+                "reps": "8",
+                "load": "315",
+                "unit": "lbs",
+                "notes": "week 2 day 2",
+                "date": 1738742400000
+              }
+            ]
+          },
+          {
+            "exercises": [
+              {
+                "name": "WEEK 2 TUESAY",
+                "loadType": "weight",
+                "sets": "4",
+                "reps": "8",
+                "load": "315",
+                "unit": "lbs",
+                "notes": "week 2 day 2",
+                "date": 1738742400000
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

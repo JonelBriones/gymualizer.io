@@ -1,3 +1,4 @@
+"use client";
 import { ExerciseT } from "@/app/_types/types";
 import React from "react";
 import {
@@ -7,19 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Params } from "next/dist/server/request/params";
-interface Param {
-  name: any;
-  sets: any;
-  reps: any;
-  loadType: any;
-  load: any;
-  unit: any;
-  notes: any;
-  addToweek: any;
-  addToWeekdayIdx: any;
-  weekIdx: any;
-  setTemplate: any;
-}
+
 const SingleExercise = ({
   name,
   sets,
@@ -28,7 +17,8 @@ const SingleExercise = ({
   load,
   unit,
   notes,
-}: Params) => {
+  date,
+}: ExerciseT) => {
   let description = `${sets} x ${reps} at ${
     loadType == "percentage"
       ? `${load}%`
@@ -36,25 +26,18 @@ const SingleExercise = ({
       ? `rpe ${load}`
       : `${load}${unit}`
   } `;
-  console.log();
+  console.log("DATE", date);
+  console.log(new Date(date));
+  const convertedDate = new Date(date);
   return (
-    <>
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <div className="flex gap-4 place-items-center p-2 rounded-md cursor-pointer select-none">
-              <div className="flex gap-2">
-                <h4 className="text-[16px] font-medium">{name}</h4>
-                <span className="text-neutral-600">{description}</span>
-              </div>
-            </div>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>{notes}</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-    </>
+    <div className="flex flex-col gap-4 p-2 rounded-md border">
+      <div className="flex gap-2">
+        <h4 className="text-[16px] font-medium">{name}</h4>
+        <p>{description}</p>
+        <p>{notes}</p>
+        <p>Date:{convertedDate.toLocaleDateString()}</p>
+      </div>
+    </div>
   );
 };
 

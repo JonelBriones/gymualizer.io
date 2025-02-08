@@ -1,13 +1,12 @@
 export type ExerciseT = {
   name: string;
   loadType: string;
-  sets: string;
-  reps: string;
+  sets: number;
+  reps: number;
   load: string;
   unit: string;
   notes: string;
-  // week: string;
-  // day: number;
+  date: number;
 };
 
 export type TemplateT = {

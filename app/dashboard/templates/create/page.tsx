@@ -1,8 +1,7 @@
 "use client";
-import { ExerciseT, TemplateT } from "@/app/_types/types";
+import { TemplateT } from "@/app/_types/types";
 import { CreateTemplateDrawer } from "@/components/shadcn/CreateTemplateDrawer";
 import SingleExercise from "@/components/template/SingleExercise";
-import fakeData from "@/json/data.json";
 import {
   Accordion,
   AccordionContent,
@@ -10,16 +9,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { addDays } from "date-fns";
-import React, {
-  FormEvent,
-  Fragment,
-  useEffect,
-  useReducer,
-  useState,
-} from "react";
+import React, { FormEvent, Fragment, useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { CreateExerciseCard } from "@/components/shadcn/CreateExerciseCard";
-import { ConstructionIcon } from "lucide-react";
 
 const currentDay = new Date();
 const defaultDate = {
@@ -43,15 +35,6 @@ const defaultTemplateForm: TemplateT = {
   endDate: "",
   weeks: [],
 };
-const defaultExerciseForm: ExerciseT = {
-  name: "",
-  loadType: "weight",
-  sets: "0",
-  reps: "0",
-  load: "0",
-  unit: "lbs",
-  notes: "",
-};
 
 const page = () => {
   const [template, setTemplate] = useState<TemplateT>(defaultTemplateForm);
@@ -63,23 +46,21 @@ const page = () => {
     day: "numeric",
   };
   const [getTotalDays, setGetTotalDays] = useState(0);
-  let totalWeeks = getTotalDays / 7;
-  let remaningDays = Math.floor(getTotalDays % 7);
+  let totalWeeks = Math.floor(getTotalDays / 7);
+  const [remaininigDays, setRemainingDay] = useState(0);
   const [readyToSave, setReadyToSave] = useState(false);
   const [showQuestion, setShowQuestion] = useState(0);
-  const [exercises, setExercises] = useState<ExerciseT[]>([]);
 
   const onSubmitCreateTemplate = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setReadyToSave(true);
     setShowQuestion(0);
     setDate(defaultDate);
-    getDurationOfTemplate();
 
     setTemplate({
       ...template,
-      startDate: date.from,
-      endDate: date.to,
+      startDate: date?.from,
+      endDate: date?.to,
       weeks: Array.from({ length: totalWeeks }, () => ({
         days: Array(7)
           .fill(null)
@@ -88,36 +69,26 @@ const page = () => {
           })),
       })),
     });
-
-    console.log("NEW TEMPLATE", template);
+    getDurationOfTemplate();
   };
 
   const getDurationOfTemplate = () => {
     console.log("running");
     let days = 0;
-    let current = new Date(date.from);
-    let end = new Date(date.to);
+    let current = date?.from ? new Date(date.from) : new Date();
+    let end = date?.to ? new Date(date.to) : new Date();
 
-    // while (current <= end) {
-    //   let weekStart = new Date(current); // date program starts
-    //   let weekEnd = new Date(weekStart);
-    //   weekEnd.setDate(weekStart.getDate() + 6); // add 6 days for full week
-    //   if (weekEnd > end) weekEnd = new Date(end);
-    //   current.setDate(current.getDate() + 1);
-    //   weeks++;
-    // }
     while (current <= end) {
       current.setDate(current.getDate() + 1);
       days++;
     }
 
-    console.log("getting the days", days);
     setGetTotalDays(days);
+    console.log("remaing", Math.floor(days % 7));
+    const remaining = Math.floor(days % 7);
+    console.log("remains", remaining);
+    setRemainingDay(remaining);
   };
-
-  const [exerciseForm, setExerciseForm] =
-    useState<ExerciseT>(defaultExerciseForm);
-
   const daysoftheweek = [
     "Monday",
     "Tuesday",
@@ -129,27 +100,30 @@ const page = () => {
   ];
 
   useEffect(() => {
-    getDurationOfTemplate();
-  }, [showQuestion == 2]);
-
-  useEffect(() => {
-    console.log(template);
-  }, [template]);
+    // console.log("confirmed calendar");
+    // // getDurationOfTemplate();
+    // let days = 0;
+    // let current = date?.from ? new Date(date.from) : new Date();
+    // let end = date?.to ? new Date(date.to) : new Date();
+    // while (current <= end) {
+    //   current.setDate(current.getDate() + 1);
+    //   days++;
+    // }
+    // setGetTotalDays(days);
+    // setRemainingDay(Math.floor(days % 7));
+    // console.log("before added", Math.floor(days % 7));
+    // console.log("remaining", remaininigDays);
+  }, []);
 
   return (
     <div className="flex gap-4 w-full">
-      {/* CALCULATE WEEKS FROM START TO END DATE */}
       {readyToSave ? (
         <div className="w-full">
-          Weeks:{remaningDays > 0 ? totalWeeks + 1 : totalWeeks}
-          Days: Remaining {remaningDays}
+          Weeks:{remaininigDays > 0 ? totalWeeks + 1 : totalWeeks}
+          Days: Remaining {remaininigDays}
           <h1 className="text-2xl">{template?.name}</h1>
           <Accordion type="multiple" className="w-full">
-            {Array(
-              remaningDays > 0
-                ? Math.floor(getTotalDays / 7) + 1
-                : Math.floor(getTotalDays / 7)
-            )
+            {Array(remaininigDays > 0 ? totalWeeks + 1 : totalWeeks)
               .fill(null)
               .map((_, weekIdx) => (
                 <AccordionItem value={`item-${weekIdx}`} key={weekIdx}>
@@ -158,8 +132,8 @@ const page = () => {
                   </AccordionTrigger>
                   <AccordionContent className="md:ml-4">
                     <Accordion type="single" collapsible className="w-full">
-                      {(remaningDays > 0 && weekIdx == totalWeeks
-                        ? daysoftheweek.slice(0, remaningDays)
+                      {(remaininigDays > 0 && weekIdx == totalWeeks
+                        ? daysoftheweek.slice(0, remaininigDays)
                         : daysoftheweek
                       ).map((day, dayIdx) => (
                         <AccordionItem value={`item-${dayIdx}`} key={dayIdx}>
@@ -167,37 +141,24 @@ const page = () => {
                             {day}
                           </AccordionTrigger>
                           {
-                            <AccordionContent>
+                            <AccordionContent className="flex gap-2">
                               <CreateExerciseCard
                                 template={template}
                                 setTemplate={setTemplate}
                                 weekIdx={weekIdx}
                                 dayIdx={dayIdx}
-                                exerciseForm={exerciseForm}
-                                setExerciseForm={setExerciseForm}
-                                defaultExerciseForm={defaultExerciseForm}
-                                exercises={exercises}
-                                setExercises={setExercises}
+                                getTotalDays={getTotalDays}
                               />
-                              {template?.weeks.map((week, currentWeekIdx) =>
-                                week.days.map((day, currentDayIdx) => (
-                                  <>
-                                    {day.exercises.map(
-                                      (props, idx) =>
-                                        currentDayIdx == weekIdx &&
-                                        currentDayIdx == dayIdx && (
-                                          <Fragment key={idx}>
-                                            <div>WEEK: {weekIdx + 1}</div>
-                                            <div>
-                                              DAY: {daysoftheweek[dayIdx]}
-                                            </div>
-                                            <SingleExercise {...props} />
-                                          </Fragment>
-                                        )
-                                    )}
-                                  </>
-                                ))
-                              )}
+
+                              <div className="flex flex-col gap-2">
+                                {template?.weeks?.[weekIdx]?.days[
+                                  dayIdx
+                                ].exercises.map((props, idx) => (
+                                  <Fragment key={idx}>
+                                    <SingleExercise {...props} />
+                                  </Fragment>
+                                ))}
+                              </div>
                             </AccordionContent>
                           }
                         </AccordionItem>

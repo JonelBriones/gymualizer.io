@@ -1,5 +1,5 @@
 "use client";
-import React, { FormEvent, useEffect } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -11,36 +11,54 @@ import {
 import { ExerciseT, TemplateT, Week } from "@/app/_types/types";
 import ExerciseForm from "../forms/exercise/ExerciseForm";
 interface Params {
-  exerciseForm: any;
-  setExerciseForm: any;
-  defaultExerciseForm: ExerciseT;
-  weekIdx: any;
-  dayIdx: any;
   template: TemplateT;
-  setTemplate: any;
-  exercises: any;
-  setExercises: any;
+  setTemplate: (template: TemplateT) => void;
+  weekIdx: number;
+  dayIdx: number;
+  getTotalDays: number;
 }
+const defaultExerciseForm: ExerciseT = {
+  name: "",
+  loadType: "weight",
+  sets: 0,
+  reps: 0,
+  load: "0",
+  unit: "lbs",
+  notes: "",
+  date: 0,
+};
+
 export function CreateExerciseCard({
-  exerciseForm,
-  setExerciseForm,
-  defaultExerciseForm,
   template,
   setTemplate,
-  exercises,
-  setExercises,
   weekIdx,
   dayIdx,
-}: any) {
+  getTotalDays,
+}: Params) {
+  const [exerciseForm, setExerciseForm] =
+    useState<ExerciseT>(defaultExerciseForm);
+
   const onSubmitCreateExercise = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(`adding new exercise to Week ${weekIdx} day ${dayIdx}`);
-
+    let timestampStart = new Date(template.startDate);
+    console.log("timestampStart", timestampStart);
     setExerciseForm(defaultExerciseForm);
-
+    const selectDay = timestampStart.setDate(
+      timestampStart.getDate() + weekIdx * 7
+    );
+    console.log("get selected day", selectDay);
+    console.log(
+      "date selected day converted",
+      new Date(1738742400000).toLocaleDateString()
+    );
+    const updatedForm = {
+      ...exerciseForm,
+      date: timestampStart.getTime(),
+    };
     setTemplate({
       ...template,
-      weeks: template.weeks.map((week: Week, currentWeek: number) =>
+      weeks: template?.weeks?.map((week: Week, currentWeek: number) =>
         currentWeek == weekIdx
           ? {
               ...week,
@@ -48,7 +66,7 @@ export function CreateExerciseCard({
                 currentDay == dayIdx
                   ? {
                       ...day,
-                      exercises: [...day.exercises, exerciseForm],
+                      exercises: [...day.exercises, updatedForm],
                     }
                   : day
               ),
@@ -56,10 +74,11 @@ export function CreateExerciseCard({
           : week
       ),
     });
+    console.log("FORM", exerciseForm);
   };
 
   return (
-    <Card className="w-fit md:max-w-md h-fit">
+    <Card className="w-full  md:w-[340px] h-fit">
       <CardHeader className="">
         <CardTitle>Create Exercise</CardTitle>
         <CardDescription>
@@ -71,6 +90,7 @@ export function CreateExerciseCard({
           onSubmitCreateExercise={onSubmitCreateExercise}
           setExerciseForm={setExerciseForm}
           exerciseForm={exerciseForm}
+          defaultExerciseForm={defaultExerciseForm}
         />
       </CardContent>
     </Card>

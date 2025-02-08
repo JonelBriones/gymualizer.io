@@ -5,93 +5,57 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useReducer } from "react";
+import { Fragment } from "react";
 import fakedata from "@/json/data.json";
 import SingleExercise from "../template/SingleExercise";
-
-const intialState = {
-  showTemplate: {},
-  showWeek: {},
-  showDay: {},
-};
-function reducer(state: any, action: any) {
-  switch (action.type) {
-    case "SHOW_TEMPLATE": {
-      return {
-        ...state,
-        showTemplate: {
-          ...state.showNotes,
-          [action.showTemplate]: !state.showNotes[action.showTemplate],
-        },
-      };
-    }
-    case "SHOW_WEEK": {
-      return {
-        ...state,
-        showWeek: {
-          ...state.showWeeks,
-          [action.week]: !state.showWeeks[action.week],
-        },
-      };
-    }
-    case "SHOW_DAY": {
-      return {
-        ...state,
-        showWeeks: {
-          ...state.showWeeks,
-          [action.week]: !state.showWeeks[action.week],
-        },
-      };
-    }
-  }
-}
-
+import { Day, ExerciseT } from "@/app/_types/types";
+console.log(fakedata);
 export function FullWorkoutTemplate() {
-  const [state, dispatchEvent] = useReducer(reducer, intialState);
-  console.log("state", state);
+  const daysoftheweek = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
   return (
     <div className="w-full">
-      <h4 className="text-4xl">Template #1</h4>
       <Accordion type="multiple" className="w-full">
-        {fakedata.map(({ name, startDate, endDate, weeks, _id }: any, idx) => (
-          <AccordionItem value={`item-${idx}`} key={_id}>
-            <AccordionTrigger
-              className="hover:bg-neutral-100 p-5"
-              onClick={() => dispatchEvent({ type: "template", weeks })}
-            >
+        {fakedata.map(({ name, weeks }, templateIdx) => (
+          <AccordionItem value={`item-${templateIdx}`} key={templateIdx}>
+            <AccordionTrigger className="hover:bg-neutral-100 p-5">
               {name}
             </AccordionTrigger>
             <AccordionContent className="ml-4">
               <Accordion type="multiple" className="w-full">
-                {weeks.map(({ days }: any, idx) => (
-                  <AccordionItem value={`item-${idx}`} key={idx}>
+                {weeks.map((week: any, weekIdx: number) => (
+                  <AccordionItem value={`item-${weekIdx}`} key={weekIdx}>
                     <AccordionTrigger
                       className="hover:bg-neutral-100 p-5"
-                      onClick={() => dispatchEvent({ type: "name", days })}
+                      onClick={() => console.log(week)}
                     >
-                      Week {idx}
+                      Week {weekIdx + 1}
                     </AccordionTrigger>
                     <AccordionContent className="ml-4">
                       <Accordion type="multiple" className="w-full">
-                        {days?.map(({ day, exercises }) => (
-                          <AccordionItem value={`item-${day}`} key={day}>
+                        {week.days?.map((day: Day, dayIdx: number) => (
+                          <AccordionItem value={`item-${dayIdx}`} key={dayIdx}>
                             <AccordionTrigger
                               className="hover:bg-neutral-100 p-5"
-                              onClick={() =>
-                                dispatchEvent({
-                                  type: "summary_notes",
-                                  note: day,
-                                })
-                              }
+                              onClick={() => console.log(day)}
                             >
-                              Day {day}
+                              Day {dayIdx + 1}
                             </AccordionTrigger>
-                            <AccordionContent className="ml-4">
-                              <div className="p-4 flex flex-col">
-                                {exercises.map((props) => (
-                                  <SingleExercise {...props} key={props.name} />
-                                ))}
-                              </div>
+                            <AccordionContent>
+                              {day.exercises.map(
+                                (props: ExerciseT, idx: number) => (
+                                  <Fragment key={idx}>
+                                    <SingleExercise {...props} />
+                                  </Fragment>
+                                )
+                              )}
                             </AccordionContent>
                           </AccordionItem>
                         ))}
