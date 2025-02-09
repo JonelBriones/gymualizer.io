@@ -14,6 +14,7 @@ import {
   SelectLabel,
 } from "@/components/ui/select";
 import { ExerciseT } from "@/app/_types/types";
+import { toast } from "sonner";
 
 interface Params {
   onSubmitCreateExercise: React.FormEventHandler<HTMLFormElement>;
@@ -221,16 +222,25 @@ const ExerciseForm = ({
           />
         </div>
       </div>
-
       <div className="flex justify-between mt-4">
         <Button
+          type="submit"
           variant="outline"
-          onClick={() => setExerciseForm(defaultExerciseForm)}
+          onClick={() => {
+            setExerciseForm(defaultExerciseForm),
+              toast("Event has been created", {
+                description: "Sunday, December 03, 2023 at 9:00 AM",
+                action: {
+                  label: "Undo",
+                  onClick: () => console.log("Undo"),
+                },
+              });
+          }}
         >
           Cancel
         </Button>
         <Button type="submit">Save</Button>
-      </div>
+      </div>{" "}
     </form>
   );
 };

@@ -32,7 +32,7 @@ export function DatePickerWithRange({ className, date, setDate }: Params) {
             id="date"
             variant={"outline"}
             className={cn(
-              "w-[300px] justify-start text-left font-normal",
+              "w-full justify-start text-left font-normal",
               !date && "text-muted-foreground"
             )}
           >
@@ -55,7 +55,7 @@ export function DatePickerWithRange({ className, date, setDate }: Params) {
           <Calendar
             initialFocus
             mode="range"
-            // fromDate={new Date()}
+            fromDate={new Date()}
             defaultMonth={new Date()}
             selected={date}
             onSelect={setDate}

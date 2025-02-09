@@ -5,9 +5,6 @@ import SingleExercise from "@/components/template/SingleExercise";
 import {
   Table,
   TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -23,11 +20,11 @@ import React, { FormEvent, Fragment, useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { CreateExerciseCard } from "@/components/shadcn/CreateExerciseCard";
 import { Button } from "@/components/ui/button";
-
+import { toast } from "sonner";
 const currentDay = new Date();
 const defaultDate = {
-  from: new Date(),
-  to: addDays(new Date(), 20),
+  from: undefined,
+  to: undefined,
 };
 const defaultTemplateForm: TemplateT = {
   name: "",
@@ -106,30 +103,8 @@ const page = () => {
       new Date(template.startDate),
       weekIdx == 0 ? dayIdx : weekIdx * 7 + dayIdx
     );
-    // daysToAdd(weekIdx, dayIdx)
-    // console.log("selected day", selectDay);
-    // if(  selectDay >= new Date(template.startDate))
     return selectDay;
   };
-  const daysToAdd = (weekIdx: number, dayIdx: number) => {
-    switch (weekIdx) {
-      case 0:
-        return dayIdx;
-      default:
-        return weekIdx * 7 + dayIdx;
-    }
-  };
-
-  // {
-  //   matchDateToToggleDay(weekIdx, dayIdx).toLocaleDateString(
-  //     "en-us",
-  //     options as {}
-  //   );
-  // }
-
-  // useEffect(() => {
-  //   showQuestion == 2 && getDurationOfTemplate();
-  // }, [showQuestion == 2]);
 
   useEffect(() => {
     console.log("updating template", template);
@@ -168,116 +143,118 @@ const page = () => {
             onDrawerClose={onDrawerClose}
           />
         ) : (
-          <Button variant="outline" onClick={onDrawerClose}>
-            Restart
-          </Button>
+          <Button variant="outline">Restart</Button>
         )}
         {readyToSave && (
-          <CreateExerciseCard
-            toggleDay={toggledDay}
-            template={template}
-            setTemplate={setTemplate}
-            weekIdx={toggledDay.week}
-            dayIdx={toggledDay.day}
-            getTotalDays={getTotalDays}
-          />
+          <>
+            <CreateExerciseCard
+              toggleDay={toggledDay}
+              template={template}
+              setTemplate={setTemplate}
+              weekIdx={toggledDay.week}
+              dayIdx={toggledDay.day}
+              getTotalDays={getTotalDays}
+            />
+            <Button variant="outline">Save</Button>
+          </>
         )}
       </div>
 
-      <div className=" min-h-screen w-full">
-        {readyToSave && (
-          <div className="w-full overflow-hidden">
-            <h1 className="flex justify-between text-4xl">
-              <span>{template?.name}</span>
-              <span>
-                {`${template.startDate.toLocaleDateString()} - ${template.endDate.toLocaleDateString()}`}
-              </span>
-            </h1>
-            <Accordion type="single" collapsible className="w-full">
-              {template.weeks?.map((day, weekIdx) => (
-                <AccordionItem value={`item-${weekIdx}`} key={weekIdx}>
-                  <AccordionTrigger
-                    className="hover:bg-neutral-100 md:p-5"
-                    onClick={() =>
-                      setToggleDay({
-                        ...toggledDay,
-                        week: weekIdx,
-                      })
-                    }
-                  >
-                    Week {weekIdx + 1}
-                  </AccordionTrigger>
-                  <AccordionContent className="md:ml-4">
-                    <Accordion type="single" collapsible className="w-full">
-                      {(remaininigDays > 0
-                        ? day.days.slice(0, remaininigDays + 1)
-                        : day.days
-                      ).map((day, dayIdx) => (
-                        <AccordionItem value={`item-${dayIdx}`} key={dayIdx}>
-                          <AccordionTrigger
-                            className="hover:bg-neutral-100 p-5"
-                            onClick={() =>
-                              setToggleDay({
-                                ...toggledDay,
-                                day: dayIdx,
-                              })
+      {readyToSave && (
+        <div className="w-full">
+          <h1 className="flex justify-between text-4xl">
+            <span>{template?.name}</span>
+            <span>
+              {`${template.startDate.toLocaleDateString()} - ${template.endDate.toLocaleDateString()}`}
+            </span>
+          </h1>
+          <div className="h-full overflow-auto">
+            <div className=" h-[700px] w-full overflow-auto">
+              <Accordion type="single" collapsible className="w-full">
+                {template.weeks?.map((day, weekIdx) => (
+                  <AccordionItem value={`item-${weekIdx}`} key={weekIdx}>
+                    <AccordionTrigger
+                      className="hover:bg-neutral-100 md:p-5"
+                      onClick={() =>
+                        setToggleDay({
+                          ...toggledDay,
+                          week: weekIdx,
+                        })
+                      }
+                    >
+                      Week {weekIdx + 1}
+                    </AccordionTrigger>
+                    <AccordionContent className="md:ml-4">
+                      <Accordion type="single" collapsible className="w-full">
+                        {(remaininigDays > 0
+                          ? day.days.slice(0, remaininigDays + 1)
+                          : day.days
+                        ).map((day, dayIdx) => (
+                          <AccordionItem value={`item-${dayIdx}`} key={dayIdx}>
+                            <AccordionTrigger
+                              className="hover:bg-neutral-100 p-5"
+                              onClick={() =>
+                                setToggleDay({
+                                  ...toggledDay,
+                                  day: dayIdx,
+                                })
+                              }
+                            >
+                              {matchDateToToggleDay(
+                                weekIdx,
+                                dayIdx
+                              ).toLocaleDateString("en-us", options as {})}
+                            </AccordionTrigger>
+                            {
+                              <AccordionContent className="flex gap-2">
+                                <Table className="w-full">
+                                  <TableHeader>
+                                    <TableRow>
+                                      <TableHead className="w-[150px]">
+                                        Exercise
+                                      </TableHead>
+                                      <TableHead>Sets</TableHead>
+                                      <TableHead>Reps</TableHead>
+                                      <TableHead>Weight</TableHead>
+                                      <TableHead>Units</TableHead>
+                                      <TableHead className="text-left">
+                                        Additional Notes
+                                      </TableHead>
+                                      <TableHead className="text-right">
+                                        Actions
+                                      </TableHead>
+                                    </TableRow>
+                                  </TableHeader>
+                                  <TableBody>
+                                    {day.exercises.map(
+                                      (exercise, exerciseIdx) => (
+                                        <TableRow key={exerciseIdx}>
+                                          <SingleExercise
+                                            exercise={exercise}
+                                            setTemplate={setTemplate}
+                                            template={template}
+                                            weekIdx={weekIdx}
+                                            dayIdx={dayIdx}
+                                            exerciseIdx={exerciseIdx}
+                                          />
+                                        </TableRow>
+                                      )
+                                    )}
+                                  </TableBody>
+                                </Table>
+                              </AccordionContent>
                             }
-                          >
-                            {matchDateToToggleDay(
-                              weekIdx,
-                              dayIdx
-                            ).toLocaleDateString("en-us", options as {})}
-                          </AccordionTrigger>
-                          {
-                            <AccordionContent className="flex gap-2">
-                              <Table className="w-full">
-                                <TableCaption>Workout summary</TableCaption>
-                                <TableHeader>
-                                  <TableRow>
-                                    <TableHead className="w-[150px]">
-                                      Exercise
-                                    </TableHead>
-                                    <TableHead>Sets</TableHead>
-                                    <TableHead>Reps</TableHead>
-                                    <TableHead>Weight</TableHead>
-                                    <TableHead>Units</TableHead>
-                                    <TableHead className="text-left">
-                                      Additional Notes
-                                    </TableHead>
-                                    <TableHead className="text-right">
-                                      Actions
-                                    </TableHead>
-                                  </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                  {day.exercises.map(
-                                    (exercise, exerciseIdx) => (
-                                      <TableRow key={exerciseIdx}>
-                                        <SingleExercise
-                                          exercise={exercise}
-                                          setTemplate={setTemplate}
-                                          template={template}
-                                          weekIdx={weekIdx}
-                                          dayIdx={dayIdx}
-                                          exerciseIdx={exerciseIdx}
-                                        />
-                                      </TableRow>
-                                    )
-                                  )}
-                                </TableBody>
-                              </Table>
-                            </AccordionContent>
-                          }
-                        </AccordionItem>
-                      ))}
-                    </Accordion>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+                          </AccordionItem>
+                        ))}
+                      </Accordion>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

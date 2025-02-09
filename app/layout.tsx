@@ -5,16 +5,7 @@ import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { BreadcrumbDemo } from "@/components/shadcn/BreadcrumbDemo";
 
 import Navigation from "@/components/shadcn/NavigationMenu";
-import { CardTemplate } from "@/components/shadcn/CreateExerciseCard";
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="min-h-screen">
+      <body className="min-h-screen ">
         <div className="container mx-auto px-4">
           <div className="p-5">
             <Navigation />
@@ -36,6 +27,7 @@ export default function RootLayout({
           <div className="flex flex-col gap-4">
             <BreadcrumbDemo />
             {children}
+            <Toaster className="text-neutral-950 bg-red-black" />
           </div>
         </div>
       </body>

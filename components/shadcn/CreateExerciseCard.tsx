@@ -11,6 +11,7 @@ import {
 import { ExerciseT, TemplateT, Week } from "@/app/_types/types";
 import ExerciseForm from "../forms/exercise/ExerciseForm";
 import { addDays } from "date-fns";
+import { toast } from "sonner";
 interface Params {
   template: TemplateT;
   setTemplate: (template: TemplateT) => void;
@@ -86,7 +87,13 @@ export function CreateExerciseCard({
           : week
       ),
     });
-
+    toast("Exercise has been added!", {
+      description: `Added on week ${weekIdx + 1} day ${dayIdx + 1}`,
+      // action: {
+      //   label: "Undo",
+      //   onClick: () => console.log("Undo"),
+      // },
+    });
     setExerciseForm(defaultExerciseForm);
   };
 
