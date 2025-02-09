@@ -45,11 +45,11 @@ export function CreateExerciseCard({
         console.log("running weeks 1");
 
         console.log("day: ", dayIdx);
-        return dayIdx - 1;
+        return dayIdx;
       default:
         console.log("running weeks 2 >");
         console.log("week * 7:", weekIdx, " day: ", dayIdx);
-        return weekIdx * 7 + (dayIdx - 1);
+        return weekIdx * 7 + dayIdx;
     }
   };
 

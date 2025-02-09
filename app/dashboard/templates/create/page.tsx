@@ -57,15 +57,22 @@ const page = () => {
     setReadyToSave(true);
     setShowQuestion(0);
     setDate(defaultDate);
-
-    console.log("creating template... totalweeks:", totalWeeks);
-    const setWeeks = Array.from({ length: totalWeeks }, () => ({
-      days: Array(7)
-        .fill(null)
-        .map(() => ({
-          exercises: [],
-        })),
-    }));
+    let caluclateWeeksAndRemainingDays =
+      remaininigDays > 0 ? totalWeeks + 1 : totalWeeks;
+    console.log(
+      "creating template... totalweeks:",
+      caluclateWeeksAndRemainingDays
+    );
+    const setWeeks = Array.from(
+      { length: caluclateWeeksAndRemainingDays },
+      () => ({
+        days: Array(7)
+          .fill(null)
+          .map(() => ({
+            exercises: [],
+          })),
+      })
+    );
     setTemplate({
       ...template,
       startDate: date?.from,
@@ -109,6 +116,7 @@ const page = () => {
 
   useEffect(() => {
     console.log("updating template", template);
+    console.log("total weeks", totalWeeks);
   }, [template]);
 
   return (
@@ -142,7 +150,7 @@ const page = () => {
                                 template={template}
                                 setTemplate={setTemplate}
                                 weekIdx={weekIdx}
-                                dayIdx={dayIdx + 1}
+                                dayIdx={dayIdx}
                                 getTotalDays={getTotalDays}
                               />
 
