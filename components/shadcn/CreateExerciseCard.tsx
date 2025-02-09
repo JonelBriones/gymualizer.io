@@ -10,6 +10,7 @@ import {
 
 import { ExerciseT, TemplateT, Week } from "@/app/_types/types";
 import ExerciseForm from "../forms/exercise/ExerciseForm";
+import { addDays } from "date-fns";
 interface Params {
   template: TemplateT;
   setTemplate: (template: TemplateT) => void;
@@ -38,24 +39,41 @@ export function CreateExerciseCard({
   const [exerciseForm, setExerciseForm] =
     useState<ExerciseT>(defaultExerciseForm);
 
+  const daysToAdd = () => {
+    switch (weekIdx) {
+      case 0:
+        console.log("running weeks 1");
+
+        console.log("day: ", dayIdx);
+        return dayIdx - 1;
+      default:
+        console.log("running weeks 2 >");
+        console.log("week * 7:", weekIdx, " day: ", dayIdx);
+        return weekIdx * 7 + (dayIdx - 1);
+    }
+  };
+
   const onSubmitCreateExercise = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(`adding new exercise to Week ${weekIdx} day ${dayIdx}`);
-    let timestampStart = new Date(template.startDate);
-    console.log("timestampStart", timestampStart);
-    setExerciseForm(defaultExerciseForm);
-    const selectDay = timestampStart.setDate(
-      timestampStart.getDate() + weekIdx * 7
-    );
-    console.log("get selected day", selectDay);
-    console.log(
-      "date selected day converted",
-      new Date(1738742400000).toLocaleDateString()
-    );
+
+    const selectDay = addDays(new Date(template.startDate), daysToAdd());
+    console.log("add week", selectDay.toLocaleDateString());
+
+    // const selectDayConvertedToString = selectDay.toLocaleString();
+    // console.log("get selected day string", selectDayConvertedToString);
+    // console.log(
+    //   "date selected day converted",
+    //   new Date(1738742400000).toLocaleDateString()
+    // );
+
     const updatedForm = {
       ...exerciseForm,
-      date: timestampStart.getTime(),
+      date: selectDay.getTime(),
     };
+    console.log(updatedForm);
+    console.log(template);
+
     setTemplate({
       ...template,
       weeks: template?.weeks?.map((week: Week, currentWeek: number) =>
@@ -74,7 +92,8 @@ export function CreateExerciseCard({
           : week
       ),
     });
-    console.log("FORM", exerciseForm);
+    console.log();
+    setExerciseForm(defaultExerciseForm);
   };
 
   return (

@@ -4,6 +4,17 @@ import { Calendar } from "@/components/ui/calendar";
 import React from "react";
 
 import Link from "next/link";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import { Button } from "@/components/ui/button";
+import { DialogTitle } from "@/components/ui/dialog";
 const fake_data = {
   exercises: [
     {
@@ -34,28 +45,39 @@ const page = () => {
   const convertedDate = new Date(1738982166547).toLocaleDateString();
 
   return (
-    <div className="flex gap-4">
-      <Link
-        href={`/dashboard/templates`}
-        className="w-fit p-5 border border-neutral-200 shadow rounded-s"
-      >
-        <h4 className="text-2xl font-bold">Today's Workout:</h4>
-        {fake_data.exercises.map(
-          ({ name, sets, reps, date }) =>
-            new Date(today).toLocaleDateString() ==
-              new Date(date).toLocaleDateString() && (
-              <div className="flex justify-between gap-2" key={name}>
-                <span>{name}</span>
-                <div>
-                  <span className="">{sets}</span>
-                  <span>x</span>
-                  <span>{reps}</span>
-                </div>
-                <p>date:{new Date(today).toLocaleDateString()}</p>
-              </div>
-            )
-        )}
-      </Link>
+    <div className="flex flex-col md:flex-row gap-4">
+      <Drawer>
+        <DrawerTrigger asChild>
+          <Button variant="outline">Today's Workout</Button>
+        </DrawerTrigger>
+        <DrawerContent className="h-[500px] ">
+          <div className="mx-auto w-full max-w-sm flex-grow flex flex-col place-content-between ">
+            <DrawerHeader>
+              <DialogTitle>Today's Workout</DialogTitle>
+
+              {fake_data.exercises.map(
+                ({ name, sets, reps, date }, idx) =>
+                  new Date(today).toLocaleDateString() ==
+                    new Date(date).toLocaleDateString() && (
+                    <DrawerDescription key={idx} className="flex text-left p-4">
+                      <span>{name}</span>
+                      <span>
+                        <span className="">{sets}</span>
+                        <span>x</span>
+                        <span>{reps}</span>
+                      </span>
+                    </DrawerDescription>
+                  )
+              )}
+            </DrawerHeader>
+            <DrawerFooter>
+              <DrawerClose asChild>
+                <Button variant="outline">Close</Button>
+              </DrawerClose>
+            </DrawerFooter>
+          </div>
+        </DrawerContent>
+      </Drawer>
 
       <Calendar
         mode="single"

@@ -12,20 +12,21 @@ import { addDays } from "date-fns";
 import React, { FormEvent, Fragment, useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { CreateExerciseCard } from "@/components/shadcn/CreateExerciseCard";
-
+// const [date, setDate] = React.useState<DateRange | undefined>({
+//   from: new Date(2022, 0, 20),
+//   to: addDays(new Date(2022, 0, 20), 20),
+// });
 const currentDay = new Date();
 const defaultDate = {
-  from: new Date(
-    currentDay.getFullYear(),
-    currentDay.getMonth(),
-    currentDay.getDay()
-  ),
+  from: new Date(),
+  // currentDay.getFullYear(),
+  // currentDay.getMonth(),
+  // currentDay.getDay()
   to: addDays(
-    new Date(
-      currentDay.getFullYear(),
-      currentDay.getMonth(),
-      currentDay.getDay()
-    ),
+    new Date(),
+    // currentDay.getFullYear(),
+    // currentDay.getMonth(),
+    // currentDay.getDay()
     20
   ),
 };
@@ -57,23 +58,24 @@ const page = () => {
     setShowQuestion(0);
     setDate(defaultDate);
 
+    console.log("creating template... totalweeks:", totalWeeks);
+    const setWeeks = Array.from({ length: totalWeeks }, () => ({
+      days: Array(7)
+        .fill(null)
+        .map(() => ({
+          exercises: [],
+        })),
+    }));
     setTemplate({
       ...template,
       startDate: date?.from,
       endDate: date?.to,
-      weeks: Array.from({ length: totalWeeks }, () => ({
-        days: Array(7)
-          .fill(null)
-          .map(() => ({
-            exercises: [],
-          })),
-      })),
+      weeks: setWeeks,
     });
-    getDurationOfTemplate();
   };
 
   const getDurationOfTemplate = () => {
-    console.log("running");
+    console.log("running checking duration", totalWeeks);
     let days = 0;
     let current = date?.from ? new Date(date.from) : new Date();
     let end = date?.to ? new Date(date.to) : new Date();
@@ -82,11 +84,13 @@ const page = () => {
       current.setDate(current.getDate() + 1);
       days++;
     }
+    console.log("TOTAL DAYS", days);
+    console.log("TOTAL WEEKS", Math.floor(days / 7));
 
     setGetTotalDays(days);
-    console.log("remaing", Math.floor(days % 7));
     const remaining = Math.floor(days % 7);
     console.log("remains", remaining);
+
     setRemainingDay(remaining);
   };
   const daysoftheweek = [
@@ -100,20 +104,12 @@ const page = () => {
   ];
 
   useEffect(() => {
-    // console.log("confirmed calendar");
-    // // getDurationOfTemplate();
-    // let days = 0;
-    // let current = date?.from ? new Date(date.from) : new Date();
-    // let end = date?.to ? new Date(date.to) : new Date();
-    // while (current <= end) {
-    //   current.setDate(current.getDate() + 1);
-    //   days++;
-    // }
-    // setGetTotalDays(days);
-    // setRemainingDay(Math.floor(days % 7));
-    // console.log("before added", Math.floor(days % 7));
-    // console.log("remaining", remaininigDays);
-  }, []);
+    showQuestion == 2 && getDurationOfTemplate();
+  }, [showQuestion == 2]);
+
+  useEffect(() => {
+    console.log("updating template", template);
+  }, [template]);
 
   return (
     <div className="flex gap-4 w-full">
@@ -146,7 +142,7 @@ const page = () => {
                                 template={template}
                                 setTemplate={setTemplate}
                                 weekIdx={weekIdx}
-                                dayIdx={dayIdx}
+                                dayIdx={dayIdx + 1}
                                 getTotalDays={getTotalDays}
                               />
 

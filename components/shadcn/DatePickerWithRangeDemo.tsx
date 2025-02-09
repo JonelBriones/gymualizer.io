@@ -56,7 +56,7 @@ export function DatePickerWithRange({ className, date, setDate }: Params) {
             initialFocus
             mode="range"
             // fromDate={new Date()}
-            defaultMonth={date?.from}
+            defaultMonth={new Date()}
             selected={date}
             onSelect={setDate}
             numberOfMonths={2}
