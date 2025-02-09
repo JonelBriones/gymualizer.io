@@ -21,21 +21,14 @@ export function CreateTemplateDrawer({
   text,
   options,
   templateForm,
-  setTemplateForm,
+  setTemplate,
   date,
   setDate,
-  setReadyToSave,
+  onDrawerClose,
   onSubmitCreateTemplate,
   setShowQuestion,
   showQuestion,
-  defaultTemplateForm,
 }: any) {
-  const onDrawerClose = () => {
-    setReadyToSave(false);
-    setTemplateForm(defaultTemplateForm);
-    setShowQuestion(0);
-  };
-
   const questions = ["Name this program.", "Pick a start and end date."];
 
   // UPDATE TEMPLATE HERE ACTION
@@ -43,7 +36,9 @@ export function CreateTemplateDrawer({
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button variant="outline">{text}</Button>
+        <Button variant="outline" className="w-full">
+          {text}
+        </Button>
       </DrawerTrigger>
       <DrawerContent>
         <div className="mx-auto w-full max-w-sm">
@@ -51,7 +46,7 @@ export function CreateTemplateDrawer({
             <DrawerHeader>
               <DrawerTitle>
                 {showQuestion == 2 ? (
-                  <span>{templateForm.name}</span>
+                  <span className="text-2xl">{templateForm.name}</span>
                 ) : (
                   <span>{questions[showQuestion]}</span>
                 )}
@@ -86,7 +81,7 @@ export function CreateTemplateDrawer({
                       placeholder="Powerlifting Program 3.0"
                       minLength={1}
                       onChange={(e) =>
-                        setTemplateForm({
+                        setTemplate({
                           ...templateForm,
                           name: e.target.value,
                         })
