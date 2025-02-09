@@ -2,16 +2,7 @@
 import { ExerciseT } from "@/app/_types/types";
 import React from "react";
 
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { TableCell } from "@/components/ui/table";
 const SingleExercise = ({
   name,
   sets,
@@ -26,8 +17,10 @@ const SingleExercise = ({
       <TableCell className="font-medium">{name}</TableCell>
       <TableCell>{sets}</TableCell>
       <TableCell>{reps}</TableCell>
-      <TableCell>{load}</TableCell>
-      <TableCell>{loadType}</TableCell>
+      <TableCell>
+        {load}
+        {loadType == "rpe" ? " RPE" : loadType == "percentage" ? "%" : ""}
+      </TableCell>
       <TableCell>{unit}</TableCell>
       <TableCell>
         <p className="text-left max-h-[40px] overflow-auto">{notes}</p>

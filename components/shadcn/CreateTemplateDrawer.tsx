@@ -41,7 +41,7 @@ export function CreateTemplateDrawer({
         </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <div className="mx-auto w-full max-w-sm">
+        <div className="mx-auto w-full max-w-sm h-[80vh] p-4">
           <Card className="h-[240px] flex flex-col justify-between">
             <DrawerHeader>
               <DrawerTitle>
@@ -110,7 +110,7 @@ export function CreateTemplateDrawer({
                         }}
                         className="flex-1"
                       >
-                        Save
+                        Next
                       </Button>
                     )}
 

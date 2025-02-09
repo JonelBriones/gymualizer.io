@@ -22,8 +22,8 @@ interface Params {
 const defaultExerciseForm: ExerciseT = {
   name: "",
   loadType: "weight",
-  sets: 0,
-  reps: 0,
+  sets: undefined,
+  reps: undefined,
   load: "0",
   unit: "lbs",
   notes: "",
@@ -35,7 +35,6 @@ export function CreateExerciseCard({
   setTemplate,
   weekIdx,
   dayIdx,
-  getTotalDays,
   toggleDay,
 }: Params) {
   const [exerciseForm, setExerciseForm] =
@@ -90,7 +89,6 @@ export function CreateExerciseCard({
 
     setExerciseForm(defaultExerciseForm);
   };
-  const [date, setDate] = useState({});
 
   return (
     <Card className="w-full  md:w-[340px] h-fit">
@@ -114,79 +112,3 @@ export function CreateExerciseCard({
     </Card>
   );
 }
-
-//  const matchDateToToggleDay = (weekIdx: number, dayIdx: number) => {
-//     const selectDay = addDays(
-//       new Date(template.startDate),
-//       daysToAdd(weekIdx, dayIdx)
-//     );
-//     console.log(selectDay.getTime());
-//     return selectDay;
-//     {
-//       matchDateToToggleDay(weekIdx, dayIdx).toLocaleDateString(
-//         "en-us",
-//         options as {}
-//       );
-//     }
-// return selectDay.toLocaleDateString("en-us", options as {});\
-
-// const onSubmitCreateTemplate = (e: FormEvent<HTMLFormElement>) => {
-//     e.preventDefault();
-//     setReadyToSave(true);
-//     setShowQuestion(0);
-//     setDate(defaultDate);
-//     const start = date?.from ? new Date(date?.from) : new Date();
-//     const end = date?.to ? new Date(date?.to) : new Date();
-//     console.log("TODAY IS:", currentDay, daysoftheweek[start.getDay()]);
-
-//     const startDay = daysoftheweek[start.getDay()];
-
-//     console.log("Start Day: ", startDay);
-
-//     const totalDays = Math.ceil(
-//       Math.abs(start.getTime() - end.getTime()) / (1000 * 60 * 60 * 24)
-//     );
-//     const completeWeeks = Math.floor(totalDays / 7);
-//     const remainingDays = Math.floor(totalDays % 7);
-//     const totalWeeks = remainingDays > 0 ? completeWeeks + 1 : completeWeeks;
-//     console.log("DURATION OF TEMPALTE", totalDays);
-//     const setWeeks = Array.from({ length: totalWeeks }, () => ({
-//       days: Array(7)
-//         .fill(null)
-//         .map(() => ({
-//           exercises: [],
-//         })),
-//     }));
-//     console.log("completed Weeks: ", completeWeeks);
-//     console.log("remaining Days: ", remainingDays);
-//     console.log("total weeks: ", totalWeeks);
-//     // const setWeeks = Array.from(
-//     //   { length: caluclateWeeksAndRemainingDays },
-//     //   () => ({
-//     //     days: Array(7)
-//     //       .fill(null)
-//     //       .map(() => ({
-//     //         exercises: [],
-//     //       })),
-//     //   })
-//     // );
-//     setTemplate({
-//       ...template,
-//       startDate: date?.from,
-//       endDate: date?.to,
-//       weeks: setWeeks,
-//     });
-//   };
-
-// const daysToAdd = (weekIdx: number, dayIdx: number) => {
-//   switch (weekIdx) {
-//     case 0:
-//       // console.log("running weeks 1");
-//       return dayIdx;
-//     default:
-//       // console.log("running weeks 2 >");
-//       // console.log("week * 7:", weekIdx, " day: ", dayIdx);
-//       return weekIdx * 7 + dayIdx;
-//   }
-// };
-// const [selectedDay, setSelectedDay] = useState();

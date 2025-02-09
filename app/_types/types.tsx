@@ -1,8 +1,8 @@
 export type ExerciseT = {
   name: string;
   loadType: string;
-  sets: number;
-  reps: number;
+  sets: number | undefined;
+  reps: number | undefined;
   load: string;
   unit: string;
   notes: string;

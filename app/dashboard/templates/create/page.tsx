@@ -149,10 +149,11 @@ const page = () => {
     setReadyToSave(false);
     setTemplate(defaultTemplateForm);
     setShowQuestion(0);
+    setDate(defaultDate);
   };
   return (
-    <div className="flex gap-4">
-      <div className="flex flex-col gap-2 w-[400px]">
+    <div className="flex md:flex-row flex-col gap-4">
+      <div className="flex flex-col gap-2 md:w-[400px]">
         {!readyToSave ? (
           <CreateTemplateDrawer
             text={"New Template"}
@@ -242,7 +243,6 @@ const page = () => {
                                     <TableHead>Sets</TableHead>
                                     <TableHead>Reps</TableHead>
                                     <TableHead>Weight</TableHead>
-                                    <TableHead>Load Type</TableHead>
                                     <TableHead>Units</TableHead>
                                     <TableHead className="text-left">
                                       Additional Notes

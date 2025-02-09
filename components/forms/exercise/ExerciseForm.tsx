@@ -86,7 +86,7 @@ const ExerciseForm = ({
           <div className="flex flex-col space-y-1.5 flex-1 ">
             <Label htmlFor="sets">Sets</Label>
             <Select
-              value={exerciseForm.sets.toString()}
+              value={exerciseForm.sets?.toString() ?? ""}
               name="sets"
               onValueChange={(e) =>
                 setExerciseForm({ ...exerciseForm, sets: parseInt(e) })
@@ -99,7 +99,7 @@ const ExerciseForm = ({
                 {Array(21)
                   .fill(null)
                   .map((_, idx) => (
-                    <SelectItem key={idx} value={idx.toString()}>
+                    <SelectItem key={idx} value={`${idx}`}>
                       {idx}
                     </SelectItem>
                   ))}
@@ -109,7 +109,7 @@ const ExerciseForm = ({
           <div className="flex flex-col space-y-1.5 flex-1">
             <Label htmlFor="reps">Reps</Label>
             <Select
-              value={exerciseForm.reps.toString()}
+              value={exerciseForm.reps?.toString() ?? ""}
               name="reps"
               onValueChange={(e) =>
                 setExerciseForm({ ...exerciseForm, reps: parseInt(e) })
@@ -182,7 +182,7 @@ const ExerciseForm = ({
               <Fragment>
                 <Label htmlFor="load">RPE</Label>
                 <Select
-                  value={exerciseForm.load}
+                  value={exerciseForm.load?.toString() ?? ""}
                   name="load"
                   onValueChange={(e) =>
                     setExerciseForm({ ...exerciseForm, load: e })
