@@ -141,16 +141,13 @@ const page = () => {
     day: 0,
   });
 
-  useEffect(() => {
-    console.log(toggledDay);
-  }, [toggledDay]);
-
   const onDrawerClose = () => {
     setReadyToSave(false);
     setTemplate(defaultTemplateForm);
     setShowQuestion(0);
     setDate(defaultDate);
   };
+
   return (
     <div className="flex md:flex-row flex-col gap-4">
       <div className="flex flex-col gap-2 md:w-[400px]">
@@ -247,14 +244,26 @@ const page = () => {
                                     <TableHead className="text-left">
                                       Additional Notes
                                     </TableHead>
+                                    <TableHead className="text-right">
+                                      Actions
+                                    </TableHead>
                                   </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                  {day.exercises.map((props, idx) => (
-                                    <TableRow key={idx}>
-                                      <SingleExercise {...props} />
-                                    </TableRow>
-                                  ))}
+                                  {day.exercises.map(
+                                    (exercise, exerciseIdx) => (
+                                      <TableRow key={exerciseIdx}>
+                                        <SingleExercise
+                                          exercise={exercise}
+                                          setTemplate={setTemplate}
+                                          template={template}
+                                          weekIdx={weekIdx}
+                                          dayIdx={dayIdx}
+                                          exerciseIdx={exerciseIdx}
+                                        />
+                                      </TableRow>
+                                    )
+                                  )}
                                 </TableBody>
                               </Table>
                             </AccordionContent>
