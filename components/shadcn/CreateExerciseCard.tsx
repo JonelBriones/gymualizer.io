@@ -1,5 +1,5 @@
 "use client";
-import React, { FormEvent, useEffect, useState } from "react";
+import React from "react";
 import {
   Card,
   CardContent,
@@ -8,32 +8,23 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { ExerciseT, TemplateT, Week } from "@/app/_types/types";
+import { TemplateT } from "@/app/_types/types";
 import ExerciseForm from "../forms/exercise/ExerciseForm";
 import { addDays } from "date-fns";
 import { toast } from "sonner";
-import { ExerciseFormSchema, ExerciseFormSchemaType } from "@/app/_ZodSchemas";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { ExerciseFormSchemaType } from "@/app/_ZodSchemas";
+
 interface Params {
   template: TemplateT;
   setTemplate: React.Dispatch<React.SetStateAction<TemplateT>>;
   weekIdx: number;
   dayIdx: number;
   getTotalDays: number;
-  toggleDay: any;
+  toggleDay: {
+    week: number;
+    day: number;
+  };
 }
-// const defaultExerciseForm: ExerciseT = {
-//   name: "",
-//   loadType: "weight",
-//   sets: undefined,
-//   reps: undefined,
-//   unit: "lbs",
-//   rpeLoad: ""
-//   notes: "",
-//   date: new Date(),
-// };
-
 export function CreateExerciseCard({
   template,
   setTemplate,
@@ -41,19 +32,11 @@ export function CreateExerciseCard({
   dayIdx,
   toggleDay,
 }: Params) {
-  // const [exerciseForm, setExerciseForm] =
-  //   useState<ExerciseT>(defaultExerciseForm);
-
   const daysToAdd = () => {
     switch (weekIdx) {
       case 0:
-        console.log("running weeks 1");
-
-        console.log("day: ", dayIdx);
         return dayIdx;
       default:
-        console.log("running weeks 2 >");
-        console.log("week * 7:", weekIdx, " day: ", dayIdx);
         return weekIdx * 7 + dayIdx;
     }
   };

@@ -60,7 +60,7 @@ const SingleExercise = ({
   useEffect(() => {}, [template]);
   type NameType = "rpe" | "weight" | "percentage";
 
-  const LOADTYPE: Record<NameType, string> = {
+  const LOADTYPE: Record<NameType, string | undefined> = {
     rpe: rpeLoad,
     weight: weightLoad,
     percentage: percentageLoad,

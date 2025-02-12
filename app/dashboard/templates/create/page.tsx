@@ -106,8 +106,8 @@ const page = () => {
   };
 
   useEffect(() => {
-    console.log("updating template", template);
-    console.log("total weeks", totalWeeks);
+    // console.log("updating template", template);
+    // console.log("total weeks", totalWeeks);
   }, [template]);
 
   const [toggledDay, setToggleDay] = useState({

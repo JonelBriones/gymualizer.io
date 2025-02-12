@@ -18,7 +18,21 @@ import { useForm } from "react-hook-form";
 import { ExerciseFormSchema, ExerciseFormSchemaType } from "@/app/_ZodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
-
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Check, ChevronsUpDown } from "lucide-react";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { cn } from "@/lib/utils";
 interface Params {
   onSubmitCreateExercise: any;
 }
@@ -36,6 +50,7 @@ const ExerciseForm = ({ onSubmitCreateExercise }: Params) => {
       unit: "lbs",
       notes: "",
     },
+    mode: "onChange",
   });
 
   const {
@@ -44,7 +59,7 @@ const ExerciseForm = ({ onSubmitCreateExercise }: Params) => {
     reset,
     resetField,
     handleSubmit,
-    formState: { isSubmitSuccessful, isSubmitted },
+    formState: { isSubmitSuccessful },
   } = exerciseForm;
 
   const loadType = watch("loadType");
@@ -52,23 +67,86 @@ const ExerciseForm = ({ onSubmitCreateExercise }: Params) => {
   useEffect(() => {
     console.log("after submitting");
     if (isSubmitSuccessful) {
-      console.log("resetting fields");
       reset({
         name: "",
+        loadType: "weight",
         notes: "",
       });
+      console.log("resetting fields");
     }
   }, [isSubmitSuccessful]);
 
-  useEffect(() => {
-    console.log("success?", isSubmitSuccessful);
-    console.log("submitted?", isSubmitted);
-  }, []);
-
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("");
+  const searchExercises = [
+    "bench",
+    "squats",
+    "deadlifts",
+    "bicep curls",
+    "tempo bench",
+  ];
   return (
     <Form {...exerciseForm}>
       <form onSubmit={handleSubmit(onSubmitCreateExercise)}>
-        <div className="grid items-center gap-4">
+        <div className="grid items-center gap-4 ">
+          {/* <FormField
+            control={control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Exercise</FormLabel>
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={open}
+                      className="w-[200px] justify-between"
+                    >
+                      {" "}
+                      {field.value
+                        ? searchExercises.find(
+                            (exercise) => exercise === field.value
+                          )
+                        : "Select language"}
+                      <ChevronsUpDown className="opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[200px] p-0">
+                    <Command>
+                      <CommandInput placeholder="Search framework..." />
+                      <CommandList>
+                        <CommandEmpty>No framework found.</CommandEmpty>
+                        <CommandGroup>
+                          {searchExercises.map((exercise) => (
+                            <CommandItem
+                              {...field}
+                              key={exercise}
+                              value={exercise}
+                              onSelect={() => {
+                                exerciseForm.setValue("name", exercise);
+                              }}
+                            >
+                             
+                              <Check
+                                className={cn(
+                                  "ml-auto",
+                                  field.value === exercise
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </FormItem>
+            )}
+          /> */}
+
           <FormField
             control={control}
             name="name"
@@ -80,6 +158,20 @@ const ExerciseForm = ({ onSubmitCreateExercise }: Params) => {
                   placeholder="Name of your exercise"
                   {...field}
                 />
+                {/* <Select onValueChange={field.onChange} {...field}>
+                  <SelectTrigger id="name">
+                    <SelectValue placeholder="Select">
+                      {field.value !== undefined ? field.value : "Select"}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent position="popper">
+                    {searchExercises.map((exercise, idx) => (
+                      <SelectItem value={exercise} key={idx}>
+                        {exercise}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select> */}
               </FormItem>
             )}
           />
@@ -105,6 +197,7 @@ const ExerciseForm = ({ onSubmitCreateExercise }: Params) => {
             />
             <FormField
               control={control}
+              defaultValue="weight"
               name="loadType"
               render={({ field }) => (
                 <FormItem className="flex flex-col space-y-1.5 flex-1">
@@ -182,7 +275,6 @@ const ExerciseForm = ({ onSubmitCreateExercise }: Params) => {
               <FormField
                 control={control}
                 name="weightLoad"
-                rules={{ required: true }}
                 render={({ field }) => (
                   <FormItem className="flex flex-col space-y-1.5 flex-1">
                     <FormLabel htmlFor="weightLoad">Weight</FormLabel>
@@ -200,7 +292,6 @@ const ExerciseForm = ({ onSubmitCreateExercise }: Params) => {
               <FormField
                 control={control}
                 name="percentageLoad"
-                rules={{ required: true }}
                 render={({ field }) => (
                   <FormItem className="flex flex-col space-y-1.5 flex-1">
                     <FormLabel htmlFor="percentageLoad">Percent</FormLabel>
@@ -232,7 +323,6 @@ const ExerciseForm = ({ onSubmitCreateExercise }: Params) => {
               <FormField
                 control={control}
                 name="rpeLoad"
-                rules={{ required: true }}
                 render={({ field }) => (
                   <FormItem className="flex flex-col space-y-1.5 flex-1">
                     <FormLabel htmlFor="rpeLoad">RPE</FormLabel>
@@ -275,17 +365,7 @@ const ExerciseForm = ({ onSubmitCreateExercise }: Params) => {
           <Button type="button" variant="outline" onClick={() => reset()}>
             Reset
           </Button>
-          <Button
-            type="submit"
-            onClick={() => {
-              reset({
-                name: "",
-                notes: "",
-              });
-            }}
-          >
-            Save
-          </Button>
+          <Button type="submit">Save</Button>
         </div>
       </form>
     </Form>
