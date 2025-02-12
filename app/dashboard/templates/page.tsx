@@ -1,9 +1,9 @@
+"use server";
 import {
   Table,
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -11,8 +11,12 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React, { Fragment } from "react";
-
-const page = () => {
+import connectDB from "@/config/database";
+import User from "@/models/User";
+const page = async () => {
+  await connectDB();
+  const user = await User.find({}).lean();
+  console.log(user);
   const templates = [
     "PowerBuilding Program 1.0",
     "Bodybuilding Program 2.0",
@@ -30,15 +34,15 @@ const page = () => {
       <TableBody className="w-full">
         {templates.map((template, idx: number) => (
           <TableRow key={idx}>
-            <TableCell className="text-left md:text-center">
+            <TableCell className="text-left md:text-left">
               <Button variant="link" className="md:text-lg">
-                <Link href={`/dashboard/templates/${template}/`}>
-                  {template}
-                </Link>
+                {template}
               </Button>
             </TableCell>
             <TableCell className="flex flex-col md:flex-row gap-2 justify-start md:justify-center">
-              <Button variant="default">Edit</Button>
+              <Button variant="default">
+                <Link href={`/dashboard/templates/${template}/`}>Edit</Link>
+              </Button>
               <Button variant="destructive">Delete</Button>
             </TableCell>
           </TableRow>

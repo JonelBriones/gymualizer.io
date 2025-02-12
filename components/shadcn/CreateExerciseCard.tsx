@@ -12,24 +12,27 @@ import { ExerciseT, TemplateT, Week } from "@/app/_types/types";
 import ExerciseForm from "../forms/exercise/ExerciseForm";
 import { addDays } from "date-fns";
 import { toast } from "sonner";
+import { ExerciseFormSchema, ExerciseFormSchemaType } from "@/app/_ZodSchemas";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 interface Params {
   template: TemplateT;
-  setTemplate: (template: TemplateT) => void;
+  setTemplate: React.Dispatch<React.SetStateAction<TemplateT>>;
   weekIdx: number;
   dayIdx: number;
   getTotalDays: number;
   toggleDay: any;
 }
-const defaultExerciseForm: ExerciseT = {
-  name: "",
-  loadType: "weight",
-  sets: undefined,
-  reps: undefined,
-  load: "0",
-  unit: "lbs",
-  notes: "",
-  date: 0,
-};
+// const defaultExerciseForm: ExerciseT = {
+//   name: "",
+//   loadType: "weight",
+//   sets: undefined,
+//   reps: undefined,
+//   unit: "lbs",
+//   rpeLoad: ""
+//   notes: "",
+//   date: new Date(),
+// };
 
 export function CreateExerciseCard({
   template,
@@ -38,8 +41,8 @@ export function CreateExerciseCard({
   dayIdx,
   toggleDay,
 }: Params) {
-  const [exerciseForm, setExerciseForm] =
-    useState<ExerciseT>(defaultExerciseForm);
+  // const [exerciseForm, setExerciseForm] =
+  //   useState<ExerciseT>(defaultExerciseForm);
 
   const daysToAdd = () => {
     switch (weekIdx) {
@@ -55,23 +58,12 @@ export function CreateExerciseCard({
     }
   };
 
-  const onSubmitCreateExercise = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(`adding new exercise to Week ${weekIdx} day ${dayIdx}`);
-
+  const onSubmitCreateExercise = (e: ExerciseFormSchemaType) => {
     const selectDay = addDays(new Date(template.startDate), daysToAdd());
-    console.log("add week", selectDay.toLocaleDateString());
-
-    const updatedForm = {
-      ...exerciseForm,
-      date: selectDay.getTime(),
-    };
-    console.log(updatedForm);
-    console.log(template);
 
     setTemplate({
       ...template,
-      weeks: template?.weeks?.map((week: Week, currentWeek: number) =>
+      weeks: template?.weeks?.map((week, currentWeek: number) =>
         currentWeek == weekIdx
           ? {
               ...week,
@@ -79,7 +71,7 @@ export function CreateExerciseCard({
                 currentDay == dayIdx
                   ? {
                       ...day,
-                      exercises: [...day.exercises, updatedForm],
+                      exercises: [...day.exercises, { ...e, date: selectDay }],
                     }
                   : day
               ),
@@ -89,12 +81,7 @@ export function CreateExerciseCard({
     });
     toast("Exercise has been added!", {
       description: `Added on week ${weekIdx + 1} day ${dayIdx + 1}`,
-      // action: {
-      //   label: "Undo",
-      //   onClick: () => console.log("Undo"),
-      // },
     });
-    setExerciseForm(defaultExerciseForm);
   };
 
   return (
@@ -109,12 +96,7 @@ export function CreateExerciseCard({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ExerciseForm
-          onSubmitCreateExercise={onSubmitCreateExercise}
-          setExerciseForm={setExerciseForm}
-          exerciseForm={exerciseForm}
-          defaultExerciseForm={defaultExerciseForm}
-        />
+        <ExerciseForm onSubmitCreateExercise={onSubmitCreateExercise} />
       </CardContent>
     </Card>
   );

@@ -24,6 +24,8 @@ export function DatePickerWithRange({ className, date, setDate }: Params) {
   //   to: addDays(new Date(2022, 0, 20), 20),
   // });
 
+  const currentDay = new Date();
+
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover>
@@ -55,8 +57,8 @@ export function DatePickerWithRange({ className, date, setDate }: Params) {
           <Calendar
             initialFocus
             mode="range"
-            fromDate={new Date()}
-            defaultMonth={new Date()}
+            fromDate={currentDay}
+            defaultMonth={currentDay}
             selected={date}
             onSelect={setDate}
             numberOfMonths={2}

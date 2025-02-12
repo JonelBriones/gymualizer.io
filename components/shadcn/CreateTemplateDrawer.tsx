@@ -1,78 +1,56 @@
 "use client";
-import React, { FormEvent, useState } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-import { CreateTemplateCard } from "./CreateTemplateCard";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
-import { Label } from "../ui/label";
 import { DatePickerWithRange } from "./DatePickerWithRangeDemo";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Calendar } from "lucide-react";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
+import { TemplateFormSchema, TemplateFormSchemaType } from "@/app/_ZodSchemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
 export function CreateTemplateDrawer({
-  template,
-  setTemplate,
   date,
   setDate,
   onSubmitCreateTemplate,
+  totalWeeks,
 }: any) {
-  // UPDATE TEMPLATE HERE ACTION
-
-  const totalDays = Math.ceil(
-    (Math.abs(date?.from?.getTime() - date?.to?.getTime()) /
-      (1000 * 60 * 60 * 24)) |
-      0
-  );
-  const completeWeeks = Math.floor(totalDays / 7);
-  const remainingDays = Math.floor(totalDays % 7);
-  const totalWeeks = remainingDays > 0 ? completeWeeks + 1 : completeWeeks;
+  const templateForm = useForm<TemplateFormSchemaType>({
+    resolver: zodResolver(TemplateFormSchema),
+    defaultValues: {
+      name: "",
+    },
+  });
 
   return (
-    <form onSubmit={onSubmitCreateTemplate} className="flex flex-col gap-4">
-      <div className="flex flex-col gap-2">
-        <div>
-          <Label htmlFor="name">Name</Label>
-          <Input
-            id="name"
+    <Form {...templateForm}>
+      <form onSubmit={templateForm.handleSubmit(onSubmitCreateTemplate)}>
+        <div className="flex flex-col gap-4">
+          <FormField
+            control={templateForm.control}
             name="name"
-            value={template?.name}
-            required
-            placeholder="Powerlifting Program 3.0"
-            minLength={1}
-            onChange={(e) =>
-              setTemplate({
-                ...template,
-                name: e.target.value,
-              })
-            }
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="name">Name</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Powerlifting Program 3.0"
+                    id="name"
+                    type="text"
+                    {...field}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
           />
+          <div>
+            <FormLabel htmlFor="date">
+              Select start and end date | Weeks: {totalWeeks}
+            </FormLabel>
+            <DatePickerWithRange date={date} setDate={setDate} />
+          </div>
+          <Button type="submit">Create template</Button>
         </div>
-        <div>
-          <Label htmlFor="date">
-            Select start and end date | Weeks: {totalWeeks}
-          </Label>
-          <DatePickerWithRange date={date} setDate={setDate} />
-        </div>
-      </div>
-
-      <Button type="submit">Create template</Button>
-    </form>
+      </form>
+    </Form>
   );
 }

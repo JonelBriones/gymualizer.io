@@ -20,7 +20,17 @@ const SingleExercise = ({
   exerciseIdx,
   weekIdx,
 }: ExerciseProps) => {
-  const { name, sets, reps, loadType, load, unit, notes } = exercise;
+  const {
+    name,
+    sets,
+    reps,
+    loadType,
+    percentageLoad,
+    weightLoad,
+    rpeLoad,
+    unit,
+    notes,
+  } = exercise;
   const deleteExercise = (
     weekIdx: number,
     dayIdx: number,
@@ -48,13 +58,21 @@ const SingleExercise = ({
     });
   };
   useEffect(() => {}, [template]);
+  type NameType = "rpe" | "weight" | "percentage";
+
+  const LOADTYPE: Record<NameType, string> = {
+    rpe: rpeLoad,
+    weight: weightLoad,
+    percentage: percentageLoad,
+  };
+
   return (
     <>
       <TableCell className="font-medium">{name}</TableCell>
       <TableCell>{sets}</TableCell>
       <TableCell>{reps}</TableCell>
       <TableCell>
-        {load}
+        {LOADTYPE[loadType as NameType]}
         {loadType == "rpe" ? " RPE" : loadType == "percentage" ? "%" : ""}
       </TableCell>
       <TableCell>{unit}</TableCell>

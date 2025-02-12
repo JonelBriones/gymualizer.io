@@ -1,9 +1,8 @@
 "use client";
-import React, { FormEvent, Fragment } from "react";
+import React, { FormEvent, Fragment, useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -15,233 +14,281 @@ import {
 } from "@/components/ui/select";
 import { ExerciseT } from "@/app/_types/types";
 import { toast } from "sonner";
+import { useForm } from "react-hook-form";
+import { ExerciseFormSchema, ExerciseFormSchemaType } from "@/app/_ZodSchemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
 
 interface Params {
-  onSubmitCreateExercise: React.FormEventHandler<HTMLFormElement>;
-  setExerciseForm: (exercise: ExerciseT) => void;
-  defaultExerciseForm: ExerciseT;
-  exerciseForm: ExerciseT;
+  onSubmitCreateExercise: any;
 }
-const ExerciseForm = ({
-  exerciseForm,
-  onSubmitCreateExercise,
-  setExerciseForm,
-  defaultExerciseForm,
-}: Params) => {
+const ExerciseForm = ({ onSubmitCreateExercise }: Params) => {
+  const exerciseForm = useForm<ExerciseFormSchemaType>({
+    resolver: zodResolver(ExerciseFormSchema),
+    defaultValues: {
+      name: "",
+      loadType: "weight",
+      sets: "4",
+      reps: "5",
+      percentageLoad: "100",
+      rpeLoad: "10",
+      weightLoad: "0",
+      unit: "lbs",
+      notes: "",
+    },
+  });
+
+  const {
+    control,
+    watch,
+    reset,
+    resetField,
+    handleSubmit,
+    formState: { isSubmitSuccessful, isSubmitted },
+  } = exerciseForm;
+
+  const loadType = watch("loadType");
+
+  useEffect(() => {
+    console.log("after submitting");
+    if (isSubmitSuccessful) {
+      console.log("resetting fields");
+      reset({
+        name: "",
+        notes: "",
+      });
+    }
+  }, [isSubmitSuccessful]);
+
+  useEffect(() => {
+    console.log("success?", isSubmitSuccessful);
+    console.log("submitted?", isSubmitted);
+  }, []);
+
   return (
-    <form onSubmit={onSubmitCreateExercise}>
-      <div className="grid items-center gap-4">
-        <div className="flex flex-col space-y-1.5">
-          <Label htmlFor="name">Exercise Name</Label>
-          <Input
-            required
-            id="name"
+    <Form {...exerciseForm}>
+      <form onSubmit={handleSubmit(onSubmitCreateExercise)}>
+        <div className="grid items-center gap-4">
+          <FormField
+            control={control}
             name="name"
-            value={exerciseForm.name}
-            placeholder="Name of your exercise"
-            onChange={(e) =>
-              setExerciseForm({ ...exerciseForm, name: e.target.value })
-            }
-          />
-        </div>
-        <div className="flex gap-2 w-full ">
-          <div className="flex flex-col space-y-1.5 flex-1">
-            <Label htmlFor="unit">Unit</Label>
-            <Select
-              value={exerciseForm.unit}
-              name="unit"
-              onValueChange={(e) =>
-                setExerciseForm({ ...exerciseForm, unit: e })
-              }
-            >
-              <SelectTrigger id="units">
-                <SelectValue placeholder="Select" />
-              </SelectTrigger>
-              <SelectContent position="popper">
-                <SelectItem value="kg">kg</SelectItem>
-                <SelectItem value="lbs">lbs</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="flex flex-col space-y-1.5 flex-1">
-            <Label htmlFor="reps">Load Type</Label>
-            <Select
-              value={exerciseForm.loadType}
-              name="loadType"
-              onValueChange={(e) =>
-                setExerciseForm({ ...exerciseForm, loadType: e })
-              }
-            >
-              <SelectTrigger id="loadType">
-                <SelectValue placeholder="Select" />
-              </SelectTrigger>
-              <SelectContent position="popper">
-                <SelectItem value="weight">Weight</SelectItem>
-                <SelectItem value="percentage">Percentage</SelectItem>
-                <SelectItem value="rpe">RPE</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-        <div className="flex gap-2">
-          <div className="flex flex-col space-y-1.5 flex-1 ">
-            <Label htmlFor="sets">Sets</Label>
-            <Select
-              value={exerciseForm.sets?.toString() ?? ""}
-              name="sets"
-              onValueChange={(e) =>
-                setExerciseForm({ ...exerciseForm, sets: parseInt(e) })
-              }
-            >
-              <SelectTrigger id="sets">
-                <SelectValue placeholder="Select" />
-              </SelectTrigger>
-              <SelectContent position="popper">
-                {Array(21)
-                  .fill(null)
-                  .map((_, idx) => (
-                    <SelectItem key={idx} value={`${idx}`}>
-                      {idx}
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="flex flex-col space-y-1.5 flex-1">
-            <Label htmlFor="reps">Reps</Label>
-            <Select
-              value={exerciseForm.reps?.toString() ?? ""}
-              name="reps"
-              onValueChange={(e) =>
-                setExerciseForm({ ...exerciseForm, reps: parseInt(e) })
-              }
-            >
-              <SelectTrigger id="reps">
-                <SelectValue placeholder="Select" />
-              </SelectTrigger>
-              <SelectContent position="popper">
-                {Array(31)
-                  .fill(null)
-                  .map((_, idx) => (
-                    <SelectItem key={idx} value={`${idx}`}>
-                      {idx}
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
-          </div>
-          {/* RENDER ON LOAD TYPE */}
-          <div className="flex flex-col space-y-1.5 flex-1">
-            {exerciseForm.loadType == "weight" && (
-              <Fragment>
-                <Label htmlFor="load">Weight</Label>
+            render={({ field }) => (
+              <FormItem className="flex flex-col space-y-1.5">
+                <FormLabel htmlFor="name">Exercise Name</FormLabel>
                 <Input
-                  id="load"
-                  placeholder="0"
-                  name="load"
-                  max={1000}
-                  value={exerciseForm.load}
-                  className="w-[70px]"
-                  onChange={(e) =>
-                    setExerciseForm({ ...exerciseForm, load: e.target.value })
-                  }
+                  id="name"
+                  placeholder="Name of your exercise"
+                  {...field}
                 />
-              </Fragment>
+              </FormItem>
             )}
-            {exerciseForm.loadType == "percentage" && (
-              <Fragment>
-                <Label htmlFor="load">Percent</Label>
+          />
 
-                <Select
-                  value={exerciseForm.load}
-                  name="load"
-                  onValueChange={(e) =>
-                    setExerciseForm({ ...exerciseForm, load: e })
-                  }
-                >
-                  <SelectTrigger id="percentage">
-                    <SelectValue placeholder="Select" />
-                  </SelectTrigger>
-                  <SelectContent position="popper">
-                    {Array.from(
-                      { length: Math.floor(101 / 2.5) + 1 },
-                      (_, i) => i * 2.5
-                    ).map(
-                      (value) =>
-                        value % 2.5 == 0 && (
-                          <SelectItem key={value} value={`${value}`}>
-                            {value}%
-                          </SelectItem>
-                        )
-                    )}
-                  </SelectContent>
-                </Select>
-              </Fragment>
-            )}
-
-            {exerciseForm.loadType == "rpe" && (
-              <Fragment>
-                <Label htmlFor="load">RPE</Label>
-                <Select
-                  value={exerciseForm.load?.toString() ?? ""}
-                  name="load"
-                  onValueChange={(e) =>
-                    setExerciseForm({ ...exerciseForm, load: e })
-                  }
-                >
-                  <SelectTrigger id="rpe">
-                    <SelectValue placeholder="Select" />
-                  </SelectTrigger>
-                  <SelectContent position="popper">
-                    <SelectGroup>
-                      <SelectLabel>RPE</SelectLabel>
-                      {Array(11)
-                        .fill("")
+          <div className="flex gap-2 w-full ">
+            <FormField
+              control={control}
+              name="unit"
+              render={({ field }) => (
+                <FormItem className="flex flex-col space-y-1.5 flex-1">
+                  <FormLabel htmlFor="unit">Unit</FormLabel>
+                  <Select onValueChange={field.onChange} {...field}>
+                    <SelectTrigger id="unit">
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent position="popper">
+                      <SelectItem value="kg">kg</SelectItem>
+                      <SelectItem value="lbs">lbs</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={control}
+              name="loadType"
+              render={({ field }) => (
+                <FormItem className="flex flex-col space-y-1.5 flex-1">
+                  <FormLabel htmlFor="reps">Load Type</FormLabel>
+                  <Select onValueChange={field.onChange} {...field}>
+                    <SelectTrigger id="loadType">
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent position="popper">
+                      <SelectItem value="weight">Weight</SelectItem>
+                      <SelectItem value="percentage">Percentage</SelectItem>
+                      <SelectItem value="rpe">RPE</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex gap-2">
+            <FormField
+              control={control}
+              name="sets"
+              render={({ field }) => (
+                <FormItem className="flex flex-col space-y-1.5 flex-1">
+                  <FormLabel htmlFor="sets">Sets</FormLabel>
+                  <Select onValueChange={field.onChange} {...field}>
+                    <SelectTrigger id="sets">
+                      <SelectValue placeholder="Select">
+                        {field.value !== undefined ? field.value : "Select"}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent position="popper">
+                      {Array(21)
+                        .fill(null)
                         .map((_, idx) => (
                           <SelectItem key={idx} value={`${idx}`}>
-                            {idx} RPE
+                            {idx}
                           </SelectItem>
                         ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </Fragment>
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={control}
+              name="reps"
+              render={({ field }) => (
+                <FormItem className="flex flex-col space-y-1.5 flex-1">
+                  <FormLabel htmlFor="reps">Reps</FormLabel>
+                  <Select onValueChange={field.onChange} {...field}>
+                    <SelectTrigger id="reps">
+                      <SelectValue placeholder="Select">
+                        {field.value !== undefined ? field.value : "Select"}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent position="popper">
+                      {Array(31)
+                        .fill(null)
+                        .map((_, idx) => (
+                          <SelectItem key={idx} value={`${idx}`}>
+                            {idx}
+                          </SelectItem>
+                        ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+
+            {/* RENDER ON LOAD TYPE */}
+
+            {loadType == "weight" && (
+              <FormField
+                control={control}
+                name="weightLoad"
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <FormItem className="flex flex-col space-y-1.5 flex-1">
+                    <FormLabel htmlFor="weightLoad">Weight</FormLabel>
+                    <Input
+                      id="weightLoad"
+                      placeholder="0"
+                      className="w-[70px]"
+                      {...field}
+                    />
+                  </FormItem>
+                )}
+              />
+            )}
+            {loadType == "percentage" && (
+              <FormField
+                control={control}
+                name="percentageLoad"
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <FormItem className="flex flex-col space-y-1.5 flex-1">
+                    <FormLabel htmlFor="percentageLoad">Percent</FormLabel>
+
+                    <Select onValueChange={field.onChange} {...field}>
+                      <SelectTrigger id="percentageLoad">
+                        <SelectValue placeholder="Select" />
+                      </SelectTrigger>
+                      <SelectContent position="popper">
+                        {Array.from(
+                          { length: Math.floor(101 / 2.5) + 1 },
+                          (_, i) => 100 - i * 2.5
+                        ).map(
+                          (value) =>
+                            value % 2.5 == 0 && (
+                              <SelectItem key={value} value={`${value}`}>
+                                {value}%
+                              </SelectItem>
+                            )
+                        )}
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {loadType == "rpe" && (
+              <FormField
+                control={control}
+                name="rpeLoad"
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <FormItem className="flex flex-col space-y-1.5 flex-1">
+                    <FormLabel htmlFor="rpeLoad">RPE</FormLabel>
+                    <Select onValueChange={field.onChange} {...field}>
+                      <SelectTrigger id="rpeLoad">
+                        <SelectValue placeholder="Select" />
+                      </SelectTrigger>
+                      <SelectContent position="popper">
+                        <SelectGroup>
+                          <SelectLabel>RPE</SelectLabel>
+                          {Array.from({ length: 11 }, (_, i) => 11 - i).map(
+                            (_, idx) => (
+                              <SelectItem key={idx} value={`${idx}`}>
+                                {idx} RPE
+                              </SelectItem>
+                            )
+                          )}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
             )}
           </div>
-        </div>
-        <div className="flex flex-col space-y-1.5">
-          <Label htmlFor="notes">Notes</Label>
-          <Input
-            id="notes"
+
+          <FormField
+            control={control}
+            defaultValue=""
             name="notes"
-            value={exerciseForm.notes}
-            placeholder="additional notes.."
-            onChange={(e) =>
-              setExerciseForm({ ...exerciseForm, notes: e.target.value })
-            }
+            render={({ field }) => (
+              <FormItem className="flex flex-col space-y-1.5 flex-1">
+                <FormLabel htmlFor="notes">Notes</FormLabel>
+                <Input id="notes" placeholder="additional notes.." {...field} />
+              </FormItem>
+            )}
           />
         </div>
-      </div>
-      <div className="flex justify-between mt-4">
-        <Button
-          type="submit"
-          variant="outline"
-          onClick={() => {
-            setExerciseForm(defaultExerciseForm),
-              toast("Event has been created", {
-                description: "Sunday, December 03, 2023 at 9:00 AM",
-                action: {
-                  label: "Undo",
-                  onClick: () => console.log("Undo"),
-                },
+        <div className="flex justify-between mt-4">
+          <Button type="button" variant="outline" onClick={() => reset()}>
+            Reset
+          </Button>
+          <Button
+            type="submit"
+            onClick={() => {
+              reset({
+                name: "",
+                notes: "",
               });
-          }}
-        >
-          Cancel
-        </Button>
-        <Button type="submit">Save</Button>
-      </div>{" "}
-    </form>
+            }}
+          >
+            Save
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
 };
 

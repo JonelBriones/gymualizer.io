@@ -15,21 +15,21 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { addDays } from "date-fns";
+import { addDays, setDate } from "date-fns";
 import React, { FormEvent, Fragment, useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { CreateExerciseCard } from "@/components/shadcn/CreateExerciseCard";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-const currentDay = new Date();
+import { TemplateFormSchemaType } from "@/app/_ZodSchemas";
+
 const defaultDate = {
-  from: undefined,
-  to: undefined,
+  from: new Date(),
+  to: addDays(new Date(), 30),
 };
 const defaultTemplateForm: TemplateT = {
   name: "",
-  startDate: "",
-  endDate: "",
+  startDate: defaultDate.from,
+  endDate: defaultDate.to,
   weeks: [],
 };
 
@@ -44,19 +44,17 @@ const page = () => {
     day: "numeric",
   };
   const [getTotalDays, setGetTotalDays] = useState(0);
-  let totalWeeks = Math.floor(getTotalDays / 7);
+  const [totalWeeks, setTotalWeeks] = useState(0);
   const [remaininigDays, setRemainingDay] = useState(0);
   const [readyToSave, setReadyToSave] = useState(false);
   const [showQuestion, setShowQuestion] = useState(0);
 
-  const onSubmitCreateTemplate = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmitCreateTemplate = (e: TemplateFormSchemaType) => {
     setReadyToSave(true);
     setShowQuestion(0);
     setDate(defaultDate);
     const start = date?.from ? new Date(date?.from) : new Date();
     const end = date?.to ? new Date(date?.to) : new Date();
-    console.log("TODAY IS:", currentDay, daysoftheweek[start.getDay()]);
 
     const startDay = daysoftheweek[start.getDay()];
 
@@ -79,11 +77,12 @@ const page = () => {
     console.log("completed Weeks: ", completeWeeks);
     console.log("remaining Days: ", remainingDays);
     console.log("total weeks: ", totalWeeks);
+    setTotalWeeks(totalWeeks);
     setRemainingDay(remainingDays);
     setTemplate({
       ...template,
-      startDate: date?.from,
-      endDate: date?.to,
+      startDate: start,
+      endDate: end,
       weeks: setWeeks,
     });
   };
@@ -141,9 +140,12 @@ const page = () => {
             showQuestion={showQuestion}
             defaultTemplateForm={defaultTemplateForm}
             onDrawerClose={onDrawerClose}
+            totalWeeks={totalWeeks}
           />
         ) : (
-          <Button variant="outline">Restart</Button>
+          <Button variant="outline" onClick={onDrawerClose}>
+            Restart
+          </Button>
         )}
         {readyToSave && (
           <>
