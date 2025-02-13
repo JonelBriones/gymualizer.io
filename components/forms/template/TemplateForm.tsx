@@ -1,9 +1,15 @@
 "use client";
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "../ui/input";
-import { DatePickerWithRange } from "../shadcn/DatePickerWithRangeDemo";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
+import { Input } from "../../ui/input";
+import { TemplateFormDatePicker } from "./TemplateFormDatePicker";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "../../ui/form";
 import { TemplateFormSchema, TemplateFormSchemaType } from "@/app/_ZodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -46,7 +52,7 @@ export function TemplateForm({
             <FormLabel htmlFor="date">
               Select start and end date | Weeks: {totalWeeks}
             </FormLabel>
-            <DatePickerWithRange date={date} setDate={setDate} />
+            <TemplateFormDatePicker date={date} setDate={setDate} />
           </div>
           <Button type="submit">Create template</Button>
         </div>

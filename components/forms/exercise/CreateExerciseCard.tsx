@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 
 import { TemplateT } from "@/app/_types/types";
-import ExerciseForm from "../forms/exercise/ExerciseForm";
+import ExerciseForm from "./ExerciseForm";
 import { addDays } from "date-fns";
 import { toast } from "sonner";
 import { ExerciseFormSchemaType } from "@/app/_ZodSchemas";

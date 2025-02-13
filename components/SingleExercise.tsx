@@ -3,7 +3,7 @@ import { ExerciseT, TemplateT } from "@/app/_types/types";
 import React, { Dispatch, SetStateAction, useEffect } from "react";
 
 import { TableCell } from "@/components/ui/table";
-import { Button } from "../ui/button";
+import { Button } from "./ui/button";
 interface ExerciseProps {
   exercise: ExerciseT;
   setTemplate: Dispatch<SetStateAction<TemplateT>>;

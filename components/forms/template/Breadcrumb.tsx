@@ -1,23 +1,17 @@
 "use client";
 import {
   Breadcrumb,
-  BreadcrumbEllipsis,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { usePathname } from "next/navigation";
-import { Fragment, useEffect } from "react";
 
-export function BreadcrumbDemo() {
+import { usePathname } from "next/navigation";
+import { Fragment } from "react";
+
+export function BreadcrumbComponent() {
   const pathname = usePathname();
 
   let pathnameArray = pathname.split("/");

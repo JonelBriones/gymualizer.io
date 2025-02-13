@@ -1,7 +1,7 @@
 "use client";
 import { TemplateT } from "@/app/_types/types";
 
-import SingleExercise from "@/components/template/SingleExercise";
+import SingleExercise from "@/components/SingleExercise";
 import {
   Table,
   TableBody,
@@ -18,10 +18,10 @@ import {
 import { addDays } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
-import { CreateExerciseCard } from "@/components/shadcn/CreateExerciseCard";
+import { CreateExerciseCard } from "@/components/forms/exercise/CreateExerciseCard";
 import { Button } from "@/components/ui/button";
 import { TemplateFormSchemaType } from "@/app/_ZodSchemas";
-import { TemplateForm } from "@/components/forms/TemplateForm";
+import { TemplateForm } from "@/components/forms/template/TemplateForm";
 
 const defaultDate = {
   from: new Date(),

@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { BreadcrumbDemo } from "@/components/shadcn/BreadcrumbDemo";
-
 import Navigation from "@/components/shadcn/NavigationMenu";
 import { Toaster } from "sonner";
+import { BreadcrumbComponent } from "@/components/forms/template/Breadcrumb";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,7 +22,7 @@ export default function RootLayout({
             <Navigation />
           </div>
           <div className="flex flex-col gap-4">
-            <BreadcrumbDemo />
+            <BreadcrumbComponent />
             {children}
             <Toaster className="text-neutral-950 bg-red-black" />
           </div>

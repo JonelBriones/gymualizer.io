@@ -1,4 +1,4 @@
-import { BreadcrumbDemo } from "@/components/shadcn/BreadcrumbDemo";
+import { BreadcrumbDemo } from "@/components/forms/template/Breadcrumb";
 import React from "react";
 
 const page = async ({ params }: { params: Promise<{ slug: string }> }) => {

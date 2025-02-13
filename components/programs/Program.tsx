@@ -29,7 +29,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import SingleExercise from "../template/SingleExercise";
+import SingleExercise from "../SingleExercise";
 import {
   Table,
   TableBody,
