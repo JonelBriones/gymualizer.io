@@ -12,7 +12,8 @@ export const ExerciseFormSchema = z.object({
     .string({
       required_error: "Name type is required.",
     })
-    .min(5),
+    .min(5)
+    .max(25),
   loadType: z.string({
     required_error: "Load type is required.",
   }),

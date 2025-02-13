@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import React, { Fragment } from "react";
+import React from "react";
 import connectDB from "@/config/database";
 import User from "@/models/User";
 const page = async () => {
@@ -23,32 +23,37 @@ const page = async () => {
     "Powerlifting Program 3.0",
   ];
   return (
-    <Table className="w-full md:max-w-xl m-auto">
-      <TableCaption>A list of your templates</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="text-left md:text-center">Name</TableHead>
-          <TableHead className="text-left md:text-center">Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody className="w-full">
-        {templates.map((template, idx: number) => (
-          <TableRow key={idx}>
-            <TableCell className="text-left md:text-left">
-              <Button variant="link" className="md:text-lg">
-                {template}
-              </Button>
-            </TableCell>
-            <TableCell className="flex flex-col md:flex-row gap-2 justify-start md:justify-center">
-              <Button variant="default">
-                <Link href={`/dashboard/templates/${template}/`}>Edit</Link>
-              </Button>
-              <Button variant="destructive">Delete</Button>
-            </TableCell>
+    <div className="flex flex-col justify-center">
+      <Button variant={"link"} className="text-center">
+        <Link href={"/dashboard/templates/create"}>Create new Program</Link>
+      </Button>
+      <Table className="w-full md:max-w-xl m-auto">
+        <TableCaption>A list of your templates</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="text-left md:text-center">Name</TableHead>
+            <TableHead className="text-left md:text-center">Actions</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody className="w-full">
+          {templates.map((template, idx: number) => (
+            <TableRow key={idx}>
+              <TableCell className="text-left md:text-left">
+                <Button variant="link" className="md:text-lg">
+                  {template}
+                </Button>
+              </TableCell>
+              <TableCell className="flex flex-col md:flex-row gap-2 justify-start md:justify-center">
+                <Button variant="default">
+                  <Link href={`/dashboard/templates/${template}/`}>Edit</Link>
+                </Button>
+                <Button variant="destructive">Delete</Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 };
 
