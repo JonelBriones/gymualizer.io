@@ -158,20 +158,6 @@ const ExerciseForm = ({ onSubmitCreateExercise }: Params) => {
                   placeholder="Name of your exercise"
                   {...field}
                 />
-                {/* <Select onValueChange={field.onChange} {...field}>
-                  <SelectTrigger id="name">
-                    <SelectValue placeholder="Select">
-                      {field.value !== undefined ? field.value : "Select"}
-                    </SelectValue>
-                  </SelectTrigger>
-                  <SelectContent position="popper">
-                    {searchExercises.map((exercise, idx) => (
-                      <SelectItem value={exercise} key={idx}>
-                        {exercise}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select> */}
               </FormItem>
             )}
           />

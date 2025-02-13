@@ -2,13 +2,13 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "../ui/input";
-import { DatePickerWithRange } from "./DatePickerWithRangeDemo";
+import { DatePickerWithRange } from "../shadcn/DatePickerWithRangeDemo";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { TemplateFormSchema, TemplateFormSchemaType } from "@/app/_ZodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-export function CreateTemplateDrawer({
+export function TemplateForm({
   date,
   setDate,
   onSubmitCreateTemplate,

@@ -1,6 +1,6 @@
 "use client";
 import { TemplateT } from "@/app/_types/types";
-import { CreateTemplateDrawer } from "@/components/shadcn/CreateTemplateDrawer";
+
 import SingleExercise from "@/components/template/SingleExercise";
 import {
   Table,
@@ -15,12 +15,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { addDays, setDate } from "date-fns";
-import React, { FormEvent, Fragment, useEffect, useState } from "react";
+import { addDays } from "date-fns";
+import React, { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { CreateExerciseCard } from "@/components/shadcn/CreateExerciseCard";
 import { Button } from "@/components/ui/button";
 import { TemplateFormSchemaType } from "@/app/_ZodSchemas";
+import { TemplateForm } from "@/components/forms/TemplateForm";
 
 const defaultDate = {
   from: new Date(),
@@ -126,7 +127,7 @@ const page = () => {
     <div className="flex md:flex-row flex-col gap-4">
       <div className="flex flex-col gap-2 md:w-[400px]">
         {!readyToSave ? (
-          <CreateTemplateDrawer
+          <TemplateForm
             text={"New Template"}
             templateForm={template}
             setTemplate={setTemplate}
@@ -219,9 +220,6 @@ const page = () => {
                                       <TableHead>Reps</TableHead>
                                       <TableHead>Weight</TableHead>
                                       <TableHead>Units</TableHead>
-                                      <TableHead className="text-left">
-                                        Additional Notes
-                                      </TableHead>
                                       <TableHead className="text-right">
                                         Actions
                                       </TableHead>

@@ -36,12 +36,13 @@ export function BreadcrumbDemo() {
       <Breadcrumb>
         <BreadcrumbList>
           {pathnameArray.map((route: string, idx: number) => (
-            <Fragment key={route}>
+            <Fragment key={idx}>
               {idx == pathnameArray.length - 1 ? (
                 <BreadcrumbItem>
                   <BreadcrumbPage>
-                    {" "}
-                    {route[0].toUpperCase() + route.slice(1, route.length)}
+                    {route == "program"
+                      ? "program name here"
+                      : route[0].toUpperCase() + route.slice(1, route.length)}
                   </BreadcrumbPage>
                 </BreadcrumbItem>
               ) : (

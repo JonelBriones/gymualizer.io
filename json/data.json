@@ -3,20 +3,32 @@
     "name": "Template #1",
     "startDate": "may 5 2025",
     "endDate": "december 9 2025",
+    "active": true,
+
+    "_id": "87398719827682176",
     "weeks": [
       {
         "days": [
           {
+            "summary_notes": "Each rep should be controlled with a 1 second pause",
+            "workout_notes": "first rep felt like shit",
+            "date": 1738742400000,
             "exercises": [
               {
                 "name": "Bench",
                 "loadType": "weight",
                 "sets": "4",
                 "reps": "8",
-                "load": "315",
-                "unit": "lbs",
-                "notes": "week 1 day 1",
-                "date": 1738742400000
+                "weightLoad": "200",
+                "unit": "lbs"
+              },
+              {
+                "name": "Tempo Bench",
+                "loadType": "weight",
+                "sets": "2",
+                "reps": "12",
+                "weightLoad": "200",
+                "unit": "lbs"
               }
             ]
           },
@@ -24,16 +36,17 @@
             "exercises": []
           },
           {
+            "summary_notes": "This is ",
+            "workout_notes": "",
+            "date": 1738942500000,
             "exercises": [
               {
                 "name": "Squat",
-                "loadType": "weight",
+                "loadType": "percentage",
                 "sets": "4",
                 "reps": "8",
-                "load": "315",
-                "unit": "lbs",
-                "notes": "week 1 day 2",
-                "date": 1738742400000
+                "percentageLoad": "87.5",
+                "unit": "lbs"
               }
             ]
           },
@@ -41,16 +54,17 @@
             "exercises": []
           },
           {
+            "summary_notes": "This is ",
+            "workout_notes": "",
+            "date": 1739092400000,
             "exercises": [
               {
                 "name": "Squat",
-                "loadType": "weight",
+                "loadType": "rpe",
                 "sets": "4",
                 "reps": "8",
-                "load": "315",
-                "unit": "lbs",
-                "notes": "week 1 day 2",
-                "date": 1738742400000
+                "rpeLoad": "8",
+                "unit": "lbs"
               }
             ]
           },
@@ -65,16 +79,17 @@
       {
         "days": [
           {
+            "summary_notes": "This is feb 12",
+            "workout_notes": "",
+            "date": 1739450000000,
             "exercises": [
               {
                 "name": "Bench",
                 "loadType": "weight",
                 "sets": "4",
                 "reps": "8",
-                "load": "315",
-                "unit": "lbs",
-                "notes": "week 1 day 1",
-                "date": 1738742400000
+                "weightLoad": "200",
+                "unit": "lbs"
               }
             ]
           },
@@ -82,16 +97,18 @@
             "exercises": []
           },
           {
+            "summary_notes": "",
+            "workout_notes": "",
+
+            "date": 1739550000000,
             "exercises": [
               {
                 "name": "Squat",
                 "loadType": "weight",
                 "sets": "4",
                 "reps": "8",
-                "load": "315",
-                "unit": "lbs",
-                "notes": "week 1 day 2",
-                "date": 1738742400000
+                "weightLoad": "200",
+                "unit": "lbs"
               }
             ]
           },
@@ -99,24 +116,20 @@
             "exercises": []
           },
           {
+            "summary_notes": "",
+            "workout_notes": "",
+
+            "date": 1738742400000,
             "exercises": [
               {
                 "name": "Squat",
                 "loadType": "weight",
                 "sets": "4",
                 "reps": "8",
-                "load": "315",
-                "unit": "lbs",
-                "notes": "week 1 day 2",
-                "date": 1738742400000
+                "weightLoad": "200",
+                "unit": "lbs"
               }
             ]
-          },
-          {
-            "exercises": []
-          },
-          {
-            "exercises": []
           }
         ]
       }
@@ -126,34 +139,39 @@
     "name": "Template #2",
     "startDate": "may 5 2025",
     "endDate": "december 9 2025",
+    "active": false,
+    "_id": "87398716227673176",
     "weeks": [
       {
         "days": [
           {
+            "summary_notes": "",
+            "workout_notes": "",
+
+            "date": 1738742400000,
             "exercises": [
               {
                 "name": "WEEK 1 MONDAY",
                 "loadType": "weight",
                 "sets": "4",
                 "reps": "8",
-                "load": "315",
-                "unit": "lbs",
-                "notes": "week 1 day 1",
-                "date": 1738742400000
+                "weightLoad": "200",
+                "unit": "lbs"
               }
             ]
           },
           {
+            "summary_notes": "",
+            "workout_notes": "",
+            "date": 1738742400000,
             "exercises": [
               {
                 "name": "WEEK 1 TUESDAY",
                 "loadType": "weight",
                 "sets": "4",
                 "reps": "8",
-                "load": "315",
-                "unit": "lbs",
-                "notes": "week 1 day 2",
-                "date": 1738742400000
+                "weightLoad": "200",
+                "unit": "lbs"
               }
             ]
           }
@@ -162,30 +180,33 @@
       {
         "days": [
           {
+            "summary_notes": "",
+            "workout_notes": "",
+
+            "date": 1738742400000,
             "exercises": [
               {
                 "name": "WEEK 2 MONDAY",
                 "loadType": "weight",
                 "sets": "4",
                 "reps": "8",
-                "load": "315",
-                "unit": "lbs",
-                "notes": "week 2 day 2",
-                "date": 1738742400000
+                "weightLoad": "200",
+                "unit": "lbs"
               }
             ]
           },
           {
+            "summary_notes": "",
+            "workout_notes": "",
+            "date": 1738742400000,
             "exercises": [
               {
                 "name": "WEEK 2 TUESAY",
                 "loadType": "weight",
                 "sets": "4",
                 "reps": "8",
-                "load": "315",
-                "unit": "lbs",
-                "notes": "week 2 day 2",
-                "date": 1738742400000
+                "weightLoad": "200",
+                "unit": "lbs"
               }
             ]
           }

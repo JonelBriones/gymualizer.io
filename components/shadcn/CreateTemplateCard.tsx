@@ -16,7 +16,6 @@ export function CreateTemplateCard({
   setProgramName,
   date,
   setDate,
-  onDrawerClose,
 }: any) {
   const onSubmitCreateTemplate = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

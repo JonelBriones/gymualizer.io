@@ -29,7 +29,6 @@ const SingleExercise = ({
     weightLoad,
     rpeLoad,
     unit,
-    notes,
   } = exercise;
   const deleteExercise = (
     weekIdx: number,
@@ -76,9 +75,6 @@ const SingleExercise = ({
         {loadType == "rpe" ? " RPE" : loadType == "percentage" ? "%" : ""}
       </TableCell>
       <TableCell>{unit}</TableCell>
-      <TableCell>
-        <p className="text-left max-h-[40px] overflow-auto">{notes}</p>
-      </TableCell>
       <TableCell className="text-right flex justify-end gap-2 ">
         <Button variant="outline">Edit</Button>
         <Button

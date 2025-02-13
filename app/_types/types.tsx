@@ -7,8 +7,6 @@ export type ExerciseT = {
   weightLoad?: string;
   rpeLoad?: string;
   unit: string;
-  notes: string;
-  date?: Date;
 };
 
 export type TemplateT = {
@@ -21,5 +19,7 @@ export type Week = {
   days: Day[];
 };
 export type Day = {
+  date?: Date;
   exercises: ExerciseT[];
+  notes?: string;
 };
