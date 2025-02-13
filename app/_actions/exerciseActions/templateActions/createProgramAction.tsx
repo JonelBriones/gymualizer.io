@@ -32,7 +32,7 @@ export const createProgramAction = async (
   console.log(getForm);
   if (!validTemplate.success) {
     return {
-      errorMsg: "error",
+      errors: validTemplate.error.flatten().fieldErrors,
     };
   } else {
     const newTemplate = await Template.create({
@@ -49,8 +49,9 @@ export const createProgramAction = async (
       await newTemplate.save();
       revalidatePath("/", "layout");
     } catch (error) {
+      revalidatePath("/", "layout");
       return {
-        errorMsg: "error",
+        errors: "error",
       };
     }
   }

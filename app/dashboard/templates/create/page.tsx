@@ -46,34 +46,9 @@ const page = () => {
   };
   const [getTotalDays, setGetTotalDays] = useState(0);
   const [totalWeeks, setTotalWeeks] = useState(0);
-  const [remaininigDays, setRemainingDay] = useState(0);
+
   const [readyToSave, setReadyToSave] = useState(false);
   const [showQuestion, setShowQuestion] = useState(0);
-
-  // const onSubmitCreateTemplate = (e: TemplateFormSchemaType) => {
-  //   console.log(e);
-  //   setReadyToSave(true);
-  //   setShowQuestion(0);
-  //   setDate(defaultDate);
-
-  //   const setWeeks = Array.from({ length: totalWeeks }, () => ({
-  //     days: Array(7)
-  //       .fill(null)
-  //       .map(() => ({
-  //         exercises: [],
-  //       })),
-  //   }));
-  //   setTemplate({
-  //     ...template,
-  //     name: e.name,
-  //     startDate: date?.from ? new Date(date?.from) : new Date(),
-  //     endDate: date?.to ? new Date(date?.to) : new Date(),
-  //     weeks: setWeeks,
-  //   });
-  // };
-  useEffect(() => {
-    console.log(template);
-  }, [template]);
 
   const daysoftheweek = [
     "Monday",
@@ -238,22 +213,7 @@ const page = () => {
         </div>
       ) : (
         <div className="flex flex-col gap-2 m-auto md:w-[500px] border p-5">
-          <TemplateForm
-            text={"New Template"}
-            templateForm={template}
-            setTemplate={setTemplate}
-            date={date}
-            setDate={setDate}
-            options={options}
-            setReadyToSave={setReadyToSave}
-            readyToSave={readyToSave}
-            // onSubmitCreateTemplate={onSubmitCreateTemplate}
-            setShowQuestion={setShowQuestion}
-            showQuestion={showQuestion}
-            defaultTemplateForm={defaultTemplateForm}
-            onDrawerClose={onDrawerClose}
-            totalWeeks={totalWeeks}
-          />
+          <TemplateForm />
         </div>
       )}
     </div>
