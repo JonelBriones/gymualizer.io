@@ -50,27 +50,27 @@ const page = () => {
   const [readyToSave, setReadyToSave] = useState(false);
   const [showQuestion, setShowQuestion] = useState(0);
 
-  const onSubmitCreateTemplate = (e: TemplateFormSchemaType) => {
-    console.log(e);
-    setReadyToSave(true);
-    setShowQuestion(0);
-    setDate(defaultDate);
+  // const onSubmitCreateTemplate = (e: TemplateFormSchemaType) => {
+  //   console.log(e);
+  //   setReadyToSave(true);
+  //   setShowQuestion(0);
+  //   setDate(defaultDate);
 
-    const setWeeks = Array.from({ length: totalWeeks }, () => ({
-      days: Array(7)
-        .fill(null)
-        .map(() => ({
-          exercises: [],
-        })),
-    }));
-    setTemplate({
-      ...template,
-      name: e.name,
-      startDate: date?.from ? new Date(date?.from) : new Date(),
-      endDate: date?.to ? new Date(date?.to) : new Date(),
-      weeks: setWeeks,
-    });
-  };
+  //   const setWeeks = Array.from({ length: totalWeeks }, () => ({
+  //     days: Array(7)
+  //       .fill(null)
+  //       .map(() => ({
+  //         exercises: [],
+  //       })),
+  //   }));
+  //   setTemplate({
+  //     ...template,
+  //     name: e.name,
+  //     startDate: date?.from ? new Date(date?.from) : new Date(),
+  //     endDate: date?.to ? new Date(date?.to) : new Date(),
+  //     weeks: setWeeks,
+  //   });
+  // };
   useEffect(() => {
     console.log(template);
   }, [template]);
@@ -93,20 +93,20 @@ const page = () => {
     return selectDay;
   };
 
-  useEffect(() => {
-    const start = date?.from ? new Date(date?.from) : new Date();
-    const end = date?.to ? new Date(date?.to) : new Date();
+  // useEffect(() => {
+  //   const start = date?.from ? new Date(date?.from) : new Date();
+  //   const end = date?.to ? new Date(date?.to) : new Date();
 
-    const totalDays = Math.ceil(
-      Math.abs(start.getTime() - end.getTime()) / (1000 * 60 * 60 * 24)
-    );
-    const completeWeeks = Math.floor(totalDays / 7);
-    const remainingDays = Math.floor(totalDays % 7);
-    const totalWeeks = remainingDays > 0 ? completeWeeks + 1 : completeWeeks;
+  //   const totalDays = Math.ceil(
+  //     Math.abs(start.getTime() - end.getTime()) / (1000 * 60 * 60 * 24)
+  //   );
+  //   const completeWeeks = Math.floor(totalDays / 7);
+  //   const remainingDays = Math.floor(totalDays % 7);
+  //   const totalWeeks = remainingDays > 0 ? completeWeeks + 1 : completeWeeks;
 
-    setTotalWeeks(totalWeeks);
-    setRemainingDay(remainingDays);
-  }, [date]);
+  //   setTotalWeeks(totalWeeks);
+  //   setRemainingDay(remainingDays);
+  // }, [date]);
 
   const [toggledDay, setToggleDay] = useState({
     week: 0,
@@ -247,7 +247,7 @@ const page = () => {
             options={options}
             setReadyToSave={setReadyToSave}
             readyToSave={readyToSave}
-            onSubmitCreateTemplate={onSubmitCreateTemplate}
+            // onSubmitCreateTemplate={onSubmitCreateTemplate}
             setShowQuestion={setShowQuestion}
             showQuestion={showQuestion}
             defaultTemplateForm={defaultTemplateForm}

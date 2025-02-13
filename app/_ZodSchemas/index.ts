@@ -1,11 +1,38 @@
 import { z } from "zod";
-
-export const TemplateFormSchema = z.object({
+// const exercise = z.object({
+//   name: z.string(),
+//   loadType: z.string(),
+//   sets: z.string(),
+//   reps: z.string(),
+//   percentageLoad: z.string().optional(),
+//   weightLoad: z.string().optional(),
+//   rpeLoad: z.string().optional(),
+//   unit: z.string(),
+// });
+// const day = z.object({
+//   exercises: z.object({
+//     name: z.string(),
+//     loadType: z.string(),
+//     sets: z.string(),
+//     reps: z.string(),
+//     percentageLoad: z.string().optional(),
+//     weightLoad: z.string().optional(),
+//     rpeLoad: z.string().optional(),
+//     unit: z.string(),
+//   }),
+// });
+// const week = z.object({
+//   days: z.array(day),
+// });
+export const templateFormSchema = z.object({
   name: z
-    .string()
+    .string({ required_error: "Name is required" })
     .min(2, { message: " Name must be at least 2 characters long." }),
+  startDate: z.number({ required_error: "Start date is required" }),
+  endDate: z.number({ required_error: "End date is required" }),
+  weeks: z.number(),
 });
-export type TemplateFormSchemaType = z.infer<typeof TemplateFormSchema>;
+export type TemplateFormSchemaType = z.infer<typeof templateFormSchema>;
 
 export const ExerciseFormSchema = z.object({
   name: z
