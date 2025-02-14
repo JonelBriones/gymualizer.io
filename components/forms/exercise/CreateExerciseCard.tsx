@@ -13,24 +13,30 @@ import ExerciseForm from "./ExerciseForm";
 import { addDays } from "date-fns";
 import { toast } from "sonner";
 import { ExerciseFormSchemaType } from "@/app/_ZodSchemas";
+import editProgramAction from "@/app/_actions/exerciseActions/templateActions/editProgramAction";
 
 interface Params {
-  template: TemplateT;
-  setTemplate: React.Dispatch<React.SetStateAction<TemplateT>>;
+  program: TemplateT;
+  setEditProgram: React.Dispatch<React.SetStateAction<TemplateT>>;
   weekIdx: number;
   dayIdx: number;
   getTotalDays: number;
+  toggledDayId: {
+    week: number;
+    day: number;
+  };
   toggleDay: {
     week: number;
     day: number;
   };
 }
 export function CreateExerciseCard({
-  template,
-  setTemplate,
+  program,
+  setEditProgram,
   weekIdx,
   dayIdx,
   toggleDay,
+  toggledDayId,
 }: Params) {
   const daysToAdd = () => {
     switch (weekIdx) {
@@ -42,11 +48,31 @@ export function CreateExerciseCard({
   };
 
   const onSubmitCreateExercise = (e: ExerciseFormSchemaType) => {
-    const selectDay = addDays(new Date(template.startDate), daysToAdd());
+    const selectDay = addDays(new Date(program.startDate), daysToAdd());
 
-    setTemplate({
-      ...template,
-      weeks: template?.weeks?.map((week, currentWeek: number) =>
+    const updatedProgram = {
+      ...program,
+      weeks: program?.weeks?.map((week, currentWeek: number) =>
+        currentWeek == weekIdx
+          ? {
+              ...week,
+              days: week.days.map((day, currentDay: number) =>
+                currentDay == dayIdx
+                  ? {
+                      ...day,
+                      exercises: [...day.exercises, { ...e, date: selectDay }],
+                    }
+                  : day
+              ),
+            }
+          : week
+      ),
+    };
+
+    editProgramAction(e, toggledDayId, program._id);
+    setEditProgram({
+      ...program,
+      weeks: program?.weeks?.map((week, currentWeek: number) =>
         currentWeek == weekIdx
           ? {
               ...week,
@@ -62,6 +88,7 @@ export function CreateExerciseCard({
           : week
       ),
     });
+
     toast("Exercise has been added!", {
       description: `Added on week ${weekIdx + 1} day ${dayIdx + 1}`,
     });

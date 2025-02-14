@@ -1,4 +1,18 @@
 import { model, models, Schema } from "mongoose";
+
+const Exercise = new Schema(
+  {
+    name: String,
+    loadType: String,
+    sets: String,
+    reps: String,
+    unit: String,
+    notes: String,
+    additionalNotes: String,
+  },
+  { _id: true }
+);
+
 const TemplateSchema = new Schema(
   {
     name: {
@@ -6,40 +20,21 @@ const TemplateSchema = new Schema(
       required: true,
     },
     startDate: {
-      type: Number,
+      type: String,
       required: true,
     },
     endDate: {
-      type: Number,
+      type: String,
       required: true,
     },
     weeks: [
       {
-        exercises: [
+        days: [
           {
-            name: {
-              name: {
-                type: String,
-              },
-              loadType: {
-                type: String,
-              },
-              sets: {
-                type: String,
-              },
-              reps: {
-                type: String,
-              },
-              unit: {
-                type: String,
-              },
-              notes: {
-                type: String,
-              },
-              additionalNotes: {
-                type: String,
-              },
-            },
+            summary_notes: { type: String },
+            workout_notes: { type: String },
+            date: { type: Number },
+            exercises: [Exercise],
           },
         ],
       },

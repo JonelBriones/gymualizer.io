@@ -1,3 +1,5 @@
+import { ObjectId, Types } from "mongoose";
+
 export type ExerciseT = {
   name: string;
   loadType: string;
@@ -10,6 +12,7 @@ export type ExerciseT = {
 };
 
 export type TemplateT = {
+  _id: Types.ObjectId;
   name: string;
   startDate: Date;
   endDate: Date;

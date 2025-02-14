@@ -80,7 +80,7 @@ export function TemplateForm() {
         <TemplateFormDatePicker date={date} setDate={setDate} />
       </div>
       <Button type="submit" disabled={pending}>
-        Create template
+        Create Program
       </Button>
     </form>
   );
