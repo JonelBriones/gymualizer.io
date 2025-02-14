@@ -4,40 +4,42 @@ import React, { Dispatch, SetStateAction, useEffect } from "react";
 
 import { TableCell } from "@/components/ui/table";
 import { Button } from "./ui/button";
+import { Types } from "mongoose";
+import { deleteExerciseAction } from "@/app/_actions/exerciseActions/templateActions/deleteExerciseAction";
 interface ExerciseProps {
   exercise: ExerciseT;
   setProgram: Dispatch<SetStateAction<TemplateT | null>>;
-  template: TemplateT;
-  dayIdx: number;
-  weekIdx: number;
-  exerciseIdx: number;
+  program: TemplateT;
+  exerciseId: Types.ObjectId;
+  weekId: Types.ObjectId;
+  dayId: Types.ObjectId;
 }
 const SingleExercise = ({
   exercise,
   setProgram,
-  template,
-  dayIdx,
-  exerciseIdx,
-  weekIdx,
+  program,
+  exerciseId,
+  weekId,
+  dayId,
 }: ExerciseProps) => {
   const { name, sets, reps, loadType, weight, unit, weightMax } = exercise;
-  const deleteExercise = (
-    weekIdx: number,
-    dayIdx: number,
-    exerciseIdx: number
-  ) => {
+  const deleteExercise = () => {
+    console.log("week", weekId);
+    console.log("day", dayId);
+    console.log("exercise", exerciseId);
+    deleteExerciseAction(weekId, dayId, exerciseId);
     setProgram({
-      ...template,
-      weeks: template.weeks?.map((week, wIdx) =>
-        wIdx == weekIdx
+      ...program,
+      weeks: program.weeks?.map((week) =>
+        week._id == weekId
           ? {
               ...week,
               days: week.days.map((day, dIdx) =>
-                dIdx == dayIdx
+                day._id == dayId
                   ? {
                       ...day,
                       exercises: day.exercises.filter(
-                        (_, eIdx) => eIdx !== exerciseIdx
+                        (exercise) => exercise._id !== exerciseId
                       ),
                     }
                   : day
@@ -47,7 +49,6 @@ const SingleExercise = ({
       ),
     });
   };
-  useEffect(() => {}, [template]);
   type NameType = "rpe" | "weight" | "percentage";
 
   return (
@@ -70,10 +71,7 @@ const SingleExercise = ({
         )}
       </TableCell>
       <TableCell className=" flex justify-end gap-2 ">
-        <Button
-          variant={"destructive"}
-          onClick={() => deleteExercise(weekIdx, dayIdx, exerciseIdx)}
-        >
+        <Button variant={"destructive"} onClick={() => deleteExercise()}>
           Delete
         </Button>
       </TableCell>

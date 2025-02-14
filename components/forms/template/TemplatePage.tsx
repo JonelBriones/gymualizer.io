@@ -193,10 +193,10 @@ const TemplatePage = ({ templatesData }: { templatesData: TemplateT[] }) => {
                                                 <SingleExercise
                                                   exercise={exercise}
                                                   setProgram={setProgram}
-                                                  template={program}
-                                                  weekIdx={weekIdx}
-                                                  dayIdx={dayIdx}
-                                                  exerciseIdx={exerciseIdx}
+                                                  program={program}
+                                                  exerciseId={exercise._id}
+                                                  weekId={week._id}
+                                                  dayId={day._id}
                                                 />
                                               </TableRow>
                                             )

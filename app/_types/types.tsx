@@ -11,6 +11,7 @@ export type ExerciseT = {
   notes: string;
   additionalNotes?: string;
   date: Date | null;
+  _id: Types.ObjectId;
 };
 
 export type TemplateT = {
