@@ -1,22 +1,21 @@
 "use server";
+import { ExerciseT, ToggleWeekDayId } from "@/app/_types/types";
 import connectDB from "@/config/database";
 import Template from "@/models/Templates";
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
-const editProgramAction = async (exercise, toggledDayId, id) => {
+const editProgramAction = async (
+  exercise: ExerciseT,
+  toggledDayId: ToggleWeekDayId
+) => {
+  console.log("exercise", exercise);
   await connectDB();
   const { week, day } = toggledDayId;
-  let weekId = new mongoose.Types.ObjectId(week);
-  let dayId = new mongoose.Types.ObjectId(day);
-  console.log(weekId);
-  let programId = new mongoose.Types.ObjectId(id);
-  const { _id } = programId;
-  // const program = await Template.findById(dayId).populate(
-  //   "weeks.days.exercise"
-  // );
 
   await Template.updateOne(
-    { "weeks._id": weekId }, // Find the correct week by ID
+    { "weeks._id": week }, // Find the correct week by ID
     {
       $push: {
         "weeks.$.days.$[day].exercises": exercise,
@@ -24,11 +23,20 @@ const editProgramAction = async (exercise, toggledDayId, id) => {
     },
     {
       arrayFilters: [
-        { "weekId._id": weekId }, // Match the correct day
-        { "day._id": dayId }, // Match the correct exercise
+        { "week._id": week }, // Match the correct day
+        { "day._id": day }, // Match the correct exercise
       ],
     }
   );
+  revalidatePath("/dashboard/templates/create", "layout");
 };
+
+// deleting or editing exercise use
+//
+// $set: {
+//   [`weeks.${weekIdx}.days.${dayIdx}.exercises.${exerciseIdx}.name`]: "New Name",
+//   [`weeks.${weekIdx}.days.${dayIdx}.exercises.${exerciseIdx}.sets`]: "4",
+// },
+// use replace instead of push use set to replace entire exericse
 
 export default editProgramAction;

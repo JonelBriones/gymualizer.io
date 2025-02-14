@@ -1,5 +1,5 @@
 "use client";
-import { TemplateT } from "@/app/_types/types";
+import { TemplateT, ToggleWeekDayId } from "@/app/_types/types";
 
 import SingleExercise from "@/components/SingleExercise";
 import {
@@ -17,30 +17,23 @@ import {
 } from "@/components/ui/accordion";
 import { addDays } from "date-fns";
 import React, { useEffect, useState } from "react";
-import { DateRange } from "react-day-picker";
+
 import { CreateExerciseCard } from "@/components/forms/exercise/CreateExerciseCard";
 import { Button } from "@/components/ui/button";
 import { TemplateForm } from "@/components/forms/template/TemplateForm";
-import { ObjectId } from "mongoose";
+import { Types } from "mongoose";
 
-const defaultDate = {
-  from: new Date(),
-  to: addDays(new Date(), 30),
-};
+const TemplatePage = ({ templatesData }: { templatesData: TemplateT[] }) => {
+  const [program, setProgram] = useState<TemplateT | null>(null);
+  const [selectedExerciseDate, setSelectedExerciseDate] = useState<Date | null>(
+    null
+  );
 
-const TemplatePage = ({ templatesData }: any) => {
-  const [program, setEditProgram] = useState<TemplateT | null>(null);
-  const [selectTemplate, setSelectTemplate] = useState<ObjectId | null>(null);
-  const [templates, setTemplates] = useState<TemplateT[] | null>([]);
-  const [toggledDayId, setToggleDayId] = useState({
-    week: undefined,
-    day: undefined,
+  const [toggledDayId, setToggleDayId] = useState<ToggleWeekDayId>({
+    week: null,
+    day: null,
   });
-  useEffect(() => {
-    setTemplates(templatesData);
-  }, []);
 
-  const [date, setDate] = React.useState<DateRange | undefined>(defaultDate);
   const options = {
     weekday: "long",
     year: "numeric",
@@ -48,69 +41,23 @@ const TemplatePage = ({ templatesData }: any) => {
     day: "numeric",
   };
   const [getTotalDays, setGetTotalDays] = useState(0);
-  const [totalWeeks, setTotalWeeks] = useState(0);
-
-  const [readyToSave, setReadyToSave] = useState(false);
-  const [showQuestion, setShowQuestion] = useState(0);
-
-  const daysoftheweek = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
 
   const matchDateToToggleDay = (weekIdx: number, dayIdx: number) => {
     const selectDay = addDays(
       new Date(Number(program?.startDate)),
       weekIdx == 0 ? dayIdx : weekIdx * 7 + dayIdx
     );
+
     return selectDay;
   };
-
-  // useEffect(() => {
-  //   const start = date?.from ? new Date(date?.from) : new Date();
-  //   const end = date?.to ? new Date(date?.to) : new Date();
-
-  //   const totalDays = Math.ceil(
-  //     Math.abs(start.getTime() - end.getTime()) / (1000 * 60 * 60 * 24)
-  //   );
-  //   const completeWeeks = Math.floor(totalDays / 7);
-  //   const remainingDays = Math.floor(totalDays % 7);
-  //   const totalWeeks = remainingDays > 0 ? completeWeeks + 1 : completeWeeks;
-
-  //   setTotalWeeks(totalWeeks);
-  //   setRemainingDay(remainingDays);
-  // }, [date]);
 
   const [toggledDay, setToggleDay] = useState({
     week: 0,
     day: 0,
   });
-
-  // const onDrawerClose = () => {
-  //   setReadyToSave(false);
-  //   setTemplate(defaultTemplateForm);
-  //   setShowQuestion(0);
-  //   setDate(defaultDate);
-  // };
   useEffect(() => {
-    if (selectTemplate) {
-      const exist = templates?.find(
-        (template) => template?._id == selectTemplate
-      );
-
-      setEditProgram(exist);
-    }
-  }, [selectTemplate]);
-
-  useEffect(() => {
-    console.log(program);
-  }, [program]);
-
+    console.log("was updated...", templatesData);
+  }, [templatesData]);
   return (
     <div className="flex md:flex-row flex-col gap-4">
       {!program?._id ? (
@@ -118,17 +65,24 @@ const TemplatePage = ({ templatesData }: any) => {
           <select
             name="select"
             id="select"
-            onChange={(e) => setSelectTemplate(e.target.value)}
+            onChange={(e) => {
+              const id = new Types.ObjectId(e.target.value);
+              const exist = templatesData?.find(
+                (template: TemplateT) => template?._id == id
+              );
+
+              setProgram(exist ? exist : null);
+            }}
           >
             <option>select</option>
-            {templates?.map((template: TemplateT, idx) => (
-              <option value={template._id} key={template._id}>
-                {template.name}
+            {templatesData?.map(({ name, _id }: TemplateT) => (
+              <option value={_id.toString()} key={_id.toString()}>
+                {name}
               </option>
             ))}
           </select>
           <div className="flex flex-col gap-2 m-auto md:w-[500px] border p-5">
-            <TemplateForm />
+            <TemplateForm program={program} />
           </div>
         </div>
       ) : (
@@ -137,29 +91,29 @@ const TemplatePage = ({ templatesData }: any) => {
             <Button
               variant="outline"
               onClick={() => {
-                setSelectTemplate(null);
-                setEditProgram(null);
+                setProgram(null);
               }}
             >
-              Restart
+              Go Back
             </Button>
             <CreateExerciseCard
               toggleDay={toggledDay}
-              setEditProgram={setEditProgram}
               program={program}
               weekIdx={toggledDay.week}
               dayIdx={toggledDay.day}
               getTotalDays={getTotalDays}
               toggledDayId={toggledDayId}
+              setProgram={setProgram}
+              selectedExerciseDate={selectedExerciseDate}
             />
-            <Button variant="outline">Save</Button>
           </div>
           <div className="w-full">
             <h1 className="flex flex-col justify-between text-4xl">
               <span>{program.name}</span>
-              {/* <span>
-                {`${template?.startDate?.toLocaleDateString()} - ${template?.endDate.toLocaleDateString()}`}
-              </span> */}
+              <span>
+                {new Date(Number(program?.startDate)).toLocaleDateString()} -{" "}
+                {new Date(Number(program?.endDate)).toLocaleDateString()}
+              </span>
             </h1>
             <div className="h-full overflow-auto">
               <div className=" h-[700px] w-full overflow-auto">
@@ -192,18 +146,20 @@ const TemplatePage = ({ templatesData }: any) => {
                                 >
                                   <AccordionTrigger
                                     className="hover:bg-neutral-100 p-5"
-                                    onClick={() =>
+                                    onClick={() => {
                                       setToggleDay({
                                         ...toggledDay,
                                         day: dayIdx,
-                                      })
-                                    }
-                                    onClickCapture={() =>
+                                      });
                                       setToggleDayId({
                                         week: week._id,
                                         day: day._id,
-                                      })
-                                    }
+                                      });
+
+                                      setSelectedExerciseDate(
+                                        matchDateToToggleDay(weekIdx, dayIdx)
+                                      );
+                                    }}
                                   >
                                     {matchDateToToggleDay(
                                       weekIdx,
@@ -224,7 +180,7 @@ const TemplatePage = ({ templatesData }: any) => {
                                             <TableHead>Sets</TableHead>
                                             <TableHead>Reps</TableHead>
                                             <TableHead>Weight</TableHead>
-                                            <TableHead>Units</TableHead>
+                                            <TableHead>Range</TableHead>
                                             <TableHead className="text-right">
                                               Actions
                                             </TableHead>
@@ -236,7 +192,7 @@ const TemplatePage = ({ templatesData }: any) => {
                                               <TableRow key={exerciseIdx}>
                                                 <SingleExercise
                                                   exercise={exercise}
-                                                  setTemplate={setEditProgram}
+                                                  setProgram={setProgram}
                                                   template={program}
                                                   weekIdx={weekIdx}
                                                   dayIdx={dayIdx}

@@ -6,7 +6,7 @@ import { TableCell } from "@/components/ui/table";
 import { Button } from "./ui/button";
 interface ExerciseProps {
   exercise: ExerciseT;
-  setTemplate: Dispatch<SetStateAction<TemplateT>>;
+  setProgram: Dispatch<SetStateAction<TemplateT | null>>;
   template: TemplateT;
   dayIdx: number;
   weekIdx: number;
@@ -14,28 +14,19 @@ interface ExerciseProps {
 }
 const SingleExercise = ({
   exercise,
-  setTemplate,
+  setProgram,
   template,
   dayIdx,
   exerciseIdx,
   weekIdx,
 }: ExerciseProps) => {
-  const {
-    name,
-    sets,
-    reps,
-    loadType,
-    percentageLoad,
-    weightLoad,
-    rpeLoad,
-    unit,
-  } = exercise;
+  const { name, sets, reps, loadType, weight, unit, weightMax } = exercise;
   const deleteExercise = (
     weekIdx: number,
     dayIdx: number,
     exerciseIdx: number
   ) => {
-    setTemplate({
+    setProgram({
       ...template,
       weeks: template.weeks?.map((week, wIdx) =>
         wIdx == weekIdx
@@ -59,24 +50,26 @@ const SingleExercise = ({
   useEffect(() => {}, [template]);
   type NameType = "rpe" | "weight" | "percentage";
 
-  const LOADTYPE: Record<NameType, string | undefined> = {
-    rpe: rpeLoad,
-    weight: weightLoad,
-    percentage: percentageLoad,
-  };
-
   return (
     <>
       <TableCell className="font-medium">{name}</TableCell>
       <TableCell>{sets}</TableCell>
       <TableCell>{reps}</TableCell>
       <TableCell>
-        {LOADTYPE[loadType as NameType]}
-        {loadType == "rpe" ? " RPE" : loadType == "percentage" ? "%" : ""}
+        {weight}
+        {loadType == "rpe" ? " RPE" : loadType == "percentage" ? "%" : unit}
       </TableCell>
-      <TableCell>{unit}</TableCell>
-      <TableCell className="text-right flex justify-end gap-2 ">
-        <Button variant="outline">Edit</Button>
+      <TableCell>
+        {weightMax !== "0" && weightMax !== undefined ? (
+          <>
+            {weightMax}
+            {loadType == "rpe" ? " RPE" : loadType == "percentage" ? "%" : unit}
+          </>
+        ) : (
+          <span className="text-xs text-neutral-400">N/A</span>
+        )}
+      </TableCell>
+      <TableCell className=" flex justify-end gap-2 ">
         <Button
           variant={"destructive"}
           onClick={() => deleteExercise(weekIdx, dayIdx, exerciseIdx)}

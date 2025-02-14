@@ -2,6 +2,7 @@
 import connectDB from "@/config/database";
 import Template from "@/models/Templates";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
 export const createProgramAction = async (
@@ -25,8 +26,6 @@ export const createProgramAction = async (
   };
   const validTemplate = template.safeParse(getForm);
 
-  console.log("validating template", validTemplate);
-
   console.log(getForm);
   if (!validTemplate.success) {
     console.log("failed to create program");
@@ -34,8 +33,6 @@ export const createProgramAction = async (
       errors: validTemplate.error.flatten().fieldErrors,
     };
   } else {
-    console.log("creating program");
-
     const totalWeeks = Array.from({ length: weeks }, () => ({
       days: Array(7)
         .fill(null)
@@ -44,15 +41,13 @@ export const createProgramAction = async (
         })),
     }));
     let completedProgram = { ...getForm, weeks: totalWeeks };
-    console.log("COMPLETE PROGRAM:", JSON.stringify(completedProgram, null, 2));
-
     const newTemplate = await Template.create(completedProgram);
 
     try {
       await newTemplate.save();
-      revalidatePath("/", "layout");
+      revalidatePath("/dashboard/templates/create", "layout");
     } catch (error) {
-      revalidatePath("/", "layout");
+      revalidatePath("/dashboard/templates/create", "layout");
       return {
         errors: "error",
       };

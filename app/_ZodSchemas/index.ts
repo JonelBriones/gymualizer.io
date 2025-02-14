@@ -50,21 +50,12 @@ export const ExerciseFormSchema = z.object({
   reps: z.string({
     required_error: "Reps is required.",
   }),
-  percentageLoad: z
-    .string({
-      required_error: "Load is required.",
-    })
-    .optional(),
-  weightLoad: z
-    .string({
-      required_error: "Load is required.",
-    })
-    .optional(),
-  rpeLoad: z
-    .string({
-      required_error: "Load is required.",
-    })
-    .optional(),
+  weightLoad: z.string().optional(),
+  weightMax: z.string().optional(),
+  rpeLoad: z.string().optional(),
+  rpeMax: z.string().optional(),
+  percentageLoad: z.string().optional(),
+  percentageMax: z.string().optional(),
   unit: z.string({
     required_error: "unit is required.",
   }),

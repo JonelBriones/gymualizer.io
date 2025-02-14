@@ -3,12 +3,14 @@ import { ObjectId, Types } from "mongoose";
 export type ExerciseT = {
   name: string;
   loadType: string;
+  weightMax: string | undefined;
+  weight: string | undefined;
   sets: string;
   reps: string;
-  percentageLoad?: string;
-  weightLoad?: string;
-  rpeLoad?: string;
   unit: string;
+  notes: string;
+  additionalNotes?: string;
+  date: Date | null;
 };
 
 export type TemplateT = {
@@ -19,10 +21,16 @@ export type TemplateT = {
   weeks: Week[];
 };
 export type Week = {
+  _id: Types.ObjectId;
   days: Day[];
 };
 export type Day = {
+  _id: Types.ObjectId;
   date?: Date;
   exercises: ExerciseT[];
   notes?: string;
+};
+export type ToggleWeekDayId = {
+  week: Types.ObjectId | null;
+  day: Types.ObjectId | null;
 };

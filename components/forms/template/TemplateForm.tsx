@@ -11,14 +11,14 @@ type Errors = {
   [name: string]: string[];
 };
 
-export function TemplateForm() {
+const defaultDate = {
+  from: new Date(),
+  to: addDays(new Date(), 30),
+};
+export function TemplateForm({ program }: any) {
+  const [date, setDate] = React.useState<DateRange | undefined>(defaultDate);
   const { pending } = useFormStatus();
 
-  const defaultDate = {
-    from: new Date(),
-    to: addDays(new Date(), 30),
-  };
-  const [date, setDate] = useState<DateRange | undefined>(defaultDate);
   const [totalWeeks, setTotalWeeks] = useState<number>(0);
 
   const [errors, setErrors] = useState<Errors>({} as Errors);
@@ -37,7 +37,13 @@ export function TemplateForm() {
     const totalWeeks = remainingDays > 0 ? completeWeeks + 1 : completeWeeks;
 
     setTotalWeeks(totalWeeks);
+    console.log("total weeks", totalWeeks);
+    console.log("date ran once");
   }, [date]);
+
+  useEffect(() => {
+    setDate(defaultDate);
+  }, [program == null]);
 
   useEffect(() => {
     if (state?.errors) {
@@ -76,7 +82,7 @@ export function TemplateForm() {
           name="endDate"
           defaultValue={date?.to ? date?.to?.getTime() : ""}
         />
-        <input type="number" hidden name="weeks" defaultValue={totalWeeks} />
+        <input type="number" hidden name="weeks" value={totalWeeks} readOnly />
         <TemplateFormDatePicker date={date} setDate={setDate} />
       </div>
       <Button type="submit" disabled={pending}>

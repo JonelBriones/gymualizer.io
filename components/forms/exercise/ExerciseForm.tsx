@@ -12,7 +12,7 @@ import {
   SelectGroup,
   SelectLabel,
 } from "@/components/ui/select";
-import { ExerciseT } from "@/app/_types/types";
+import { ExerciseT, TemplateT } from "@/app/_types/types";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { ExerciseFormSchema, ExerciseFormSchemaType } from "@/app/_ZodSchemas";
@@ -47,6 +47,9 @@ const ExerciseForm = ({ onSubmitCreateExercise }: Params) => {
       percentageLoad: "100",
       rpeLoad: "10",
       weightLoad: "0",
+      percentageMax: "100",
+      rpeMax: "10",
+      weightMax: "0",
       unit: "lbs",
       notes: "",
     },
@@ -57,7 +60,6 @@ const ExerciseForm = ({ onSubmitCreateExercise }: Params) => {
     control,
     watch,
     reset,
-    resetField,
     handleSubmit,
     formState: { isSubmitSuccessful },
   } = exerciseForm;
@@ -255,83 +257,148 @@ const ExerciseForm = ({ onSubmitCreateExercise }: Params) => {
               )}
             />
 
-            {/* RENDER ON LOAD TYPE */}
-
             {loadType == "weight" && (
-              <FormField
-                control={control}
-                name="weightLoad"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col space-y-1.5 flex-1">
-                    <FormLabel htmlFor="weightLoad">Weight</FormLabel>
-                    <Input
-                      id="weightLoad"
-                      placeholder="0"
-                      className="w-[70px]"
-                      {...field}
-                    />
-                  </FormItem>
-                )}
-              />
+              <>
+                <FormField
+                  name="weightLoad"
+                  control={control}
+                  defaultValue="0"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col space-y-1.5 flex-1">
+                      <FormLabel htmlFor="weightLoad">Weight</FormLabel>
+                      <Input id="weightLoad" className="w-[70px]" {...field} />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="weightMax"
+                  control={control}
+                  defaultValue="0"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col space-y-1.5 flex-1">
+                      <FormLabel htmlFor="weightMax">Weight</FormLabel>
+                      <Input id="weightMax" className="w-[70px]" {...field} />
+                    </FormItem>
+                  )}
+                />
+              </>
             )}
             {loadType == "percentage" && (
-              <FormField
-                control={control}
-                name="percentageLoad"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col space-y-1.5 flex-1">
-                    <FormLabel htmlFor="percentageLoad">Percent</FormLabel>
+              <>
+                <FormField
+                  control={control}
+                  name="percentageLoad"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col space-y-1.5 flex-1">
+                      <FormLabel htmlFor="percentageLoad">Percent</FormLabel>
 
-                    <Select onValueChange={field.onChange} {...field}>
-                      <SelectTrigger id="percentageLoad">
-                        <SelectValue placeholder="Select" />
-                      </SelectTrigger>
-                      <SelectContent position="popper">
-                        {Array.from(
-                          { length: Math.floor(101 / 2.5) + 1 },
-                          (_, i) => 100 - i * 2.5
-                        ).map(
-                          (value) =>
-                            value % 2.5 == 0 && (
-                              <SelectItem key={value} value={`${value}`}>
-                                {value}%
-                              </SelectItem>
-                            )
-                        )}
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
+                      <Select onValueChange={field.onChange} {...field}>
+                        <SelectTrigger id="percentageLoad">
+                          <SelectValue placeholder="Select" />
+                        </SelectTrigger>
+                        <SelectContent position="popper">
+                          {Array.from(
+                            { length: Math.floor(101 / 2.5) + 1 },
+                            (_, i) => 100 - i * 2.5
+                          ).map(
+                            (value) =>
+                              value % 2.5 == 0 && (
+                                <SelectItem key={value} value={`${value}`}>
+                                  {value}%
+                                </SelectItem>
+                              )
+                          )}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={control}
+                  name="percentageMax"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col space-y-1.5 flex-1">
+                      <FormLabel htmlFor="percentageMax">Percent</FormLabel>
+
+                      <Select onValueChange={field.onChange} {...field}>
+                        <SelectTrigger id="percentageMax">
+                          <SelectValue placeholder="Select" />
+                        </SelectTrigger>
+                        <SelectContent position="popper">
+                          {Array.from(
+                            { length: Math.floor(101 / 2.5) + 1 },
+                            (_, i) => 100 - i * 2.5
+                          ).map(
+                            (value) =>
+                              value % 2.5 == 0 && (
+                                <SelectItem key={value} value={`${value}`}>
+                                  {value}%
+                                </SelectItem>
+                              )
+                          )}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+              </>
             )}
 
             {loadType == "rpe" && (
-              <FormField
-                control={control}
-                name="rpeLoad"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col space-y-1.5 flex-1">
-                    <FormLabel htmlFor="rpeLoad">RPE</FormLabel>
-                    <Select onValueChange={field.onChange} {...field}>
-                      <SelectTrigger id="rpeLoad">
-                        <SelectValue placeholder="Select" />
-                      </SelectTrigger>
-                      <SelectContent position="popper">
-                        <SelectGroup>
-                          <SelectLabel>RPE</SelectLabel>
-                          {Array.from({ length: 11 }, (_, i) => 11 - i).map(
-                            (_, idx) => (
-                              <SelectItem key={idx} value={`${idx}`}>
-                                {idx} RPE
-                              </SelectItem>
-                            )
-                          )}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
+              <>
+                <FormField
+                  control={control}
+                  name="rpeLoad"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col space-y-1.5 flex-1">
+                      <FormLabel htmlFor="rpeLoad">RPE</FormLabel>
+                      <Select onValueChange={field.onChange} {...field}>
+                        <SelectTrigger id="rpeLoad">
+                          <SelectValue placeholder="Select" />
+                        </SelectTrigger>
+                        <SelectContent position="popper">
+                          <SelectGroup>
+                            <SelectLabel>RPE</SelectLabel>
+                            {Array.from({ length: 11 }, (_, i) => 11 - i).map(
+                              (_, idx) => (
+                                <SelectItem key={idx} value={`${idx}`}>
+                                  {idx} RPE
+                                </SelectItem>
+                              )
+                            )}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={control}
+                  name="rpeMax"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col space-y-1.5 flex-1">
+                      <FormLabel htmlFor="rpeMax">RPE</FormLabel>
+                      <Select onValueChange={field.onChange} {...field}>
+                        <SelectTrigger id="rpeMax">
+                          <SelectValue placeholder="Select" />
+                        </SelectTrigger>
+                        <SelectContent position="popper">
+                          <SelectGroup>
+                            <SelectLabel>RPE</SelectLabel>
+                            {Array.from({ length: 11 }, (_, i) => 11 - i).map(
+                              (_, idx) => (
+                                <SelectItem key={idx} value={`${idx}`}>
+                                  {idx} RPE
+                                </SelectItem>
+                              )
+                            )}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+              </>
             )}
           </div>
 

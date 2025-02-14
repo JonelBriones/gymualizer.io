@@ -4,11 +4,14 @@ const Exercise = new Schema(
   {
     name: String,
     loadType: String,
+    weightMax: String,
+    weight: String,
     sets: String,
     reps: String,
     unit: String,
     notes: String,
     additionalNotes: String,
+    date: Number,
   },
   { _id: true }
 );

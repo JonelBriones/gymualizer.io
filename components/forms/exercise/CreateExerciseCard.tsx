@@ -8,79 +8,91 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { TemplateT } from "@/app/_types/types";
+import { TemplateT, ToggleWeekDayId } from "@/app/_types/types";
 import ExerciseForm from "./ExerciseForm";
-import { addDays } from "date-fns";
 import { toast } from "sonner";
 import { ExerciseFormSchemaType } from "@/app/_ZodSchemas";
 import editProgramAction from "@/app/_actions/exerciseActions/templateActions/editProgramAction";
 
 interface Params {
   program: TemplateT;
-  setEditProgram: React.Dispatch<React.SetStateAction<TemplateT>>;
+  setProgram: React.Dispatch<React.SetStateAction<TemplateT | null>>;
   weekIdx: number;
   dayIdx: number;
   getTotalDays: number;
-  toggledDayId: {
-    week: number;
-    day: number;
-  };
+  toggledDayId: ToggleWeekDayId;
   toggleDay: {
     week: number;
     day: number;
   };
+  selectedExerciseDate: Date | null;
 }
 export function CreateExerciseCard({
   program,
-  setEditProgram,
+  setProgram,
   weekIdx,
   dayIdx,
   toggleDay,
   toggledDayId,
+  selectedExerciseDate,
 }: Params) {
-  const daysToAdd = () => {
-    switch (weekIdx) {
-      case 0:
-        return dayIdx;
-      default:
-        return weekIdx * 7 + dayIdx;
-    }
-  };
-
   const onSubmitCreateExercise = (e: ExerciseFormSchemaType) => {
-    const selectDay = addDays(new Date(program.startDate), daysToAdd());
-
-    const updatedProgram = {
-      ...program,
-      weeks: program?.weeks?.map((week, currentWeek: number) =>
-        currentWeek == weekIdx
-          ? {
-              ...week,
-              days: week.days.map((day, currentDay: number) =>
-                currentDay == dayIdx
-                  ? {
-                      ...day,
-                      exercises: [...day.exercises, { ...e, date: selectDay }],
-                    }
-                  : day
-              ),
-            }
-          : week
-      ),
+    const {
+      name,
+      loadType,
+      sets,
+      reps,
+      percentageLoad,
+      rpeLoad,
+      weightLoad,
+      weightMax,
+      rpeMax,
+      percentageMax,
+      unit,
+      notes,
+    } = e;
+    let selectLoadType = {
+      name,
+      loadType,
+      sets,
+      reps,
+      weightMax,
+      unit,
+      notes,
     };
 
-    editProgramAction(e, toggledDayId, program._id);
-    setEditProgram({
+    type WeightType = "percentage" | "weight" | "rpe";
+
+    const LOADTYPE: Record<WeightType, string | undefined> = {
+      rpe: rpeLoad,
+      weight: weightLoad,
+      percentage: percentageLoad,
+    };
+    const LOADTYPEMAX: Record<WeightType, string | undefined> = {
+      rpe: rpeMax,
+      weight: weightMax,
+      percentage: percentageMax,
+    };
+
+    const updatedExercise = {
+      ...selectLoadType,
+      date: selectedExerciseDate,
+      weight: LOADTYPE[loadType as WeightType],
+      weightMax: LOADTYPEMAX[loadType as WeightType],
+    };
+    console.log("toggleDayId", toggledDayId);
+    editProgramAction(updatedExercise, toggledDayId);
+    setProgram({
       ...program,
-      weeks: program?.weeks?.map((week, currentWeek: number) =>
-        currentWeek == weekIdx
+      weeks: program?.weeks?.map((week) =>
+        week._id == toggledDayId.week
           ? {
               ...week,
-              days: week.days.map((day, currentDay: number) =>
-                currentDay == dayIdx
+              days: week.days.map((day) =>
+                day._id == toggledDayId.day
                   ? {
                       ...day,
-                      exercises: [...day.exercises, { ...e, date: selectDay }],
+                      exercises: [...day.exercises, { ...updatedExercise }],
                     }
                   : day
               ),
