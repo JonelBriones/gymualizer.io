@@ -11,7 +11,7 @@ export type ExerciseT = {
   notes: string;
   additionalNotes?: string;
   date: Date | null;
-  _id: Types.ObjectId;
+  _id?: Types.ObjectId;
 };
 
 export type TemplateT = {
@@ -21,6 +21,7 @@ export type TemplateT = {
   endDate: Date;
   weeks: Week[];
 };
+
 export type Week = {
   _id: Types.ObjectId;
   days: Day[];

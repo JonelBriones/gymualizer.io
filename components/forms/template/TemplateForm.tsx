@@ -6,6 +6,8 @@ import { createProgramAction } from "@/app/_actions/exerciseActions/templateActi
 import { useFormStatus } from "react-dom";
 import { DateRange } from "react-day-picker";
 import { addDays } from "date-fns";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 type Errors = {
   [name: string]: string[];
@@ -52,21 +54,24 @@ export function TemplateForm({ program }: any) {
   }, [state]);
 
   return (
-    <form action={createProgram} className="flex flex-col gap-4">
-      <div className="flex flex-col">
+    <form
+      action={createProgram}
+      className="flex flex-col gap-4 w-full border rounded-md p-4"
+    >
+      <div className="flex flex-col gap-2">
         {state?.errors ? (
-          <label className="text-sm text-red-600">{errors["name"]}</label>
+          <Label className="text-sm text-red-600">{errors["name"]}</Label>
         ) : (
-          <label htmlFor="name">Name</label>
+          <Label htmlFor="name">Name</Label>
         )}
-        <input
+        <Input
           placeholder="Powerlifting Program 3.0"
           id="name"
           type="text"
           name="name"
         />
       </div>
-      <div>
+      <div className="flex flex-col gap-2">
         <label htmlFor="date">
           Select start and end date | Weeks: {totalWeeks}
         </label>

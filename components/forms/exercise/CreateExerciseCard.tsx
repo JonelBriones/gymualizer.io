@@ -15,11 +15,10 @@ import { ExerciseFormSchemaType } from "@/app/_ZodSchemas";
 import editProgramAction from "@/app/_actions/exerciseActions/templateActions/editProgramAction";
 
 interface Params {
-  program: TemplateT;
+  program: TemplateT | null;
   setProgram: React.Dispatch<React.SetStateAction<TemplateT | null>>;
   weekIdx: number;
   dayIdx: number;
-  getTotalDays: number;
   toggledDayId: ToggleWeekDayId;
   toggleDay: {
     week: number;
@@ -82,6 +81,9 @@ export function CreateExerciseCard({
     };
     console.log("toggleDayId", toggledDayId);
     editProgramAction(updatedExercise, toggledDayId);
+
+    if (!program) return;
+
     setProgram({
       ...program,
       weeks: program?.weeks?.map((week) =>
@@ -107,7 +109,7 @@ export function CreateExerciseCard({
   };
 
   return (
-    <Card className="w-full  md:w-[340px] h-fit">
+    <Card className="w-full h-fit">
       <CardHeader>
         <CardTitle>Create exercise</CardTitle>
         <CardDescription className="flex flex-col">
@@ -118,7 +120,10 @@ export function CreateExerciseCard({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ExerciseForm onSubmitCreateExercise={onSubmitCreateExercise} />
+        <ExerciseForm
+          onSubmitCreateExercise={onSubmitCreateExercise}
+          program={program}
+        />
       </CardContent>
     </Card>
   );

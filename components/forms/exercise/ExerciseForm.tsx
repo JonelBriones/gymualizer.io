@@ -34,9 +34,10 @@ import {
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 interface Params {
+  program: TemplateT | null;
   onSubmitCreateExercise: any;
 }
-const ExerciseForm = ({ onSubmitCreateExercise }: Params) => {
+const ExerciseForm = ({ onSubmitCreateExercise, program }: Params) => {
   const exerciseForm = useForm<ExerciseFormSchemaType>({
     resolver: zodResolver(ExerciseFormSchema),
     defaultValues: {
@@ -148,7 +149,6 @@ const ExerciseForm = ({ onSubmitCreateExercise }: Params) => {
               </FormItem>
             )}
           /> */}
-
           <FormField
             control={control}
             name="name"
@@ -418,7 +418,9 @@ const ExerciseForm = ({ onSubmitCreateExercise }: Params) => {
           <Button type="button" variant="outline" onClick={() => reset()}>
             Reset
           </Button>
-          <Button type="submit">Save</Button>
+          <Button type="submit" disabled={program == null}>
+            Save
+          </Button>
         </div>
       </form>
     </Form>

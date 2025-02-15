@@ -16,15 +16,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="min-h-screen ">
-        <div className="container mx-auto px-4">
+      <body className="min-h-screen">
+        <div className="container mx-auto px-4 min-h-screen flex flex-col">
           <div className="p-5">
             <Navigation />
           </div>
           <div className="flex flex-col gap-4">
             <BreadcrumbComponent />
             {children}
-            <Toaster className="text-neutral-950 bg-red-black" />
+            <Toaster className="text-neutral-950" />
           </div>
         </div>
       </body>

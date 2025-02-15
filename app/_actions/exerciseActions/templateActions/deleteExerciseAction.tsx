@@ -7,7 +7,7 @@ import { Types } from "mongoose";
 export const deleteExerciseAction = async (
   weekId: Types.ObjectId,
   dayId: Types.ObjectId,
-  exerciseId: Types.ObjectId
+  exerciseId?: Types.ObjectId
 ) => {
   await connectDB();
   console.log("weekID", weekId);

@@ -10,7 +10,7 @@ interface ExerciseProps {
   exercise: ExerciseT;
   setProgram: Dispatch<SetStateAction<TemplateT | null>>;
   program: TemplateT;
-  exerciseId: Types.ObjectId;
+  exerciseId?: Types.ObjectId;
   weekId: Types.ObjectId;
   dayId: Types.ObjectId;
 }
