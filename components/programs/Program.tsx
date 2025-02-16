@@ -58,7 +58,7 @@ const Program = ({ program }: { program: TemplateT }) => {
     month: "short",
     day: "numeric",
   };
-  const [state, addNote] = useActionState(updateWorkoutNotesAction, null);
+  // const [state, addNote] = useActionState(updateWorkoutNotesAction, null);
 
   const matchDateToToggleDay = (weekIdx: number, dayIdx: number) => {
     const selectDay = addDays(
@@ -73,16 +73,15 @@ const Program = ({ program }: { program: TemplateT }) => {
     day: null,
   });
 
-  const [note, setNote] = useState("");
+  const [note, setNote] = useState<string>("");
 
-  const addNoteAction = (e: any) => {
-    e.preventDefault();
-
-    console.log(note);
-    console.log(program.weeks[selectWeek]._id);
-    updateWorkoutNotesAction(note, toggleWeekDay);
-  };
-
+  useEffect(() => {
+    const localNote = localStorage.getItem("note");
+    if (localNote) {
+      setNote(localNote);
+    }
+  }, []);
+  console.log(programWeeks);
   return (
     <div className="w-full">
       <div className="flex justify-between place-items-center">
@@ -109,138 +108,147 @@ const Program = ({ program }: { program: TemplateT }) => {
           </SelectContent>
         </Select>
       </div>
-      <div className="flex flex-col gap-4 p-5 w-full">
+
+      <div className="flex flex-col gap-5 p-5">
         {/* DESKTOP USE POPUP / MOBILE USE DRAWER */}
-        {programWeeks.map((day, dayIdx) => (
-          <Drawer key={day._id.toString()}>
-            <DrawerTrigger
-              asChild
-              onClick={() =>
-                setToggleWeekDay({
-                  week: program.weeks[selectWeek]._id,
-                  day: day._id,
-                })
-              }
-            >
-              <Button
-                variant="outline"
-                className={`justify-start  gap-4 ${
+        {programWeeks.length == 0 ? (
+          <div className="text-center">
+            <p className="text-neutral-500">No workouts planned this week</p>
+          </div>
+        ) : (
+          programWeeks.map((day, dayIdx) => (
+            <Fragment key={day._id.toString()}>
+              <h4
+                className={` text-xl p-4  gap-4 ${
                   matchDateToToggleDay(
                     selectWeek,
                     dayIdx
                   ).toLocaleDateString() == today
                     ? "bg-green-100"
-                    : ""
+                    : "bg-neutral-100"
                 }`}
               >
                 {matchDateToToggleDay(selectWeek, dayIdx).toLocaleDateString(
                   "en-us",
                   options as {}
                 )}
-              </Button>
-            </DrawerTrigger>
-
-            <DrawerContent className="">
-              <div className="mx-auto w-full md:max-w-2xl h-[90vh] flex flex-col justify-between">
-                <DrawerHeader>
-                  <DrawerTitle>
-                    Week {selectWeek + 1} | Day {dayIdx + 1}
-                  </DrawerTitle>
-                  <DrawerDescription className="flex gap-2">
-                    <span>{day?.notes}</span>
-                  </DrawerDescription>
-
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="w-[150px]">Exercise</TableHead>
-                        <TableHead>Sets</TableHead>
-                        <TableHead>Reps</TableHead>
-                        <TableHead>Weight</TableHead>
-                        <TableHead>Range</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {day.exercises.map(
-                        (
-                          {
-                            name,
-                            sets,
-                            reps,
-                            loadType,
-                            weight,
-                            unit,
-                            weightMax,
-                            notes,
-                          },
-                          exerciseIdx
-                        ) => (
-                          <TableRow key={exerciseIdx}>
-                            <TableCell className="font-medium text-left">
-                              {name}
-                            </TableCell>
-                            <TableCell>{sets}</TableCell>
-                            <TableCell>{reps}</TableCell>
-                            <TableCell>
-                              {weight}
+              </h4>
+              <div className="border-t p-4 ">
+                <h4 className="text-lg">
+                  Workout notes: <span> {day.workout_notes}</span>
+                </h4>
+              </div>
+              <Table className="overflow-hidden">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[150px]">Exercise</TableHead>
+                    <TableHead>Sets</TableHead>
+                    <TableHead>Reps</TableHead>
+                    <TableHead>Weight</TableHead>
+                    <TableHead>Range</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {day.exercises.map(
+                    (
+                      {
+                        name,
+                        sets,
+                        reps,
+                        loadType,
+                        weight,
+                        unit,
+                        weightMax,
+                        notes,
+                      },
+                      exerciseIdx
+                    ) => (
+                      <TableRow key={exerciseIdx}>
+                        <TableCell className="font-medium text-left">
+                          {name}
+                        </TableCell>
+                        <TableCell>{sets}</TableCell>
+                        <TableCell>{reps}</TableCell>
+                        <TableCell>
+                          {weight}
+                          {loadType == "rpe"
+                            ? " RPE"
+                            : loadType == "percentage"
+                            ? "%"
+                            : unit}
+                        </TableCell>
+                        <TableCell>
+                          {weightMax !== "0" && weightMax !== undefined ? (
+                            <>
+                              {weightMax}
                               {loadType == "rpe"
                                 ? " RPE"
                                 : loadType == "percentage"
                                 ? "%"
                                 : unit}
-                            </TableCell>
-                            <TableCell>
-                              {weightMax !== "0" && weightMax !== undefined ? (
-                                <>
-                                  {weightMax}
-                                  {loadType == "rpe"
-                                    ? " RPE"
-                                    : loadType == "percentage"
-                                    ? "%"
-                                    : unit}
-                                </>
-                              ) : (
-                                <span className="text-xs text-neutral-400">
-                                  N/A
-                                </span>
-                              )}
-                            </TableCell>
-                          </TableRow>
-                        )
-                      )}
-                    </TableBody>
-                    <TableFooter></TableFooter>
-                  </Table>
-                </DrawerHeader>
-                <DrawerFooter className="flex flex-col gap-4">
-                  <span className="text-sm">Workout notes</span>
-                  <form
-                    onSubmit={addNoteAction}
-                    className="text-left border rounded-md"
-                  >
+                            </>
+                          ) : (
+                            <span className="text-xs text-neutral-400">
+                              N/A
+                            </span>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    )
+                  )}
+                </TableBody>
+              </Table>
+
+              <Drawer>
+                <DrawerTrigger
+                  asChild
+                  onClick={() =>
+                    setToggleWeekDay({
+                      week: program.weeks[selectWeek]._id,
+                      day: day._id,
+                    })
+                  }
+                >
+                  <Button variant="outline">Add comment</Button>
+                </DrawerTrigger>
+                <DrawerContent>
+                  <div className="mx-auto md:max-w-2xl h-[90vh] flex flex-col justify-between w-full p-4">
+                    <DrawerHeader>
+                      <DrawerTitle className="text-center">
+                        Week {selectWeek + 1} | Day {dayIdx + 1}
+                      </DrawerTitle>
+                      <DrawerDescription aria-disabled></DrawerDescription>
+                    </DrawerHeader>
+
                     <textarea
                       placeholder="add notes"
-                      className="w-full p-2"
-                      defaultValue={day?.workout_notes}
+                      className="w-full p-5 min-h-[300px] text-2xl border rounded-md"
+                      defaultValue={note ? note : day?.workout_notes}
                       name="workoutNote"
-                      onChange={(e) => setNote(e.target.value)}
+                      onChange={(e) => {
+                        setNote(e.target.value);
+                        localStorage.setItem("note", e.target.value);
+                      }}
                     />
-                    <Button
-                      type="submit"
-                      variant="secondary"
-                      className="w-full"
-                    >
-                      submit
-                    </Button>
-                  </form>
-                  <DrawerClose asChild className="flex flex-col gap-4">
-                    <Button variant="outline">Close</Button>
-                  </DrawerClose>
-                </DrawerFooter>
-              </div>
-            </DrawerContent>
-          </Drawer>
-        ))}
+
+                    <DrawerFooter className="flex flex-col gap-4">
+                      <DrawerClose asChild className="flex flex-col gap-4">
+                        <Button
+                          variant="outline"
+                          onClick={() =>
+                            updateWorkoutNotesAction(note, toggleWeekDay)
+                          }
+                        >
+                          Save
+                        </Button>
+                      </DrawerClose>
+                    </DrawerFooter>
+                  </div>
+                </DrawerContent>
+              </Drawer>
+            </Fragment>
+          ))
+        )}
       </div>
     </div>
   );

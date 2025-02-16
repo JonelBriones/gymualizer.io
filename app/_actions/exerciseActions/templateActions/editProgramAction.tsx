@@ -10,7 +10,6 @@ const editProgramAction = async (
   exercise: ExerciseT,
   toggledDayId: ToggleWeekDayId
 ) => {
-  console.log("exercise", exercise);
   await connectDB();
   const { week, day } = toggledDayId;
 
