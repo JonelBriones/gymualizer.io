@@ -74,7 +74,7 @@ const TemplatePage = ({
     <div className="flex flex-col place-content-center md:flex-row w-full m-auto gap-4 ">
       <div className="flex flex-1 flex-col place-items-center gap-4 md:max-w-sm ">
         <TemplateForm program={program} />
-
+        {/* make template form into a popover-desktop drawer-mobile */}
         <CreateExerciseCard
           toggleDay={toggledDay}
           program={program}
@@ -136,7 +136,7 @@ const TemplatePage = ({
                       Week {weekIdx + 1}
                     </AccordionTrigger>
                     <AccordionContent className="md:ml-4">
-                      <Accordion type="single" collapsible className="w-full">
+                      <Accordion type="multiple" className="w-full">
                         {week.days.map(
                           (day, dayIdx) =>
                             matchDateToToggleDay(weekIdx, dayIdx).getTime() <

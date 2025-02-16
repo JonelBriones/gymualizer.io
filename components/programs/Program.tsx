@@ -1,7 +1,7 @@
 "use client";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useActionState, useEffect, useState } from "react";
 import fakedata from "@/json/data.json";
-import { TemplateT } from "@/app/_types/types";
+import { TemplateT, ToggleWeekDayId } from "@/app/_types/types";
 import Link from "next/link";
 import {
   Accordion,
@@ -34,38 +34,55 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "../ui/table";
-const Program = () => {
-  const program = fakedata[0];
+import { addDays } from "date-fns";
+import { updateWorkoutNotesAction } from "@/app/_actions/exerciseActions/templateActions/updateWorkoutNotesAction";
+const Program = ({ program }: { program: TemplateT }) => {
   const [selectWeek, setSelectWeek] = useState(0);
-  const weeks = program.weeks.length;
   if (!program) return <div>program error loaded</div>;
 
-  const convertTimestamp = (date: number) => {
-    return new Date(date);
-  };
-
-  const removeExtraDays = program.weeks[selectWeek].days.filter(
+  const programWeeks = program.weeks[selectWeek].days.filter(
     (exercise) => exercise.exercises.length != 0
   );
-  console.log(removeExtraDays);
+
+  // const today = new Date().getTime();
+
+  const today = new Date().toLocaleDateString();
   const options = {
     weekday: "long",
     year: "numeric",
     month: "short",
     day: "numeric",
   };
+  const [state, addNote] = useActionState(updateWorkoutNotesAction, null);
 
-  // const today = new Date().getTime();
-
-  const exerciseIsToday = (date: number) => {
-    return (
-      new Date(date).toLocaleDateString() == new Date().toLocaleDateString()
+  const matchDateToToggleDay = (weekIdx: number, dayIdx: number) => {
+    const selectDay = addDays(
+      new Date(Number(program?.startDate)),
+      weekIdx == 0 ? dayIdx : weekIdx * 7 + dayIdx
     );
+
+    return selectDay;
   };
+  const [toggleWeekDay, setToggleWeekDay] = useState<ToggleWeekDayId>({
+    week: null,
+    day: null,
+  });
+
+  const [note, setNote] = useState("");
+
+  const addNoteAction = (e: any) => {
+    e.preventDefault();
+
+    console.log(note);
+    console.log(program.weeks[selectWeek]._id);
+    updateWorkoutNotesAction(note, toggleWeekDay);
+  };
+
   return (
     <div className="w-full">
       <div className="flex justify-between place-items-center">
@@ -81,9 +98,11 @@ const Program = () => {
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Weeks</SelectLabel>
-              {program.weeks.map((_, idx) => (
-                <Fragment key={idx}>
-                  <SelectItem value={idx.toString()}>Week {idx}</SelectItem>
+              {program.weeks.map((_, weekIdx) => (
+                <Fragment key={weekIdx}>
+                  <SelectItem value={weekIdx.toString()}>
+                    Week {weekIdx + 1}
+                  </SelectItem>
                 </Fragment>
               ))}
             </SelectGroup>
@@ -91,39 +110,54 @@ const Program = () => {
         </Select>
       </div>
       <div className="flex flex-col gap-4 p-5 w-full">
-        {removeExtraDays.map((day, dayIdx) => (
-          <Drawer key={dayIdx}>
-            <DrawerTrigger asChild>
+        {/* DESKTOP USE POPUP / MOBILE USE DRAWER */}
+        {programWeeks.map((day, dayIdx) => (
+          <Drawer key={day._id.toString()}>
+            <DrawerTrigger
+              asChild
+              onClick={() =>
+                setToggleWeekDay({
+                  week: program.weeks[selectWeek]._id,
+                  day: day._id,
+                })
+              }
+            >
               <Button
                 variant="outline"
                 className={`justify-start  gap-4 ${
-                  exerciseIsToday(day.date) ? "bg-green-100" : ""
+                  matchDateToToggleDay(
+                    selectWeek,
+                    dayIdx
+                  ).toLocaleDateString() == today
+                    ? "bg-green-100"
+                    : ""
                 }`}
               >
-                {convertTimestamp(day?.date).toLocaleDateString(
+                {matchDateToToggleDay(selectWeek, dayIdx).toLocaleDateString(
                   "en-us",
                   options as {}
                 )}
               </Button>
             </DrawerTrigger>
 
-            <DrawerContent>
-              <div className="mx-auto w-full max-w-sm h-[90vh] flex flex-col justify-between">
+            <DrawerContent className="">
+              <div className="mx-auto w-full md:max-w-2xl h-[90vh] flex flex-col justify-between">
                 <DrawerHeader>
                   <DrawerTitle>
                     Week {selectWeek + 1} | Day {dayIdx + 1}
                   </DrawerTitle>
                   <DrawerDescription className="flex gap-2">
-                    <span>{day.summary_notes}</span>
+                    <span>{day?.notes}</span>
                   </DrawerDescription>
 
-                  <Table className="w-full">
+                  <Table>
                     <TableHeader>
                       <TableRow>
                         <TableHead className="w-[150px]">Exercise</TableHead>
                         <TableHead>Sets</TableHead>
                         <TableHead>Reps</TableHead>
-                        <TableHead colSpan={2}>Weight</TableHead>
+                        <TableHead>Weight</TableHead>
+                        <TableHead>Range</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -134,10 +168,10 @@ const Program = () => {
                             sets,
                             reps,
                             loadType,
-                            percentageLoad,
-                            weightLoad,
-                            rpeLoad,
+                            weight,
                             unit,
+                            weightMax,
+                            notes,
                           },
                           exerciseIdx
                         ) => (
@@ -148,25 +182,49 @@ const Program = () => {
                             <TableCell>{sets}</TableCell>
                             <TableCell>{reps}</TableCell>
                             <TableCell>
+                              {weight}
                               {loadType == "rpe"
-                                ? `RPE ${rpeLoad}`
+                                ? " RPE"
                                 : loadType == "percentage"
-                                ? `${percentageLoad}%`
-                                : `${weightLoad}${unit}`}
+                                ? "%"
+                                : unit}
+                            </TableCell>
+                            <TableCell>
+                              {weightMax !== "0" && weightMax !== undefined ? (
+                                <>
+                                  {weightMax}
+                                  {loadType == "rpe"
+                                    ? " RPE"
+                                    : loadType == "percentage"
+                                    ? "%"
+                                    : unit}
+                                </>
+                              ) : (
+                                <span className="text-xs text-neutral-400">
+                                  N/A
+                                </span>
+                              )}
                             </TableCell>
                           </TableRow>
                         )
                       )}
                     </TableBody>
+                    <TableFooter></TableFooter>
                   </Table>
                 </DrawerHeader>
                 <DrawerFooter className="flex flex-col gap-4">
-                  <div>
-                    <span className="text-sm text-right">Workout notes</span>
-                    <p>{day.workout_notes}</p>
-                  </div>
-                  <form action="" className="text-left border">
-                    <textarea placeholder="add notes" className="w-full p-2" />
+                  <span className="text-sm">Workout notes</span>
+                  <form
+                    onSubmit={addNoteAction}
+                    className="text-left border rounded-md"
+                  >
+                    <textarea
+                      placeholder="add notes"
+                      className="w-full p-2"
+                      defaultValue={day?.workout_notes}
+                      name="workoutNote"
+                      onChange={(e) => setNote(e.target.value)}
+                    />
                     <Button
                       type="submit"
                       variant="secondary"

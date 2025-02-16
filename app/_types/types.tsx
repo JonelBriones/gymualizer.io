@@ -9,7 +9,6 @@ export type ExerciseT = {
   reps: string;
   unit: string;
   notes: string;
-  additionalNotes?: string;
   date: Date | null;
   _id?: Types.ObjectId;
 };
@@ -31,6 +30,7 @@ export type Day = {
   date?: Date;
   exercises: ExerciseT[];
   notes?: string;
+  workout_notes?: string;
 };
 export type ToggleWeekDayId = {
   week: Types.ObjectId | null;

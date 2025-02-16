@@ -7,8 +7,14 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import mongoose, {
+  isObjectIdOrHexString,
+  isValidObjectId,
+  ObjectId,
+  Types,
+} from "mongoose";
 
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { Fragment } from "react";
 
 export function BreadcrumbComponent() {
@@ -24,6 +30,7 @@ export function BreadcrumbComponent() {
     }
     return string;
   };
+  const { id } = useParams() as { id: string };
 
   return (
     pathname !== "/" && (
@@ -34,8 +41,9 @@ export function BreadcrumbComponent() {
               {idx == pathnameArray.length - 1 ? (
                 <BreadcrumbItem>
                   <BreadcrumbPage>
-                    {route == "program"
-                      ? "program name here"
+                    {pathnameArray[1] == "program" &&
+                    mongoose.Types.ObjectId.isValid(pathnameArray[2])
+                      ? "View"
                       : route[0].toUpperCase() + route.slice(1, route.length)}
                   </BreadcrumbPage>
                 </BreadcrumbItem>

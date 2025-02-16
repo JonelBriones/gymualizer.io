@@ -34,9 +34,9 @@ const TemplateSchema = new Schema(
       {
         days: [
           {
-            summary_notes: { type: String },
-            workout_notes: { type: String },
-            date: { type: Number },
+            summary_notes: String,
+            workout_notes: String,
+            date: Number,
             exercises: [Exercise],
           },
         ],

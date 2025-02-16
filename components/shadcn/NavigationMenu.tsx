@@ -42,12 +42,12 @@ const Navigation = () => {
         <NavigationMenuItem>
           <NavigationMenuTrigger>Links</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-              <LinkItems href="/dashboard" title="Dashboard">
-                View of today and upcoming workouts, calendar view, check stats!
+            <ul className="grid gap-3 p-6 w-[300px] md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+              <LinkItems href="/dashboard/program" title="Programs">
+                View all programs.
               </LinkItems>
-              <LinkItems href="/dashboard/templates" title="Templates">
-                Create, edit or delete workout templates here.
+              <LinkItems href="/dashboard/create" title="New Program">
+                Create a new program.
               </LinkItems>
             </ul>
           </NavigationMenuContent>
@@ -55,7 +55,7 @@ const Navigation = () => {
         <NavigationMenuItem>
           <NavigationMenuTrigger>Calculators</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+            <ul className="grid gap-3 p-6 w-[300px] md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
               {components.map((component) => (
                 <LinkItems
                   key={component.title}

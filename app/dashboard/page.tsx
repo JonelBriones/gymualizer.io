@@ -1,21 +1,21 @@
-"use client";
-
-import React, { Fragment } from "react";
-import fakedata from "@/json/data.json";
+"use server";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
-const page = () => {
-  const [date, setDate] = React.useState<Date | undefined>(new Date());
-  const today = new Date().getTime();
-  const convertedDate = new Date(1738982166547).toLocaleDateString();
-  console.log(fakedata);
-  return (
-    <div className="flex flex-col">
-      <p>this is a summary of the programs</p>
-      <Link href={"/dashboard/programs"} className="text-xl border p-3 w-full">
-        Programs
-      </Link>
-    </div>
-  );
-};
+import Template from "@/models/Templates";
+import { TemplateT } from "../_types/types";
+import Dashboard from "@/components/dashboard/Dashboard";
+const page = async () => {
+  const programs = await Template.find({}).lean();
 
+  return <Dashboard programs={JSON.parse(JSON.stringify(programs))} />;
+};
 export default page;
