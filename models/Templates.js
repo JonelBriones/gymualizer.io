@@ -12,6 +12,7 @@ const Exercise = new Schema(
     notes: String,
     additionalNotes: String,
     date: Number,
+    setWeight: [Number],
   },
   { _id: true }
 );

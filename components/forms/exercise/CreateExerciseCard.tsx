@@ -72,12 +72,14 @@ export function CreateExerciseCard({
       weight: weightMax,
       percentage: percentageMax,
     };
+    const setWeight = Array(Number(sets)).fill(null);
 
     const updatedExercise = {
       ...selectLoadType,
       date: selectedExerciseDate,
       weight: LOADTYPE[loadType as WeightType],
       weightMax: LOADTYPEMAX[loadType as WeightType],
+      setWeight,
     };
     console.log("toggleDayId", toggledDayId);
     editProgramAction(updatedExercise, toggledDayId);

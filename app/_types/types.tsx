@@ -10,6 +10,7 @@ export type ExerciseT = {
   unit: string;
   notes: string;
   date: Date | null;
+  setWeight: Number[];
   _id?: Types.ObjectId;
 };
 

@@ -20,7 +20,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
 
   return (
     <div>
-      <Program program={JSON.parse(JSON.stringify(program))} />
+      <Program programData={JSON.parse(JSON.stringify(program))} />
     </div>
   );
 };
