@@ -17,7 +17,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen">
-        <div className="container mx-auto px-4 min-h-screen flex flex-col">
+        {children}
+        {/* <div className="container mx-auto px-4 min-h-screen flex flex-col">
           <div className="p-5">
             <Navigation />
           </div>
@@ -26,7 +27,7 @@ export default function RootLayout({
             {children}
             <Toaster className="text-neutral-950" />
           </div>
-        </div>
+        </div> */}
       </body>
     </html>
   );
